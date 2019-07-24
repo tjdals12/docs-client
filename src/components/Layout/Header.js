@@ -61,11 +61,18 @@ class Header extends React.Component {
 		});
 	};
 
+	sidebarControl = (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+
+		document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
+	};
+
 	render() {
 		return (
 			<Navbar light expand className={bem.b('bg-white')}>
 				<Nav navbar className="mr-3">
-					<Button outline>
+					<Button outline onClick={this.sidebarControl}>
 						<MdClearAll size={25} />
 					</Button>
 				</Nav>
