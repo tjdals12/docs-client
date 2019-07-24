@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { LayoutRoute, MainLayout } from 'components/Layout';
-import { DashboardPage } from 'pages';
+import { DashboardPage, DocumentsPage } from 'pages';
 
 class App extends React.Component {
 	render() {
@@ -9,6 +9,7 @@ class App extends React.Component {
 			<BrowserRouter>
 				<Switch>
 					<LayoutRoute exact path="/" layout={MainLayout} component={DashboardPage} />
+					<LayoutRoute exact path="/documents" layout={MainLayout} component={DocumentsPage} />
 				</Switch>
 			</BrowserRouter>
 		);

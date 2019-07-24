@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink as BSNavLink, Collapse } from 'reactstrap';
-import { MdDashboard, MdDescription, MdBusiness, MdKeyboardArrowDown, MdBrightness1 } from 'react-icons/md';
+import { MdDashboard, MdDescription, MdBusiness, MdKeyboardArrowDown, MdChevronRight } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
 import sidebarBgImg from 'assets/img/sidebar/sidebar-9.jpg';
@@ -20,9 +20,9 @@ const navMenus = [
 ];
 
 const vendorMenus = [
-	{ to: '/vendors', name: 'Overral', exact: true, Icon: MdBrightness1 },
-	{ to: '/vendors/list', name: 'Vendor List', exact: true, Icon: MdBrightness1 },
-	{ to: '/vendors/management', name: 'Management', exact: true, Icon: MdBrightness1 }
+	{ to: '/vendors', name: 'Overral', exact: true, Icon: MdChevronRight },
+	{ to: '/vendors/list', name: 'Vendor List', exact: true, Icon: MdChevronRight },
+	{ to: '/vendors/management', name: 'Management', exact: true, Icon: MdChevronRight }
 ];
 
 class Sidebar extends React.Component {

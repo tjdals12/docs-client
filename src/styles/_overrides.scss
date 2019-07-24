@@ -10,3 +10,21 @@
 		}
 	}
 }
+
+.page-item {
+	.page-link {
+		color: #fc5c7d;
+	}
+
+	&.active {
+		.page-link {
+			background: #fc5c7d;
+			border: #fc5c7d;
+		}
+	}
+}
+
+.table td {
+	padding: .5rem .75rem;
+	font-size: .8rem;
+}
