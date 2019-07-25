@@ -6,9 +6,9 @@ import * as documentActions from 'store/modules/document';
 
 class DocumentTableContainer extends React.Component {
 	getDocuments = () => {
-		const { DocumentActions } = this.props;
+		const { DocumentActions, page } = this.props;
 
-		DocumentActions.getDocuments();
+		DocumentActions.getDocuments({ page });
 	};
 
 	componentDidMount() {
@@ -16,17 +16,18 @@ class DocumentTableContainer extends React.Component {
 	}
 
 	render() {
-		const { documents, loading } = this.props;
+		const { documents, lastPage, loading, page } = this.props;
 
 		if (loading) return null;
 
-		return <DocumentTable data={documents} bordered striped hover />;
+		return <DocumentTable currentPage={page} lastPage={lastPage} data={documents} bordered striped hover />;
 	}
 }
 
 export default connect(
 	(state) => ({
-		documents: state.document,
+		documents: state.document.get('documents'),
+		lastPage: state.document.get('lastPage'),
 		loading: state.pender.pending['document/GET_DOCUMENTS']
 	}),
 	(dispatch) => ({

@@ -3,80 +3,124 @@ import { Table } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-const DocumentTable = ({ data, className, ...rest }) => {
+import Pagination from 'components/Pagination';
+
+const DocumentTable = ({ currentPage, lastPage, data, className, ...rest }) => {
 	const classes = classNames('mt-2 mb-2', className);
 
 	return (
-		<Table className={classes} {...rest}>
-			<thead>
-				<tr>
-					<th width="3%" className="text-center">
-						<input type="checkbox" />
-					</th>
-					<th className="text-center">No.</th>
-					<th className="text-center">Title</th>
-					<th className="text-center">Rev.</th>
-					<th className="text-center">Date</th>
-					<th className="text-center">Status</th>
-					<th className="text-center">Hold</th>
-					<th className="text-center">Delay</th>
-					<th className="text-center">Level</th>
-				</tr>
-			</thead>
-			<tbody>
-				{data.map((item, index) => {
-					let { level, delayGb } = item.toJS();
+		<React.Fragment>
+			<Table className={classes} {...rest}>
+				<thead>
+					<tr>
+						<th width="3%" className="text-center">
+							<input type="checkbox" />
+						</th>
+						<th width="4%" className="text-center">
+							Gb
+						</th>
+						<th width="15%" className="text-center">
+							No.
+						</th>
+						<th width="25%" className="text-center">
+							Title
+						</th>
+						<th width="5%" className="text-center">
+							Rev.
+						</th>
+						<th width="10%" className="text-center">
+							Date
+						</th>
+						<th width="" className="text-center">
+							Status
+						</th>
+						<th width="8%" className="text-center">
+							Hold
+						</th>
+						<th width="7%" className="text-center">
+							Delete
+						</th>
+						<th width="5%" className="text-center">
+							Delay
+						</th>
+						<th width="3%" className="text-center">
+							Level
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					{data.map((item, index) => {
+						let { level, delayGb } = item.toJS();
 
-					return (
-						<tr key={index}>
-							<td>
-								<input type="checkbox" />
-							</td>
-							<td>{item.get('documentNumber')}</td>
-							<td>{item.get('documentTitle')}</td>
-							<td className="text-center">{item.get('documentRev')}</td>
-							<td className="text-center">{item.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)}</td>
-							<td>
-								{item.getIn([ 'documentStatus', -1, 'status' ])}{' '}
-								<small className="text-primary">
-									({item.getIn([ 'documentStatus', -1, 'timestamp', 'regDt' ]).substr(0, 10)})
-								</small>
-							</td>
-							<td>
-								{item.getIn([ 'holdYn', -1, 'yn' ])}{' '}
-								<small className="text-danger font-weight-bold">
-									({item.getIn([ 'holdYn', -1, 'effStaDt' ]).substr(0, 10)})
-								</small>
-							</td>
-							<td className="text-center">
-								{delayGb === '여유' ? (
-									<span className="text-success">{delayGb}</span>
-								) : delayGb === '임박' ? (
-									<span className="text-primary">{delayGb}</span>
-								) : delayGb === '오늘' ? (
-									<span className="text-warning">{delayGb}</span>
-								) : (
-									<span className="text-danger">{delayGb}</span>
-								)}
-							</td>
-							<td className="text-center">
-								{level > 3 ? (
-									<span className="text-danger">{level}</span>
-								) : level === 3 ? (
-									<span className="text-warning">{level}</span>
-								) : (
-									<span className="text-success">{level}</span>
-								)}
-							</td>
-						</tr>
-					);
-				})}
-			</tbody>
-		</Table>
+						return (
+							<tr key={index}>
+								<td>
+									<input type="checkbox" />
+								</td>
+								<td className="text-center">{item.get('documentGb')}</td>
+								<td>{item.get('documentNumber')}</td>
+								<td>{item.get('documentTitle')}</td>
+								<td className="text-center">{item.get('documentRev')}</td>
+								<td className="text-center">{item.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)}</td>
+								<td className="text-center">
+									{item.getIn([ 'documentStatus', -1, 'status' ])}
+									<br />
+									<small className="text-primary">
+										({item.getIn([ 'documentStatus', -1, 'timestamp', 'regDt' ]).substr(0, 10)})
+									</small>
+								</td>
+								<td className="text-center">
+									{item.getIn([ 'holdYn', -1, 'yn' ])}
+									<br />
+									{item.getIn([ 'holdYn', -1, 'yn' ]) === 'YES' && (
+										<small className="text-danger font-weight-bold">
+											({item.getIn([ 'holdYn', -1, 'effStaDt' ]).substr(0, 10)})
+										</small>
+									)}
+								</td>
+								<td className="text-center">
+									{item.getIn([ 'deleteYn', 'yn' ])}
+									<br />
+									{item.getIn([ 'deleteYn', 'yn' ]) === 'YES' && (
+										<small className="font-weight-bold">
+											({item.getIn([ 'deleteYn', 'deleteDt' ]).substr(0, 10)})
+										</small>
+									)}
+								</td>
+								<td className="text-center">
+									{delayGb === '여유' ? (
+										<span className="text-success">{delayGb}</span>
+									) : delayGb === '임박' ? (
+										<span className="text-primary">{delayGb}</span>
+									) : delayGb === '오늘' ? (
+										<span className="text-warning">{delayGb}</span>
+									) : (
+										<span className="text-danger">{delayGb}</span>
+									)}
+								</td>
+								<td className="text-center">
+									{level > 3 ? (
+										<span className="text-danger">{level}</span>
+									) : level === 3 ? (
+										<span className="text-warning">{level}</span>
+									) : (
+										<span className="text-success">{level}</span>
+									)}
+								</td>
+							</tr>
+						);
+					})}
+				</tbody>
+			</Table>
+
+			<Pagination currentPage={currentPage} lastPage={lastPage} size="md" aria-label="Page navigation" listClassName="flex-row justify-content-end ml-auto" />
+		</React.Fragment>
 	);
 };
 
 DocumentTable.propTypes = {
+	currentPage: PropTypes.number,
+	lastPage: PropTypes.number,
 	data: PropTypes.object
 };
 

@@ -3,8 +3,8 @@ import { Row, Col, Button } from 'reactstrap';
 import SearchForm from 'components/SearchForm';
 import Page from 'components/Page';
 import DocumentTableContainer from 'containers/DocumentTableContainer';
-import Pagination from 'components/Pagination';
 import DocumentAddModal from 'components/Modal/DocumentAddModal';
+import queryString from 'query-string';
 
 class DocumentsPage extends React.Component {
 	state = {
@@ -22,6 +22,8 @@ class DocumentsPage extends React.Component {
 	};
 
 	render() {
+		const { page } = queryString.parse(this.props.location.search);
+
 		return (
 			<Page title="Documents" breadcrumbs={[ { name: 'Documents', active: true } ]}>
 				<Row className="mb-2 hidden-md hidden-sm hidden-xs">
@@ -38,13 +40,7 @@ class DocumentsPage extends React.Component {
 					</Col>
 				</Row>
 
-				<DocumentTableContainer />
-
-				<Pagination
-					size="md"
-					aria-label="Page navigation"
-					listClassName="flex-row justify-content-end ml-auto"
-				/>
+				<DocumentTableContainer page={parseInt(page, 10)} />
 
 				<DocumentAddModal isOpen={this.state.isOpenAdd} toggle={this.handleClick('Add')} />
 			</Page>
