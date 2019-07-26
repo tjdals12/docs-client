@@ -1,15 +1,29 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import { Col, Row, Button, Table } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
+import SearchForm from 'components/SearchForm';
 import Pagination from 'components/Pagination';
 
-const DocumentTable = ({ currentPage, lastPage, data, className, ...rest }) => {
-	const classes = classNames('mt-2 mb-2', className);
+const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, className, ...rest }) => {
+	const classes = classNames('mt-2 mb-4 bg-white', className);
 
 	return (
 		<React.Fragment>
+			<Row className="hidden-md hidden-sm hidden-xs">
+				<Col xl={2} lg={4}>
+					<Button color="primary" className="mr-2" onClick={onOpenAdd}>
+						ADD
+					</Button>
+
+					<Button color="secondary">DELETE</Button>
+				</Col>
+
+				<Col xl={{ size: 2, offset: 8 }} lg={{ size: 4, offset: 4 }}>
+					<SearchForm />
+				</Col>
+			</Row>
 			<Table className={classes} {...rest}>
 				<thead>
 					<tr>
@@ -49,17 +63,21 @@ const DocumentTable = ({ currentPage, lastPage, data, className, ...rest }) => {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((item, index) => {
-						let { level, delayGb } = item.toJS();
+					{data.map((item) => {
+						let { _id: id, level, delayGb } = item.toJS();
 
 						return (
-							<tr key={index}>
+							<tr key={id}>
 								<td>
 									<input type="checkbox" />
 								</td>
 								<td className="text-center">{item.get('documentGb')}</td>
 								<td>{item.get('documentNumber')}</td>
-								<td>{item.get('documentTitle')}</td>
+								<td>
+									<span className="have-link" onClick={onOpenDetail({ id })}>
+										{item.get('documentTitle')}
+									</span>
+								</td>
 								<td className="text-center">{item.get('documentRev')}</td>
 								<td className="text-center">{item.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)}</td>
 								<td className="text-center">
@@ -82,7 +100,7 @@ const DocumentTable = ({ currentPage, lastPage, data, className, ...rest }) => {
 									{item.getIn([ 'deleteYn', 'yn' ])}
 									<br />
 									{item.getIn([ 'deleteYn', 'yn' ]) === 'YES' && (
-										<small className="font-weight-bold">
+										<small className="text-danger font-weight-bold">
 											({item.getIn([ 'deleteYn', 'deleteDt' ]).substr(0, 10)})
 										</small>
 									)}
@@ -113,7 +131,13 @@ const DocumentTable = ({ currentPage, lastPage, data, className, ...rest }) => {
 				</tbody>
 			</Table>
 
-			<Pagination currentPage={currentPage} lastPage={lastPage} size="md" aria-label="Page navigation" listClassName="flex-row justify-content-end ml-auto" />
+			<Pagination
+				currentPage={currentPage}
+				lastPage={lastPage}
+				size="md"
+				aria-label="Page navigation"
+				listClassName="flex-row justify-content-end ml-auto"
+			/>
 		</React.Fragment>
 	);
 };

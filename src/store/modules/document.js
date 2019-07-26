@@ -4,11 +4,35 @@ import * as api from 'lib/api';
 import { pender } from 'redux-pender';
 
 const GET_DOCUMENTS = 'document/GET_DOCUMENTS';
+const GET_DOCUMENT = 'document/GET_DOCUMENT';
+const ADD_DOCUMENT = 'document/ADD_DOCUMENT';
+const HOLD_DOCUMENT = 'document/HOLD_DOCUMENT';
+const DELETE_DOCUMENT = 'document/DELETE_DOCUMENT';
+const ON_CHANGE = 'document/ON_CHANGE';
+const ON_CHANGE_REASON = 'document/ON_CHANGE_REASON';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
+export const getDocument = createAction(GET_DOCUMENT, api.getDocument);
+export const addDocument = createAction(ADD_DOCUMENT, api.addDocument);
+export const holdDocument = createAction(HOLD_DOCUMENT, api.holdDocument);
+export const deleteDocument = createAction(DELETE_DOCUMENT, api.deleteDocument);
+export const onChange = createAction(ON_CHANGE);
+export const onChangeReason = createAction(ON_CHANGE_REASON);
 
 const initialState = Map({
 	documents: List(),
+	document: Map(),
+	add: Map({
+		vendor: '',
+		part: '',
+		documentTitle: '',
+		documentNumber: '',
+		documentGb: '',
+		documentRev: '',
+		officialNumber: '',
+		memo: ''
+	}),
+	reason: '',
 	lastPage: null
 });
 
@@ -22,7 +46,49 @@ export default handleActions(
 
 				return state.set('documents', fromJS(documents)).set('lastPage', parseInt(lastPage, 10));
 			}
-		})
+		}),
+		...pender({
+			type: ADD_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state.set('add', initialState.get('document')).set('document', fromJS(document));
+			}
+		}),
+		...pender({
+			type: GET_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state.set('document', fromJS(document));
+			}
+		}),
+		...pender({
+			type: HOLD_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state.set('document', fromJS(document));
+			}
+		}),
+		...pender({
+			type: DELETE_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state.set('document', fromJS(document));
+			}
+		}),
+		[ON_CHANGE]: (state, action) => {
+			const { name, value } = action.payload;
+
+			return state.setIn([ 'add', name ], value);
+		},
+		[ON_CHANGE_REASON]: (state, action) => {
+			const { name, value } = action.payload;
+
+			return state.set(name, value);
+		}
 	},
 	initialState
 );

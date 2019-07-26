@@ -2,6 +2,15 @@
 	cursor: pointer;
 }
 
+.have-link {
+	cursor: pointer;
+	color: theme-color('primary');
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
 .overflow-hidden {
 	overflow: hidden;
 }
