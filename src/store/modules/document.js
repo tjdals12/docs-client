@@ -8,7 +8,9 @@ const GET_DOCUMENT = 'document/GET_DOCUMENT';
 const ADD_DOCUMENT = 'document/ADD_DOCUMENT';
 const HOLD_DOCUMENT = 'document/HOLD_DOCUMENT';
 const DELETE_DOCUMENT = 'document/DELETE_DOCUMENT';
+const EDIT_DOCUMENT = 'document/EDIT_DOCUMENT';
 const ON_CHANGE = 'document/ON_CHANGE';
+const ON_CHANGE_EDIT = 'document/ON_CHANGE_EDIT';
 const ON_CHANGE_REASON = 'document/ON_CHANGE_REASON';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
@@ -16,13 +18,25 @@ export const getDocument = createAction(GET_DOCUMENT, api.getDocument);
 export const addDocument = createAction(ADD_DOCUMENT, api.addDocument);
 export const holdDocument = createAction(HOLD_DOCUMENT, api.holdDocument);
 export const deleteDocument = createAction(DELETE_DOCUMENT, api.deleteDocument);
+export const editDocument = createAction(EDIT_DOCUMENT, api.editDocument);
 export const onChange = createAction(ON_CHANGE);
+export const onChangeEdit = createAction(ON_CHANGE_EDIT);
 export const onChangeReason = createAction(ON_CHANGE_REASON);
 
 const initialState = Map({
 	documents: List(),
 	document: Map(),
 	add: Map({
+		vendor: '',
+		part: '',
+		documentTitle: '',
+		documentNumber: '',
+		documentGb: '',
+		documentRev: '',
+		officialNumber: '',
+		memo: ''
+	}),
+	edit: Map({
 		vendor: '',
 		part: '',
 		documentTitle: '',
@@ -60,7 +74,16 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
 
-				return state.set('document', fromJS(document));
+				return state
+					.set('document', fromJS(document))
+					.setIn([ 'edit', 'vendor' ], document.vendor)
+					.setIn([ 'edit', 'part' ], document.part)
+					.setIn([ 'edit', 'documentTitle' ], document.documentTitle)
+					.setIn([ 'edit', 'documentNumber' ], document.documentNumber)
+					.setIn([ 'edit', 'documentGb' ], document.documentGb)
+					.setIn([ 'edit', 'documentRev' ], document.documentRev)
+					.setIn([ 'edit', 'officialNumber' ], document.documentInOut[0].officialNumber)
+					.setIn([ 'edit', 'memo' ], document.memo);
 			}
 		}),
 		...pender({
@@ -79,10 +102,32 @@ export default handleActions(
 				return state.set('document', fromJS(document));
 			}
 		}),
+		...pender({
+			type: EDIT_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state
+					.set('document', fromJS(document))
+					.setIn([ 'edit', 'vendor' ], document.vendor)
+					.setIn([ 'edit', 'part' ], document.part)
+					.setIn([ 'edit', 'documentTitle' ], document.documentTitle)
+					.setIn([ 'edit', 'documentNumber' ], document.documentNumber)
+					.setIn([ 'edit', 'documentGb' ], document.documentGb)
+					.setIn([ 'edit', 'documentRev' ], document.documentRev)
+					.setIn([ 'edit', 'officialNumber' ], document.documentInOut[0].officialNumber)
+					.setIn([ 'edit', 'memo' ], document.memo);
+			}
+		}),
 		[ON_CHANGE]: (state, action) => {
 			const { name, value } = action.payload;
 
 			return state.setIn([ 'add', name ], value);
+		},
+		[ON_CHANGE_EDIT]: (state, action) => {
+			const { name, value } = action.payload;
+
+			return state.setIn([ 'edit', name ], value);
 		},
 		[ON_CHANGE_REASON]: (state, action) => {
 			const { name, value } = action.payload;

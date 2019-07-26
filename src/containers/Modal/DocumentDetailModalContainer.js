@@ -26,6 +26,13 @@ class DocumentDetailModalContainer extends React.Component {
 		DocumentActions.onChangeReason({ name: 'reason', value: '' });
 	};
 
+	handleEdit = () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.close('documentDetail');
+		ModalActions.open('documentEdit');
+	};
+
 	handleChange = (e) => {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
@@ -47,6 +54,7 @@ class DocumentDetailModalContainer extends React.Component {
 				onHold={this.handleHold}
 				onDelete={this.handleDelete}
 				onChange={this.handleChange}
+				onEdit={this.handleEdit}
 			/>
 		);
 	}

@@ -64,7 +64,7 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 				</thead>
 				<tbody>
 					{data.map((item) => {
-						let { _id: id, level, delayGb } = item.toJS();
+						let { id, level, delayGb } = item.toJS();
 
 						return (
 							<tr key={id}>

@@ -1,7 +1,18 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup, Button, Input, Table, Progress } from 'reactstrap';
 
-const DocumentDetailModal = ({ isOpen, data, reason, onClose, onHold, onDelete, onChange, className, ...rest }) => {
+const DocumentDetailModal = ({
+	isOpen,
+	data,
+	reason,
+	onClose,
+	onHold,
+	onDelete,
+	onEdit,
+	onChange,
+	className,
+	...rest
+}) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -167,27 +178,29 @@ const DocumentDetailModal = ({ isOpen, data, reason, onClose, onHold, onDelete, 
 				/>
 				<ButtonGroup>
 					{data.getIn([ 'deleteYn', 'yn' ]) === 'NO' ? (
-						<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'YES' })}>
+						<Button color="danger" onClick={onDelete({ id: data.get('id'), yn: 'YES' })}>
 							DELETE
 						</Button>
 					) : (
-						<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'NO' })}>
+						<Button color="danger" onClick={onDelete({ id: data.get('id'), yn: 'NO' })}>
 							DELETE 취소
 						</Button>
 					)}
 					{data.getIn([ 'holdYn', -1, 'yn' ]) === 'NO' ? (
-						<Button color="info" onClick={onHold({ id: data.get('_id'), yn: 'YES' })}>
+						<Button color="info" onClick={onHold({ id: data.get('id'), yn: 'YES' })}>
 							HOLD
 						</Button>
 					) : (
-						<Button color="info" onClick={onHold({ id: data.get('_id'), yn: 'NO' })}>
+						<Button color="info" onClick={onHold({ id: data.get('id'), yn: 'NO' })}>
 							HOLD 취소
 						</Button>
 					)}
 				</ButtonGroup>
-				<Button color="primary">EDIT</Button>
+				<Button color="primary" onClick={onEdit}>
+					EDIT
+				</Button>
 				<Button color="secondary" onClick={onClose}>
-					Cancel
+					CANCEL
 				</Button>
 			</ModalFooter>
 		</Modal>
