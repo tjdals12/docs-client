@@ -43,6 +43,8 @@ class DocumentDetailModalContainer extends React.Component {
 	render() {
 		const { isOpen, document, reason, loading } = this.props;
 
+		console.log(loading);
+
 		if (loading === undefined || loading) return null;
 
 		return (

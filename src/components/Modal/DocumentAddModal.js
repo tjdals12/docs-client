@@ -33,7 +33,7 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="vendor">VENDOR</Label>
-							<Input type="select" name="vendor" multiple onChange={onChange}>
+							<Input type="select" name="vendor" onChange={onChange}>
 								<option value="">------ 업체를 선택해주세요. ------</option>
 								<option value="5d33ef877cceb91244d16fdd">바로</option>
 								<option value="5d33ef877cceb91244d16fdd">유니콘</option>
@@ -44,15 +44,13 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 
 						<Col md={6}>
 							<Label for="part">PART</Label>
-							<Input type="select" name="part" multiple onChange={onChange}>
+							<Input type="select" name="part" onChange={onChange}>
 								<option value="">------ 공종을 선택해주세요. ------</option>
-								<option value="01">기계</option>
-								<option value="02">장치</option>
-								<option value="03">전기</option>
-								<option value="04">계장</option>
-								<option value="05">건축</option>
-								<option value="06">토목</option>
-								<option value="07">소방</option>
+								{parts.get('cdMinors').map((part) => (
+									<option key={part.get('cdMinor')} value={part.get('cdMinor')}>
+										{part.get('cdSName')}
+									</option>
+								))}
 							</Input>
 						</Col>
 					</FormGroup>
@@ -77,10 +75,11 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 						<Col md={6}>
 							<Label for="gb">구분</Label>
 							<Input type="select" name="documentGb" onChange={onChange}>
-								<option value="00">공통</option>
-								<option value="01">절차서</option>
-								<option value="02">도면</option>
-								<option value="03">보고서</option>
+								{gbs.get('cdMinors').map((gb) => (
+									<option key={gb.get('cdMinor')} value={gb.get('cdMinor')}>
+										{gb.get('cdSName')}
+									</option>
+								))}
 							</Input>
 						</Col>
 					</FormGroup>
@@ -108,7 +107,8 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 
 DocumentAddModal.propTypes = {
 	vendors: PropTypes.arrayOf(PropTypes.string),
-	parts: PropTypes.arrayOf(PropTypes.string),
+	parts: PropTypes.object,
+	gbs: PropTypes.object,
 	isOpen: PropTypes.bool,
 	toggle: PropTypes.func,
 	className: PropTypes.string
@@ -116,8 +116,8 @@ DocumentAddModal.propTypes = {
 
 DocumentAddModal.defaultProps = {
 	vendors: [],
-	parts: [],
-	gbs: [],
+	parts: {},
+	gbs: {},
 	isOpen: false
 };
 

@@ -14,7 +14,7 @@ import {
 	Col
 } from 'reactstrap';
 
-const DocumentEditModal = ({ data, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
+const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
 	const {
 		id,
 		vendor,
@@ -46,10 +46,11 @@ const DocumentEditModal = ({ data, isOpen, onClose, onChange, onEdit, className,
 							<Label for="vendor">VENDOR</Label>
 							<Input type="select" name="vendor" value={vendor} onChange={onChange}>
 								<option value="">------ 업체를 선택해주세요. ------</option>
-								<option value="5d33ef877cceb91244d16fda">바로</option>
-								<option value="5d33ef877cceb91244d16fdd">유니콘</option>
-								<option value="5d33ef877cceb91244d16fdc">신화전기</option>
-								<option value="5d33ef877cceb91244d16fds">우아한형제</option>
+								{parts.get('cdMinors').map((part) => (
+									<option key={part.get('cdMinor')} value={part.get('cdMinor')}>
+										{part.get('cdSName')}
+									</option>
+								))}
 							</Input>
 						</Col>
 
@@ -106,10 +107,11 @@ const DocumentEditModal = ({ data, isOpen, onClose, onChange, onEdit, className,
 						<Col md={6}>
 							<Label for="gb">구분</Label>
 							<Input type="select" name="documentGb" value={documentGb} onChange={onChange}>
-								<option value="00">공통</option>
-								<option value="01">절차서</option>
-								<option value="02">도면</option>
-								<option value="03">보고서</option>
+								{gbs.get('cdMinors').map((gb) => (
+									<option key={gb.get('cdMinor')} value={gb.get('cdMinor')}>
+										{gb.get('cdSName')}
+									</option>
+								))}
 							</Input>
 						</Col>
 					</FormGroup>
