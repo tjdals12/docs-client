@@ -14,10 +14,10 @@ class DocumentAddModalContainer extends React.Component {
 	};
 
 	handleInsert = async () => {
-		const { document, DocumentActions, onClose } = this.props;
+		const { document, DocumentActions } = this.props;
 
 		await DocumentActions.addDocument(document.toJS());
-		onClose();
+		this.handleClose();
 	};
 
 	handleChange = (e) => {
@@ -60,7 +60,7 @@ class DocumentAddModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
-		document: state.document.get('document'),
+		document: state.document.get('add'),
 		parts: state.cmcode.get('0001'),
 		gbs: state.cmcode.get('0002'),
 		isOpen: state.modal.get('documentAddModal')

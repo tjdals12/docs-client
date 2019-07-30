@@ -1,7 +1,21 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, ButtonGroup, Button, Input, Table, Progress } from 'reactstrap';
+import {
+	Modal,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	ButtonGroup,
+	Button,
+	Input,
+	InputGroup,
+	InputGroupAddon,
+	Table,
+	Progress,
+	Col
+} from 'reactstrap';
 
 const DocumentDetailModal = ({
+	codes,
 	isOpen,
 	data,
 	reason,
@@ -42,12 +56,12 @@ const DocumentDetailModal = ({
 								업체 (공종)
 							</th>
 							<td>
-								{data.get('vendor')} ({data.get('part')})
+								{data.get('vendor')} ({data.getIn([ 'part', 'cdSName' ])})
 							</td>
 							<th scope="row" className="text-right bg-light">
 								구분
 							</th>
-							<td>{data.get('documentGb')}</td>
+							<td>{data.getIn([ 'documentGb', 'cdSName' ])}</td>
 						</tr>
 						<tr className="border-bottom">
 							<th scope="row" className="text-right bg-light">
@@ -168,6 +182,21 @@ const DocumentDetailModal = ({
 				</Table>
 			</ModalBody>
 			<ModalFooter className="bg-light">
+				<Col className="pr-5">
+					<InputGroup>
+						<Input type="select" name="inOut">
+							<option value="">--- 변경할 상태를 선택해주세요. ---</option>
+							{codes.get('cdMinors').map((code) => (
+								<option key={code.get('_id')} value={code.get('_id')}>
+									{code.get('cdSName')}
+								</option>
+							))}
+						</Input>
+						<InputGroupAddon addonType="append">
+							<Button>변경</Button>
+						</InputGroupAddon>
+					</InputGroup>
+				</Col>
 				<Input
 					type="text"
 					name="reason"

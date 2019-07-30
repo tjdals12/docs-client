@@ -4,8 +4,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
+import * as cmcodeActions from 'store/modules/cmcode';
 
 class DocumentDetailModalContainer extends React.Component {
+	getCmcodes = async (major) => {
+		const { CmcodeActions } = this.props;
+
+		await CmcodeActions.getCmcodeByMajor({ major: major });
+	};
+
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
@@ -40,15 +47,20 @@ class DocumentDetailModalContainer extends React.Component {
 		DocumentActions.onChangeReason({ name, value });
 	};
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
+			this.getCmcodes('0003');
+		}
+	}
+
 	render() {
-		const { isOpen, document, reason, loading } = this.props;
+		const { codes, isOpen, document, reason, loading } = this.props;
 
-		console.log(loading);
-
-		if (loading === undefined || loading) return null;
+		if (!codes || (loading === undefined || loading)) return null;
 
 		return (
 			<DocumentDetailModal
+				codes={codes}
 				isOpen={isOpen}
 				data={document}
 				reason={reason}
@@ -64,6 +76,7 @@ class DocumentDetailModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		codes: state.cmcode.get('0003'),
 		isOpen: state.modal.get('documentDetailModal'),
 		document: state.document.get('document'),
 		reason: state.document.get('reason'),
@@ -71,6 +84,7 @@ export default connect(
 	}),
 	(dispatch) => ({
 		DocumentActions: bindActionCreators(documentActions, dispatch),
-		ModalActions: bindActionCreators(modalActions, dispatch)
+		ModalActions: bindActionCreators(modalActions, dispatch),
+		CmcodeActions: bindActionCreators(cmcodeActions, dispatch)
 	})
 )(DocumentDetailModalContainer);

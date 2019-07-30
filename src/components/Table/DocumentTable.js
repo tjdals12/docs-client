@@ -30,7 +30,7 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 						<th width="3%" className="text-center">
 							<input type="checkbox" />
 						</th>
-						<th width="4%" className="text-center">
+						<th width="6%" className="text-center">
 							Gb
 						</th>
 						<th width="15%" className="text-center">
@@ -57,7 +57,7 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 						<th width="5%" className="text-center">
 							Delay
 						</th>
-						<th width="3%" className="text-center">
+						<th width="1%" className="text-center">
 							Level
 						</th>
 					</tr>
@@ -71,7 +71,7 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 								<td>
 									<input type="checkbox" />
 								</td>
-								<td className="text-center">{item.get('documentGb')}</td>
+								<td className="text-center">{item.getIn([ 'documentGb', 'cdSName' ])}</td>
 								<td>{item.get('documentNumber')}</td>
 								<td>
 									<span className="have-link" onClick={onOpenDetail({ id })}>
