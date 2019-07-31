@@ -13,31 +13,53 @@ import {
 	Progress,
 	Col
 } from 'reactstrap';
+import { MdClose } from 'react-icons/md';
+import QuestionModal from 'components/Modal/QuestionModal';
 
 const DocumentDetailModal = ({
 	codes,
 	isOpen,
+	isOpenQuestion,
 	data,
 	reason,
 	onClose,
 	onHold,
 	onDelete,
-	onEdit,
+	onOpen,
 	onChange,
 	onStatus,
+	onDeleteStatus,
+	onTarget,
 	className,
 	...rest
 }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
-			toggle={onClose}
+			toggle={onClose('documentDetail')}
 			className={className}
 			contentClassName="border-light rounded"
 			{...rest}
 			size="xl"
 		>
-			<ModalHeader toggle={onClose} className="bg-light">
+			<QuestionModal
+				isOpen={isOpen && isOpenQuestion}
+				onClose={onClose}
+				size="md"
+				header="In/Out 및 상태 삭제"
+				body={
+					<div>
+						<p className="m-0">선택 값을 삭제하시겠습니까?</p>
+						<p className="m-0 text-danger">(* 삭제된 데이터 복구되지 않습니다.)</p>
+					</div>
+				}
+				footer={
+					<Button color="primary" onClick={onDeleteStatus}>
+						DELETE
+					</Button>
+				}
+			/>
+			<ModalHeader toggle={onClose('documentDetail')} className="bg-light">
 				Document 상세{' '}
 				<span className="text-primary">
 					({data.get('documentNumber')}_{data.get('documentTitle')}_{data.get('documentRev')})
@@ -128,7 +150,15 @@ const DocumentDetailModal = ({
 								{data.get('documentInOut').map((item, index) => {
 									return (
 										<div key={index} className="mb-2">
-											<span key={index}>{item.get('inOutGb')}</span>
+											<span key={index}>{item.get('inOutGb')} </span>
+											<MdClose
+												size={15}
+												className="text-danger can-click"
+												onClick={() => {
+													onTarget({ id: item.get('_id') });
+													onOpen('question')();
+												}}
+											/>
 											<br />
 
 											<span className="text-danger">
@@ -149,6 +179,15 @@ const DocumentDetailModal = ({
 												{item.get('status')}
 												{!!item.get('resultCode') && ` (${item.get('resultCode')})`}
 												{!!item.get('replyCode') && ` - ${item.get('replyCode')}`}
+												{'  '}
+												<MdClose
+													size={15}
+													className="text-danger can-click"
+													onClick={() => {
+														onTarget({ id: item.get('_id') });
+														onOpen('question')();
+													}}
+												/>
 											</span>
 											<br />
 
@@ -227,10 +266,10 @@ const DocumentDetailModal = ({
 						</Button>
 					)}
 				</ButtonGroup>
-				<Button color="primary" onClick={onEdit}>
+				<Button color="primary" onClick={onOpen('documentEdit')}>
 					EDIT
 				</Button>
-				<Button color="secondary" onClick={onClose}>
+				<Button color="secondary" onClick={onClose('documentDetail')}>
 					CANCEL
 				</Button>
 			</ModalFooter>

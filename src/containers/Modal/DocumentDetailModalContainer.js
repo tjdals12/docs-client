@@ -13,10 +13,26 @@ class DocumentDetailModalContainer extends React.Component {
 		await CmcodeActions.getCmcodeByMajor({ major: major });
 	};
 
-	handleClose = () => {
+	handleTarget = ({ id }) => {
+		const { DocumentActions } = this.props;
+
+		DocumentActions.setTarget(id);
+	};
+
+	handleOpen = (name) => () => {
 		const { ModalActions } = this.props;
 
-		ModalActions.close('documentDetail');
+		if (name === 'documentEdit') {
+			ModalActions.close('documentDetail');
+		}
+
+		ModalActions.open(name);
+	};
+
+	handleClose = (name) => () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.close(name);
 	};
 
 	handleHold = ({ id, yn }) => async () => {
@@ -33,13 +49,6 @@ class DocumentDetailModalContainer extends React.Component {
 		DocumentActions.onChangeReason({ name: 'reason', value: '' });
 	};
 
-	handleEdit = () => {
-		const { ModalActions } = this.props;
-
-		ModalActions.close('documentDetail');
-		ModalActions.open('documentEdit');
-	};
-
 	handleChange = (e) => {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
@@ -53,6 +62,13 @@ class DocumentDetailModalContainer extends React.Component {
 		await DocumentActions.inOutDocument(id, JSON.parse(selectedStatus));
 	};
 
+	handleDeleteStatus = async () => {
+		const { DocumentActions, ModalActions, document, target } = this.props;
+
+		await DocumentActions.deleteInOutDocument({ id: document.get('_id'), target });
+		ModalActions.close('question');
+	};
+
 	componentDidUpdate(prevProps) {
 		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
 			this.getCmcodes('0003');
@@ -60,7 +76,7 @@ class DocumentDetailModalContainer extends React.Component {
 	}
 
 	render() {
-		const { codes, isOpen, document, reason, loading } = this.props;
+		const { codes, isOpen, isOpenQuestion, document, reason, loading } = this.props;
 
 		if (!codes || (loading === undefined || loading)) return null;
 
@@ -68,14 +84,17 @@ class DocumentDetailModalContainer extends React.Component {
 			<DocumentDetailModal
 				codes={codes}
 				isOpen={isOpen}
+				isOpenQuestion={isOpenQuestion}
 				data={document}
 				reason={reason}
 				onClose={this.handleClose}
 				onHold={this.handleHold}
 				onDelete={this.handleDelete}
-				onEdit={this.handleEdit}
+				onOpen={this.handleOpen}
 				onChange={this.handleChange}
 				onStatus={this.handleStatus}
+				onDeleteStatus={this.handleDeleteStatus}
+				onTarget={this.handleTarget}
 			/>
 		);
 	}
@@ -86,8 +105,10 @@ export default connect(
 		codes: state.cmcode.get('0003'),
 		selectedStatus: state.document.get('status'),
 		isOpen: state.modal.get('documentDetailModal'),
+		isOpenQuestion: state.modal.get('questionModal'),
 		document: state.document.get('document'),
 		reason: state.document.get('reason'),
+		target: state.document.get('target'),
 		loading: state.pender.pending['document/GET_DOCUMENT']
 	}),
 	(dispatch) => ({

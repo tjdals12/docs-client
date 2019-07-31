@@ -10,9 +10,11 @@ const HOLD_DOCUMENT = 'document/HOLD_DOCUMENT';
 const DELETE_DOCUMENT = 'document/DELETE_DOCUMENT';
 const EDIT_DOCUMENT = 'document/EDIT_DOCUMENT';
 const INOUT_DOCUMENT = 'document/INOUT_DOCUMENT';
+const DELETE_INOUT_DOCUMENT = 'document/DELETE_INOUT_DOCUMENT';
 const ON_CHANGE = 'document/ON_CHANGE';
 const ON_CHANGE_EDIT = 'document/ON_CHANGE_EDIT';
 const ON_CHANGE_OTHER = 'document/ON_CHANGE_OTHER';
+const SET_TARGET = 'document/SET_TARGET';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
 export const getDocument = createAction(GET_DOCUMENT, api.getDocument);
@@ -21,9 +23,11 @@ export const holdDocument = createAction(HOLD_DOCUMENT, api.holdDocument);
 export const deleteDocument = createAction(DELETE_DOCUMENT, api.deleteDocument);
 export const editDocument = createAction(EDIT_DOCUMENT, api.editDocument);
 export const inOutDocument = createAction(INOUT_DOCUMENT, api.inOutDocument);
+export const deleteInOutDocument = createAction(DELETE_INOUT_DOCUMENT, api.deleteInOutDocument);
 export const onChange = createAction(ON_CHANGE);
 export const onChangeEdit = createAction(ON_CHANGE_EDIT);
 export const onChangeOther = createAction(ON_CHANGE_OTHER);
+export const setTarget = createAction(SET_TARGET);
 
 const initialState = Map({
 	documents: List(),
@@ -50,6 +54,7 @@ const initialState = Map({
 	}),
 	reason: '',
 	status: '',
+	target: '',
 	lastPage: null
 });
 
@@ -130,6 +135,14 @@ export default handleActions(
 				return state.set('document', fromJS(document));
 			}
 		}),
+		...pender({
+			type: DELETE_INOUT_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: document } = action.payload.data;
+
+				return state.set('document', fromJS(document));
+			}
+		}),
 		[ON_CHANGE]: (state, action) => {
 			const { name, value } = action.payload;
 
@@ -144,6 +157,11 @@ export default handleActions(
 			const { name, value } = action.payload;
 
 			return state.set(name, value);
+		},
+		[SET_TARGET]: (state, action) => {
+			const { payload } = action;
+
+			return state.set('target', payload);
 		}
 	},
 	initialState

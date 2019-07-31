@@ -10,7 +10,8 @@ export const close = createAction(CLOSE);
 const initialState = Map({
 	documentAddModal: false,
 	documentDetailModal: false,
-	documentEditModal: false
+	documentEditModal: false,
+	questionModal: false
 });
 
 export default handleActions(
