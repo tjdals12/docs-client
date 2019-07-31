@@ -24,6 +24,7 @@ const DocumentDetailModal = ({
 	onDelete,
 	onEdit,
 	onChange,
+	onStatus,
 	className,
 	...rest
 }) => {
@@ -146,7 +147,8 @@ const DocumentDetailModal = ({
 										<div key={index} className="mb-2">
 											<span key={index}>
 												{item.get('status')}
-												{!!item.get('resultCode') && ' - ' + item.get('resultCode')}
+												{!!item.get('resultCode') && ` (${item.get('resultCode')})`}
+												{!!item.get('replyCode') && ` - ${item.get('replyCode')}`}
 											</span>
 											<br />
 
@@ -184,16 +186,16 @@ const DocumentDetailModal = ({
 			<ModalFooter className="bg-light">
 				<Col className="pr-5">
 					<InputGroup>
-						<Input type="select" name="inOut">
+						<Input type="select" name="status" onChange={onChange}>
 							<option value="">--- 변경할 상태를 선택해주세요. ---</option>
 							{codes.get('cdMinors').map((code) => (
-								<option key={code.get('_id')} value={code.get('_id')}>
+								<option key={code.get('_id')} value={JSON.stringify(code.get('cdRef1'))}>
 									{code.get('cdSName')}
 								</option>
 							))}
 						</Input>
 						<InputGroupAddon addonType="append">
-							<Button>변경</Button>
+							<Button onClick={onStatus({ id: data.get('id') })}>변경</Button>
 						</InputGroupAddon>
 					</InputGroup>
 				</Col>

@@ -44,7 +44,13 @@ class DocumentDetailModalContainer extends React.Component {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
 
-		DocumentActions.onChangeReason({ name, value });
+		DocumentActions.onChangeOther({ name, value });
+	};
+
+	handleStatus = ({ id }) => async () => {
+		const { DocumentActions, selectedStatus } = this.props;
+
+		await DocumentActions.inOutDocument(id, JSON.parse(selectedStatus));
 	};
 
 	componentDidUpdate(prevProps) {
@@ -67,8 +73,9 @@ class DocumentDetailModalContainer extends React.Component {
 				onClose={this.handleClose}
 				onHold={this.handleHold}
 				onDelete={this.handleDelete}
-				onChange={this.handleChange}
 				onEdit={this.handleEdit}
+				onChange={this.handleChange}
+				onStatus={this.handleStatus}
 			/>
 		);
 	}
@@ -77,6 +84,7 @@ class DocumentDetailModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		codes: state.cmcode.get('0003'),
+		selectedStatus: state.document.get('status'),
 		isOpen: state.modal.get('documentDetailModal'),
 		document: state.document.get('document'),
 		reason: state.document.get('reason'),
