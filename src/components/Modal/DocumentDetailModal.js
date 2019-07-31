@@ -14,10 +14,12 @@ import {
 	Col
 } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
+import DatePicker from 'react-datepicker';
 import QuestionModal from 'components/Modal/QuestionModal';
 
 const DocumentDetailModal = ({
 	codes,
+	date,
 	isOpen,
 	isOpenQuestion,
 	data,
@@ -27,6 +29,7 @@ const DocumentDetailModal = ({
 	onDelete,
 	onOpen,
 	onChange,
+	onDate,
 	onStatus,
 	onDeleteStatus,
 	onTarget,
@@ -225,14 +228,23 @@ const DocumentDetailModal = ({
 			<ModalFooter className="bg-light">
 				<Col className="pr-5">
 					<InputGroup>
-						<Input type="select" name="status" onChange={onChange}>
-							<option value="">--- 변경할 상태를 선택해주세요. ---</option>
+						<Input type="select" name="status" onChange={onChange} className="text-center">
+							<option value="">-- 변경할 상태 선택 --</option>
 							{codes.get('cdMinors').map((code) => (
 								<option key={code.get('_id')} value={JSON.stringify(code.get('cdRef1'))}>
 									{code.get('cdSName')}
 								</option>
 							))}
 						</Input>
+						<InputGroupAddon addonType="prepend">
+							<DatePicker
+								dateFormat="yyyy-MM-dd"
+								className="text-center"
+								name="date"
+								selected={date}
+								onChange={onDate}
+							/>
+						</InputGroupAddon>
 						<InputGroupAddon addonType="append">
 							<Button onClick={onStatus({ id: data.get('id') })}>변경</Button>
 						</InputGroupAddon>

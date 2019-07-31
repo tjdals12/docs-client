@@ -56,10 +56,16 @@ class DocumentDetailModalContainer extends React.Component {
 		DocumentActions.onChangeOther({ name, value });
 	};
 
-	handleStatus = ({ id }) => async () => {
-		const { DocumentActions, selectedStatus } = this.props;
+	handleDate = (date) => {
+		const { DocumentActions } = this.props;
 
-		await DocumentActions.inOutDocument(id, JSON.parse(selectedStatus));
+		DocumentActions.onChangeOther({ name: 'date', value: date });
+	};
+
+	handleStatus = ({ id }) => async () => {
+		const { DocumentActions, selectedStatus, date } = this.props;
+
+		await DocumentActions.inOutDocument(id, Object.assign(JSON.parse(selectedStatus), { date: date }));
 	};
 
 	handleDeleteStatus = async () => {
@@ -76,13 +82,14 @@ class DocumentDetailModalContainer extends React.Component {
 	}
 
 	render() {
-		const { codes, isOpen, isOpenQuestion, document, reason, loading } = this.props;
+		const { codes, date, isOpen, isOpenQuestion, document, reason, loading } = this.props;
 
 		if (!codes || (loading === undefined || loading)) return null;
 
 		return (
 			<DocumentDetailModal
 				codes={codes}
+				date={date}
 				isOpen={isOpen}
 				isOpenQuestion={isOpenQuestion}
 				data={document}
@@ -92,6 +99,7 @@ class DocumentDetailModalContainer extends React.Component {
 				onDelete={this.handleDelete}
 				onOpen={this.handleOpen}
 				onChange={this.handleChange}
+				onDate={this.handleDate}
 				onStatus={this.handleStatus}
 				onDeleteStatus={this.handleDeleteStatus}
 				onTarget={this.handleTarget}
@@ -104,6 +112,7 @@ export default connect(
 	(state) => ({
 		codes: state.cmcode.get('0003'),
 		selectedStatus: state.document.get('status'),
+		date: state.document.get('date'),
 		isOpen: state.modal.get('documentDetailModal'),
 		isOpenQuestion: state.modal.get('questionModal'),
 		document: state.document.get('document'),

@@ -54,6 +54,7 @@ const initialState = Map({
 	}),
 	reason: '',
 	status: '',
+	date: new Date(),
 	target: '',
 	lastPage: null
 });
