@@ -3,6 +3,7 @@ import bn from 'utils/bemnames';
 import Sidebar from './Sidebar';
 import Content from './Content';
 import Header from './Header';
+import Footer from './Footer';
 import componentQueries from 'react-component-queries';
 
 const bem = bn.create('app');
@@ -52,7 +53,7 @@ class MainLayout extends React.Component {
 				<Content fluid>
 					<Header />
 					{children}
-					<div>Footer</div>
+					<Footer />
 				</Content>
 			</main>
 		);

@@ -2,6 +2,7 @@ import { List, Map, fromJS } from 'immutable';
 import { createAction, handleActions } from 'redux-actions';
 import * as api from 'lib/api';
 import { pender } from 'redux-pender';
+import moment from 'moment';
 
 const GET_DOCUMENTS = 'document/GET_DOCUMENTS';
 const GET_DOCUMENT = 'document/GET_DOCUMENT';
@@ -15,6 +16,7 @@ const DELETE_INOUT_DOCUMENT = 'document/DELETE_INOUT_DOCUMENT';
 const ON_CHANGE = 'document/ON_CHANGE';
 const ON_CHANGE_EDIT = 'document/ON_CHANGE_EDIT';
 const ON_CHANGE_OTHER = 'document/ON_CHANGE_OTHER';
+const ON_CHANGE_SEARCH = 'document/ON_CHANGE_SEARCH';
 const SET_TARGET = 'document/SET_TARGET';
 const SET_CHECKED_LIST = 'document/SET_CHECKED_LIST';
 
@@ -30,6 +32,7 @@ export const deleteInOutDocument = createAction(DELETE_INOUT_DOCUMENT, api.delet
 export const onChange = createAction(ON_CHANGE);
 export const onChangeEdit = createAction(ON_CHANGE_EDIT);
 export const onChangeOther = createAction(ON_CHANGE_OTHER);
+export const onChangeSearch = createAction(ON_CHANGE_SEARCH);
 export const setTarget = createAction(SET_TARGET);
 export const setCheckedList = createAction(SET_CHECKED_LIST);
 
@@ -55,6 +58,13 @@ const initialState = Map({
 		documentRev: '',
 		officialNumber: '',
 		memo: ''
+	}),
+	search: Map({
+		documentNumber: '',
+		documentTitle: '',
+		documentRev: '',
+		regDtSta: moment().subtract(7, 'days').format('YYYY-MM-DD'),
+		regDtEnd: moment().format('YYYY-MM-DD')
 	}),
 	reason: '',
 	status: '',
@@ -172,6 +182,11 @@ export default handleActions(
 			const { name, value } = action.payload;
 
 			return state.set(name, value);
+		},
+		[ON_CHANGE_SEARCH]: (state, action) => {
+			const { name, value } = action.payload;
+
+			return state.setIn([ 'search', name ], value);
 		},
 		[SET_TARGET]: (state, action) => {
 			const { payload } = action;

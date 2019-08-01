@@ -3,10 +3,11 @@ import { Col, Row, Button, Table } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import SearchForm from 'components/SearchForm';
+import DocumentSearchFormContainer from 'containers/Form/DocumentSearchFormContainer';
 import Pagination from 'components/Pagination';
 
 const DocumentTable = ({
+	search,
 	currentPage,
 	lastPage,
 	data,
@@ -16,6 +17,8 @@ const DocumentTable = ({
 	checkedList,
 	onChecked,
 	onCheckedAll,
+	onChange,
+	onSearch,
 	className,
 	...rest
 }) => {
@@ -23,6 +26,7 @@ const DocumentTable = ({
 
 	return (
 		<React.Fragment>
+			<DocumentSearchFormContainer />
 			<Row className="hidden-md hidden-sm hidden-xs">
 				<Col xl={2} lg={4}>
 					<Button color="primary" className="mr-2" onClick={onOpenAdd}>
@@ -32,10 +36,6 @@ const DocumentTable = ({
 					<Button color="secondary" onClick={onDelete}>
 						DELETE
 					</Button>
-				</Col>
-
-				<Col xl={{ size: 2, offset: 8 }} lg={{ size: 4, offset: 4 }}>
-					<SearchForm />
 				</Col>
 			</Row>
 			<Table className={classes} {...rest}>
