@@ -39,14 +39,14 @@ class DocumentDetailModalContainer extends React.Component {
 		const { DocumentActions, reason } = this.props;
 
 		await DocumentActions.holdDocument({ id, yn, reason });
-		DocumentActions.onChangeReason({ name: 'reason', value: '' });
+		DocumentActions.onChange({ name: 'reason', value: '' });
 	};
 
 	handleDelete = ({ id, yn }) => async () => {
 		const { DocumentActions, reason } = this.props;
 
 		await DocumentActions.deleteDocument({ id, yn, reason });
-		DocumentActions.onChangeReason({ name: 'reason', value: '' });
+		DocumentActions.onChange({ name: 'reason', value: '' });
 	};
 
 	handleChange = (e) => {

@@ -6,7 +6,19 @@ import PropTypes from 'prop-types';
 import SearchForm from 'components/SearchForm';
 import Pagination from 'components/Pagination';
 
-const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, className, ...rest }) => {
+const DocumentTable = ({
+	currentPage,
+	lastPage,
+	data,
+	onOpenAdd,
+	onDelete,
+	onOpenDetail,
+	checkedList,
+	onChecked,
+	onCheckedAll,
+	className,
+	...rest
+}) => {
 	const classes = classNames('mt-2 mb-4 bg-white', className);
 
 	return (
@@ -17,7 +29,9 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 						ADD
 					</Button>
 
-					<Button color="secondary">DELETE</Button>
+					<Button color="secondary" onClick={onDelete}>
+						DELETE
+					</Button>
 				</Col>
 
 				<Col xl={{ size: 2, offset: 8 }} lg={{ size: 4, offset: 4 }}>
@@ -28,7 +42,7 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 				<thead>
 					<tr>
 						<th width="3%" className="text-center">
-							<input type="checkbox" />
+							<input type="checkbox" onChange={onCheckedAll} />
 						</th>
 						<th width="6%" className="text-center">
 							Gb
@@ -69,7 +83,12 @@ const DocumentTable = ({ currentPage, lastPage, data, onOpenAdd, onOpenDetail, c
 						return (
 							<tr key={id}>
 								<td>
-									<input type="checkbox" />
+									<input
+										type="checkbox"
+										value={id}
+										checked={checkedList.includes(id)}
+										onChange={onChecked}
+									/>
 								</td>
 								<td className="text-center">{item.getIn([ 'documentGb', 'cdSName' ])}</td>
 								<td>{item.get('documentNumber')}</td>

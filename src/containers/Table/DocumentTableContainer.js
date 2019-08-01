@@ -28,6 +28,12 @@ class DocumentTableContainer extends React.Component {
 		ModalActions.open('documentAdd');
 	};
 
+	handleDelete = () => {
+		const { DocumentActions, checkedList, page } = this.props;
+
+		DocumentActions.deleteDocuments(checkedList.toJS(), page);
+	};
+
 	handleOpenDetail = ({ id }) => async () => {
 		const { ModalActions } = this.props;
 
@@ -36,8 +42,24 @@ class DocumentTableContainer extends React.Component {
 		ModalActions.open('documentDetail');
 	};
 
+	handleChecked = (e) => {
+		const { DocumentActions } = this.props;
+		const { checked, value } = e.target;
+
+		DocumentActions.setCheckedList({ checked: checked, value: value });
+	};
+
+	handleCheckedAll = (e) => {
+		const { DocumentActions, documents } = this.props;
+		const { checked } = e.target;
+
+		documents.map((document) => {
+			DocumentActions.setCheckedList({ checked: checked, value: document.get('_id') });
+		});
+	};
+
 	render() {
-		const { documents, lastPage, loading, page } = this.props;
+		const { documents, lastPage, checkedList, loading, page } = this.props;
 
 		if (loading) return null;
 
@@ -46,8 +68,12 @@ class DocumentTableContainer extends React.Component {
 				currentPage={parseInt(page, 10) || 1}
 				lastPage={lastPage}
 				data={documents}
+				checkedList={checkedList.toJS()}
 				onOpenAdd={this.handleOpenAdd}
+				onDelete={this.handleDelete}
 				onOpenDetail={this.handleOpenDetail}
+				onChecked={this.handleChecked}
+				onCheckedAll={this.handleCheckedAll}
 				bordered
 				striped
 				hover
@@ -60,6 +86,7 @@ export default connect(
 	(state) => ({
 		documents: state.document.get('documents'),
 		lastPage: state.document.get('lastPage'),
+		checkedList: state.document.get('checkedList'),
 		loading: state.pender.pending['document/GET_DOCUMENTS']
 	}),
 	(dispatch) => ({

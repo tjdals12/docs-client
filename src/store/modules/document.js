@@ -8,6 +8,7 @@ const GET_DOCUMENT = 'document/GET_DOCUMENT';
 const ADD_DOCUMENT = 'document/ADD_DOCUMENT';
 const HOLD_DOCUMENT = 'document/HOLD_DOCUMENT';
 const DELETE_DOCUMENT = 'document/DELETE_DOCUMENT';
+const DELETE_DOCUMENTS = 'document/DELETE_DOCUMENTS';
 const EDIT_DOCUMENT = 'document/EDIT_DOCUMENT';
 const INOUT_DOCUMENT = 'document/INOUT_DOCUMENT';
 const DELETE_INOUT_DOCUMENT = 'document/DELETE_INOUT_DOCUMENT';
@@ -15,12 +16,14 @@ const ON_CHANGE = 'document/ON_CHANGE';
 const ON_CHANGE_EDIT = 'document/ON_CHANGE_EDIT';
 const ON_CHANGE_OTHER = 'document/ON_CHANGE_OTHER';
 const SET_TARGET = 'document/SET_TARGET';
+const SET_CHECKED_LIST = 'document/SET_CHECKED_LIST';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
 export const getDocument = createAction(GET_DOCUMENT, api.getDocument);
 export const addDocument = createAction(ADD_DOCUMENT, api.addDocument);
 export const holdDocument = createAction(HOLD_DOCUMENT, api.holdDocument);
 export const deleteDocument = createAction(DELETE_DOCUMENT, api.deleteDocument);
+export const deleteDocuments = createAction(DELETE_DOCUMENTS, api.deleteDocuments);
 export const editDocument = createAction(EDIT_DOCUMENT, api.editDocument);
 export const inOutDocument = createAction(INOUT_DOCUMENT, api.inOutDocument);
 export const deleteInOutDocument = createAction(DELETE_INOUT_DOCUMENT, api.deleteInOutDocument);
@@ -28,6 +31,7 @@ export const onChange = createAction(ON_CHANGE);
 export const onChangeEdit = createAction(ON_CHANGE_EDIT);
 export const onChangeOther = createAction(ON_CHANGE_OTHER);
 export const setTarget = createAction(SET_TARGET);
+export const setCheckedList = createAction(SET_CHECKED_LIST);
 
 const initialState = Map({
 	documents: List(),
@@ -56,6 +60,7 @@ const initialState = Map({
 	status: '',
 	date: new Date(),
 	target: '',
+	checkedList: List(),
 	lastPage: null
 });
 
@@ -112,6 +117,15 @@ export default handleActions(
 			}
 		}),
 		...pender({
+			type: DELETE_DOCUMENTS,
+			onSuccess: (state, action) => {
+				const { data: documents } = action.payload.data;
+				const lastPage = action.payload.headers['last-page'];
+
+				return state.set('documents', fromJS(documents)).set('lastPage', parseInt(lastPage, 10));
+			}
+		}),
+		...pender({
 			type: EDIT_DOCUMENT,
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
@@ -163,6 +177,18 @@ export default handleActions(
 			const { payload } = action;
 
 			return state.set('target', payload);
+		},
+		[SET_CHECKED_LIST]: (state, action) => {
+			const { checked, value } = action.payload;
+			const checkedList = state.get('checkedList');
+
+			if (checked) {
+				return state.set('checkedList', checkedList.push(value));
+			} else {
+				const index = checkedList.findIndex((item) => item === value);
+
+				return state.set('checkedList', checkedList.remove(index));
+			}
 		}
 	},
 	initialState

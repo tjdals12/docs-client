@@ -8,6 +8,7 @@ export const getDocument = ({ id }) => axios.get(`${real}/api/documents/${id}`);
 export const addDocument = (document) => axios.post(`${real}/api/documents`, { ...document });
 export const holdDocument = ({ id, yn, reason }) => axios.patch(`${real}/api/documents/${id}/hold`, { yn, reason });
 export const deleteDocument = ({ id, yn, reason }) => axios.patch(`${real}/api/documents/${id}/delete`, { yn, reason });
+export const deleteDocuments = (ids, page) => axios.patch(`${real}/api/documents/delete?page=${page}`, { ids: ids });
 export const editDocument = ({ id, document }) => axios.patch(`${real}/api/documents/${id}/edit`, { ...document });
 export const inOutDocument = (id, param) => axios.patch(`${real}/api/documents/${id}/inout`, { ...param });
 export const deleteInOutDocument = ({ id, target }) =>
