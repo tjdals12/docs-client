@@ -3,9 +3,6 @@ import { Col, Row, Button, Table } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import DocumentSearchFormContainer from 'containers/Form/DocumentSearchFormContainer';
-import Pagination from 'components/Pagination';
-
 const DocumentTable = ({
 	search,
 	currentPage,
@@ -26,7 +23,6 @@ const DocumentTable = ({
 
 	return (
 		<React.Fragment>
-			<DocumentSearchFormContainer />
 			<Row className="hidden-md hidden-sm hidden-xs">
 				<Col xl={2} lg={4}>
 					<Button color="primary" className="mr-2" onClick={onOpenAdd}>
@@ -78,7 +74,7 @@ const DocumentTable = ({
 				</thead>
 				<tbody>
 					{data.map((item) => {
-						let { id, level, delayGb } = item.toJS();
+						let { _id: id, level, delayGb } = item.toJS();
 
 						return (
 							<tr key={id}>
@@ -100,7 +96,7 @@ const DocumentTable = ({
 								<td className="text-center">{item.get('documentRev')}</td>
 								<td className="text-center">{item.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)}</td>
 								<td className="text-center">
-									{item.getIn([ 'documentStatus', -1, 'status' ])}
+									{item.getIn([ 'documentStatus', -1, 'statusName' ])}
 									<br />
 									<small className="text-primary">
 										({item.getIn([ 'documentStatus', -1, 'timestamp', 'regDt' ]).substr(0, 10)})
@@ -125,14 +121,14 @@ const DocumentTable = ({
 									)}
 								</td>
 								<td className="text-center">
-									{delayGb === '여유' ? (
-										<span className="text-success">{delayGb}</span>
-									) : delayGb === '임박' ? (
-										<span className="text-primary">{delayGb}</span>
-									) : delayGb === '오늘' ? (
-										<span className="text-warning">{delayGb}</span>
+									{delayGb === '01' ? (
+										<span className="text-success">여유</span>
+									) : delayGb === '02' ? (
+										<span className="text-primary">임박</span>
+									) : delayGb === '03' ? (
+										<span className="text-warning">오늘</span>
 									) : (
-										<span className="text-danger">{delayGb}</span>
+										<span className="text-danger">지연</span>
 									)}
 								</td>
 								<td className="text-center">
@@ -149,14 +145,6 @@ const DocumentTable = ({
 					})}
 				</tbody>
 			</Table>
-
-			<Pagination
-				currentPage={currentPage}
-				lastPage={lastPage}
-				size="md"
-				aria-label="Page navigation"
-				listClassName="flex-row justify-content-end ml-auto"
-			/>
 		</React.Fragment>
 	);
 };

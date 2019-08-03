@@ -5,7 +5,7 @@ const Footer = () => {
 	return (
 		<Navbar>
 			<Nav navbar>
-				<NavItem>2019.07 Minz-logger</NavItem>
+				<NavItem className="footer">2019.07 Minz-logger</NavItem>
 			</Nav>
 		</Navbar>
 	);

@@ -5,6 +5,7 @@ import { pender } from 'redux-pender';
 import moment from 'moment';
 
 const GET_DOCUMENTS = 'document/GET_DOCUMENTS';
+const SEARCH_DOCUMENTS = 'document/SEARCH_DOCUMENTS';
 const GET_DOCUMENT = 'document/GET_DOCUMENT';
 const ADD_DOCUMENT = 'document/ADD_DOCUMENT';
 const HOLD_DOCUMENT = 'document/HOLD_DOCUMENT';
@@ -21,6 +22,7 @@ const SET_TARGET = 'document/SET_TARGET';
 const SET_CHECKED_LIST = 'document/SET_CHECKED_LIST';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
+export const searchDocuments = createAction(SEARCH_DOCUMENTS, api.searchDocuments);
 export const getDocument = createAction(GET_DOCUMENT, api.getDocument);
 export const addDocument = createAction(ADD_DOCUMENT, api.addDocument);
 export const holdDocument = createAction(HOLD_DOCUMENT, api.holdDocument);
@@ -64,7 +66,8 @@ const initialState = Map({
 		documentTitle: '',
 		documentRev: '',
 		regDtSta: moment().subtract(7, 'days').format('YYYY-MM-DD'),
-		regDtEnd: moment().format('YYYY-MM-DD')
+		regDtEnd: moment().add(1, 'days').format('YYYY-MM-DD'),
+		isSearch: false
 	}),
 	reason: '',
 	status: '',
@@ -86,6 +89,18 @@ export default handleActions(
 			}
 		}),
 		...pender({
+			type: SEARCH_DOCUMENTS,
+			onSuccess: (state, action) => {
+				const { data: documents } = action.payload.data;
+				const lastPage = action.payload.headers['last-page'];
+
+				return state
+					.set('documents', fromJS(documents))
+					.set('lastPage', parseInt(lastPage, 10))
+					.setIn([ 'search', 'isSearch' ], true);
+			}
+		}),
+		...pender({
 			type: ADD_DOCUMENT,
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
@@ -101,10 +116,10 @@ export default handleActions(
 				return state
 					.set('document', fromJS(document))
 					.setIn([ 'edit', 'vendor' ], document.vendor)
-					.setIn([ 'edit', 'part' ], document.part)
+					.setIn([ 'edit', 'part' ], document.part._id)
 					.setIn([ 'edit', 'documentTitle' ], document.documentTitle)
 					.setIn([ 'edit', 'documentNumber' ], document.documentNumber)
-					.setIn([ 'edit', 'documentGb' ], document.documentGb)
+					.setIn([ 'edit', 'documentGb' ], document.documentGb._id)
 					.setIn([ 'edit', 'documentRev' ], document.documentRev)
 					.setIn([ 'edit', 'officialNumber' ], document.documentInOut[0].officialNumber)
 					.setIn([ 'edit', 'memo' ], document.memo);
@@ -115,7 +130,7 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
 
-				return state.set('document', fromJS(document));
+				return state.set('document', fromJS(document)).set('reason', '');
 			}
 		}),
 		...pender({
@@ -123,7 +138,7 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
 
-				return state.set('document', fromJS(document));
+				return state.set('document', fromJS(document)).set('reason', '');
 			}
 		}),
 		...pender({

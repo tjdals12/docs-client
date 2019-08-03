@@ -1,15 +1,17 @@
 import React from 'react';
 import DocumentTable from 'components/Table/DocumentTable';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
 
 class DocumentTableContainer extends React.Component {
-	getDocuments = () => {
-		const { DocumentActions, page } = this.props;
+	getDocuments = async () => {
+		const { DocumentActions, history } = this.props;
 
-		DocumentActions.getDocuments({ page });
+		await DocumentActions.getDocuments({ page: 1 });
+		history.push('/documents?page=1');
 	};
 
 	getDocument = (id) => {
@@ -59,14 +61,12 @@ class DocumentTableContainer extends React.Component {
 	};
 
 	render() {
-		const { documents, lastPage, checkedList, loading, page } = this.props;
+		const { documents, checkedList, loading } = this.props;
 
 		if (loading) return null;
 
 		return (
 			<DocumentTable
-				currentPage={parseInt(page, 10) || 1}
-				lastPage={lastPage}
 				data={documents}
 				checkedList={checkedList.toJS()}
 				onOpenAdd={this.handleOpenAdd}
@@ -85,7 +85,6 @@ class DocumentTableContainer extends React.Component {
 export default connect(
 	(state) => ({
 		documents: state.document.get('documents'),
-		lastPage: state.document.get('lastPage'),
 		checkedList: state.document.get('checkedList'),
 		loading: state.pender.pending['document/GET_DOCUMENTS']
 	}),
@@ -93,4 +92,4 @@ export default connect(
 		DocumentActions: bindActionCreators(documentActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(DocumentTableContainer);
+)(withRouter(DocumentTableContainer));

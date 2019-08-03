@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button } from 'reactstrap';
 
-const DocumentSearchForm = ({ search, onChange, onSearch }) => {
+const DocumentSearchForm = ({ status, search, onChange, onSearch }) => {
 	return (
 		<Form
 			className="bg-white mb-3 px-2 py-2 border rounded"
@@ -77,8 +77,16 @@ const DocumentSearchForm = ({ search, onChange, onSearch }) => {
 						onChange={onChange}
 					>
 						<option value="">-- Status --</option>
-						<option value="01">접수</option>
-						<option value="02">내부 검토중</option>
+						{status.get('cdMinors').map((code, index) => {
+							let name = code.get('cdSName');
+							let value = code.getIn([ 'cdRef1', 'status' ]);
+
+							return (
+								<option key={index} value={value}>
+									{name}
+								</option>
+							);
+						})}
 					</Input>
 				</Col>
 				<Label md={1} for="holdYn" className="text-right">
@@ -93,8 +101,8 @@ const DocumentSearchForm = ({ search, onChange, onSearch }) => {
 						onChange={onChange}
 					>
 						<option value="">-- Y/N --</option>
-						<option value="01">YES</option>
-						<option value="02">NO</option>
+						<option value="YES">YES</option>
+						<option value="NO">NO</option>
 					</Input>
 				</Col>
 				<Label md={1} for="deleteYn" className="text-right">
@@ -109,8 +117,8 @@ const DocumentSearchForm = ({ search, onChange, onSearch }) => {
 						onChange={onChange}
 					>
 						<option value="">-- Y/N --</option>
-						<option value="01">YES</option>
-						<option value="02">NO</option>
+						<option value="YES">YES</option>
+						<option value="NO">NO</option>
 					</Input>
 				</Col>
 				<Label md={1} for="delayGb" className="text-right">
@@ -153,6 +161,7 @@ const DocumentSearchForm = ({ search, onChange, onSearch }) => {
 				<Col md={2}>
 					<Input type="select" name="level" id="level" value={search.get('level')} onChange={onChange}>
 						<option value="">-- Level --</option>
+						<option value="0">0</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>

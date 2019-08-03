@@ -116,7 +116,17 @@ const DocumentDetailModal = ({
 							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
 								지연여부
 							</th>
-							<td rowSpan="2">{data.get('delayGb')}</td>
+							<td rowSpan="2">
+								{data.get('delayGb') === '01' ? (
+									'여유'
+								) : data.get('delayGb') ? (
+									'임박'
+								) : data.get('delayGb') ? (
+									'오늘'
+								) : (
+									'지연'
+								)}
+							</td>
 							<th scope="row" className="text-right bg-light">
 								삭제여부
 							</th>

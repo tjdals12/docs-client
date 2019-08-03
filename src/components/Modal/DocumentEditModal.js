@@ -55,7 +55,7 @@ const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit
 
 						<Col md={6}>
 							<Label for="part">PART</Label>
-							<Input type="select" name="part" value={part._id} onChange={onChange}>
+							<Input type="select" name="part" value={part} onChange={onChange}>
 								<option value="">------ 공종을 선택해주세요. ------</option>
 								{parts.get('cdMinors').map((part) => (
 									<option key={part.get('_id')} value={part.get('_id')}>
@@ -103,7 +103,7 @@ const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit
 
 						<Col md={6}>
 							<Label for="gb">구분</Label>
-							<Input type="select" name="documentGb" value={documentGb._id} onChange={onChange}>
+							<Input type="select" name="documentGb" value={documentGb} onChange={onChange}>
 								<option value="">------ 구분을 선택해주세요. ------</option>
 								{gbs.get('cdMinors').map((gb) => (
 									<option key={gb.get('_id')} value={gb.get('_id')}>
