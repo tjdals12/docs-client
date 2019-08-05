@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button } from 'reactstrap';
 
-const DocumentSearchForm = ({ status, search, onChange, onSearch }) => {
+const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
 	return (
 		<Form
 			className="bg-white mb-3 px-2 py-2 border rounded"
@@ -18,9 +18,11 @@ const DocumentSearchForm = ({ status, search, onChange, onSearch }) => {
 				<Col md={2}>
 					<Input type="select" name="documentGb" id="documentGb" onChange={onChange}>
 						<option value="">-- Gb --</option>
-						<option value="01">절차서</option>
-						<option value="02">보고서</option>
-						<option value="03">도면</option>
+						{gb.get('cdMinors').map((code, index) => (
+							<option key={index} value={code.get('cdMinor')}>
+								{code.get('cdSName')}
+							</option>
+						))}
 					</Input>
 				</Col>
 				<Label md={1} for="documentNumber" className="text-right">

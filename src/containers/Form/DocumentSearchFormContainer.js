@@ -28,16 +28,18 @@ class DocumentSearchFormContainer extends React.Component {
 	};
 
 	componentDidMount() {
+		this.getCmcodes('0002');
 		this.getCmcodes('0003');
 	}
 
 	render() {
-		const { status, search } = this.props;
+		const { gb, status, search } = this.props;
 
-		if (!status) return null;
+		if (!status || !gb) return null;
 
 		return (
 			<DocumentSearchForm
+				gb={gb}
 				status={status}
 				search={search}
 				onChange={this.handleChange}
@@ -49,6 +51,7 @@ class DocumentSearchFormContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		gb: state.cmcode.get('0002'),
 		status: state.cmcode.get('0003'),
 		search: state.document.get('search')
 	}),

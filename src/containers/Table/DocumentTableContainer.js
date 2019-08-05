@@ -7,11 +7,16 @@ import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
 
 class DocumentTableContainer extends React.Component {
-	getDocuments = async () => {
-		const { DocumentActions, history } = this.props;
+	getDocuments = async (page) => {
+		const { DocumentActions, isSearch, search, history } = this.props;
 
-		await DocumentActions.getDocuments({ page: 1 });
-		history.push('/documents?page=1');
+		if (isSearch) {
+			await DocumentActions.searchDocuments(page, search.toJS());
+			history.push(`/documents?page=${page}`);
+		} else {
+			await DocumentActions.getDocuments({ page });
+			history.push(`/documents?page=${page}`);
+		}
 	};
 
 	getDocument = (id) => {
@@ -21,7 +26,7 @@ class DocumentTableContainer extends React.Component {
 	};
 
 	componentDidMount() {
-		this.getDocuments();
+		this.getDocuments(1);
 	}
 
 	handleOpenAdd = () => {
@@ -61,12 +66,14 @@ class DocumentTableContainer extends React.Component {
 	};
 
 	render() {
-		const { documents, checkedList, loading } = this.props;
+		const { documents, checkedList, lastPage, page, loading } = this.props;
 
 		if (loading) return null;
 
 		return (
 			<DocumentTable
+				page={page}
+				lastPage={lastPage}
 				data={documents}
 				checkedList={checkedList.toJS()}
 				onOpenAdd={this.handleOpenAdd}
@@ -74,6 +81,7 @@ class DocumentTableContainer extends React.Component {
 				onOpenDetail={this.handleOpenDetail}
 				onChecked={this.handleChecked}
 				onCheckedAll={this.handleCheckedAll}
+				onPage={this.getDocuments}
 				bordered
 				striped
 				hover
@@ -86,6 +94,9 @@ export default connect(
 	(state) => ({
 		documents: state.document.get('documents'),
 		checkedList: state.document.get('checkedList'),
+		isSearch: state.document.getIn([ 'search', 'isSearch' ]),
+		search: state.document.get('search'),
+		lastPage: state.document.get('lastPage'),
 		loading: state.pender.pending['document/GET_DOCUMENTS']
 	}),
 	(dispatch) => ({

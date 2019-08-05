@@ -30,6 +30,21 @@
 	vertical-align: middle;
 }
 
+.card-body {
+	.card-title {
+		font-size: 1.5rem;
+		font-family: 'Do Hyeon', sans-serif;
+	}
+
+	.card-subtitle {
+		font-size: 1rem;
+	}
+
+	.card-text {
+		font-size: .8rem;
+	}
+}
+
 /* react-datepicker override */
 .react-datepicker__input-container {
 	height: 100%;

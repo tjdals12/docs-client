@@ -16,11 +16,12 @@ const sidebarBackground = {
 
 const navMenus = [
 	{ to: '/', name: 'Dashboard', exact: true, Icon: MdDashboard },
-	{ to: '/documents', name: 'Documents', exact: true, Icon: MdDescription }
+	{ to: '/documents', name: 'Documents', exact: true, Icon: MdDescription },
+	{ to: '/vendors', name: 'Vendors', exact: true, Icon: MdBusiness }
 ];
 
 const vendorMenus = [
-	{ to: '/vendors', name: 'Overral', exact: true, Icon: MdChevronRight },
+	{ to: '/vendors/overral', name: 'Overral', exact: true, Icon: MdChevronRight },
 	{ to: '/vendors/list', name: 'Vendor List', exact: true, Icon: MdChevronRight },
 	{ to: '/vendors/management', name: 'Management', exact: true, Icon: MdChevronRight }
 ];

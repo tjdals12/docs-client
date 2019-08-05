@@ -2,10 +2,11 @@ import React from 'react';
 import { Col, Row, Button, Table } from 'reactstrap';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Pagination from 'components/Pagination';
 
 const DocumentTable = ({
 	search,
-	currentPage,
+	page,
 	lastPage,
 	data,
 	onOpenAdd,
@@ -16,6 +17,7 @@ const DocumentTable = ({
 	onCheckedAll,
 	onChange,
 	onSearch,
+	onPage,
 	className,
 	...rest
 }) => {
@@ -24,7 +26,7 @@ const DocumentTable = ({
 	return (
 		<React.Fragment>
 			<Row className="hidden-md hidden-sm hidden-xs">
-				<Col xl={2} lg={4}>
+				<Col md={4}>
 					<Button color="primary" className="mr-2" onClick={onOpenAdd}>
 						ADD
 					</Button>
@@ -145,12 +147,21 @@ const DocumentTable = ({
 					})}
 				</tbody>
 			</Table>
+
+			<Pagination
+				currentPage={page}
+				lastPage={lastPage}
+				onPage={onPage}
+				size="md"
+				aria-label="Page navigation"
+				listClassName="flex-row justify-content-end ml-auto"
+			/>
 		</React.Fragment>
 	);
 };
 
 DocumentTable.propTypes = {
-	currentPage: PropTypes.number,
+	page: PropTypes.number,
 	lastPage: PropTypes.number,
 	data: PropTypes.object
 };

@@ -15,5 +15,8 @@ export const inOutDocument = (id, param) => axios.patch(`${real}/api/documents/$
 export const deleteInOutDocument = ({ id, target }) =>
 	axios.patch(`${real}/api/documents/${id}/inout/delete`, { targetId: target });
 
+/** Vendor */
+export const getVendors = ({ page }) => axios.get(`${real}/api/vendors?page=${page}`);
+
 /** Cmcode */
 export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${major}/minors`);

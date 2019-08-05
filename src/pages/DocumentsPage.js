@@ -2,7 +2,6 @@ import React from 'react';
 import Page from 'components/Page';
 import DocumentSearchFormContainer from 'containers/Form/DocumentSearchFormContainer';
 import DocumentTableContainer from 'containers/Table/DocumentTableContainer';
-import PaginationContainer from 'containers/PaginationContainer';
 import DocumentAddModalContainier from 'containers/Modal/DocumentAddModalContainer';
 import DocumentDetailModalContainer from 'containers/Modal/DocumentDetailModalContainer';
 import DocumentEditModalContainer from 'containers/Modal/DocumentEditModalContainer';
@@ -14,8 +13,7 @@ class DocumentsPage extends React.Component {
 		return (
 			<Page title="Documents" breadcrumbs={[ { name: 'Documents', active: true } ]}>
 				<DocumentSearchFormContainer />
-				<DocumentTableContainer />
-				<PaginationContainer page={parseInt(page || 1, 10)} />
+				<DocumentTableContainer page={parseInt(page || 1, 10)} />
 				<DocumentAddModalContainier />
 				<DocumentDetailModalContainer />
 				<DocumentEditModalContainer />
