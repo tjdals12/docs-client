@@ -94,10 +94,10 @@ class DocumentDetailModalContainer extends React.Component {
 				isOpenQuestion={isOpenQuestion}
 				data={document}
 				reason={reason}
+				onOpen={this.handleOpen}
 				onClose={this.handleClose}
 				onHold={this.handleHold}
 				onDelete={this.handleDelete}
-				onOpen={this.handleOpen}
 				onChange={this.handleChange}
 				onDate={this.handleDate}
 				onStatus={this.handleStatus}

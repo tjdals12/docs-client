@@ -11,6 +11,7 @@ const initialState = Map({
 	documentAddModal: false,
 	documentDetailModal: false,
 	documentEditModal: false,
+	vendorAddModal: false,
 	questionModal: false
 });
 

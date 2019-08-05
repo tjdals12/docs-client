@@ -3,17 +3,19 @@ import { Row, Col, Button } from 'reactstrap';
 import VendorCard from 'components/Card/VendorCard';
 import Pagination from 'components/Pagination';
 
-const VendorList = ({ page, lastPage, data, onPage }) => {
+const VendorList = ({ page, lastPage, data, onPage, onOpen }) => {
 	return (
 		<React.Fragment>
-			<Row>
+			<Row className="hidden-md hidden-sm hidden-xs">
 				<Col md={4}>
-					<Button color="primary">ADD</Button>
+					<Button color="primary" onClick={onOpen('vendorAdd')}>
+						ADD
+					</Button>
 				</Col>
 			</Row>
 			<Row className="mt-2">
 				{data.map((vendor, index) => (
-					<Col md={3} className="mb-4" key={index}>
+					<Col xs={12} md={6} lg={3} className="mb-4" key={index}>
 						<VendorCard vendor={vendor} />
 					</Col>
 				))}

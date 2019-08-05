@@ -1,7 +1,9 @@
 import React from 'react';
+import ScrollToTop from 'components/ScrollToTop';
 import Page from 'components/Page';
-import VendorSearchForm from 'components/Form/VendorSearchForm';
+import VendorSearchFormContainer from 'containers/Form/VendorSearchFormContainer';
 import VendorListContainer from 'containers/List/VendorListContainer';
+import VendorAddModalContainer from 'containers/Modal/VendorAddModalContainer';
 import queryString from 'query-string';
 
 class VendorsPage extends React.Component {
@@ -9,10 +11,13 @@ class VendorsPage extends React.Component {
 		let { page } = queryString.parse(this.props.location.search);
 
 		return (
-			<Page title="Vendors" breadcrumbs={[ { name: 'Vendors', active: true } ]}>
-				<VendorSearchForm />
-				<VendorListContainer page={parseInt(page || 1, 10)} />
-			</Page>
+			<ScrollToTop>
+				<Page title="Vendors" breadcrumbs={[ { name: 'Vendors', active: true } ]}>
+					<VendorSearchFormContainer />
+					<VendorListContainer page={parseInt(page || 1, 10)} />
+					<VendorAddModalContainer />
+				</Page>
+			</ScrollToTop>
 		);
 	}
 }

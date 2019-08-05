@@ -105,7 +105,7 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: document } = action.payload.data;
 
-				return state.set('add', initialState.get('document')).set('document', fromJS(document));
+				return state.set('add', initialState.get('add')).set('document', fromJS(document));
 			}
 		}),
 		...pender({

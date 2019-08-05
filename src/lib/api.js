@@ -17,6 +17,7 @@ export const deleteInOutDocument = ({ id, target }) =>
 
 /** Vendor */
 export const getVendors = ({ page }) => axios.get(`${real}/api/vendors?page=${page}`);
+export const addVendor = (vendor) => axios.post(`${real}/api/vendors`, { ...vendor });
 
 /** Cmcode */
 export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${major}/minors`);

@@ -1,4 +1,5 @@
 import React from 'react';
+import ScrollToTop from 'components/ScrollToTop';
 import Page from 'components/Page';
 import DocumentSearchFormContainer from 'containers/Form/DocumentSearchFormContainer';
 import DocumentTableContainer from 'containers/Table/DocumentTableContainer';
@@ -11,13 +12,15 @@ class DocumentsPage extends React.Component {
 		let { page } = queryString.parse(this.props.location.search);
 
 		return (
-			<Page title="Documents" breadcrumbs={[ { name: 'Documents', active: true } ]}>
-				<DocumentSearchFormContainer />
-				<DocumentTableContainer page={parseInt(page || 1, 10)} />
-				<DocumentAddModalContainier />
-				<DocumentDetailModalContainer />
-				<DocumentEditModalContainer />
-			</Page>
+			<ScrollToTop>
+				<Page title="Documents" breadcrumbs={[ { name: 'Documents', active: true } ]}>
+					<DocumentSearchFormContainer />
+					<DocumentTableContainer page={parseInt(page || 1, 10)} />
+					<DocumentAddModalContainier />
+					<DocumentDetailModalContainer />
+					<DocumentEditModalContainer />
+				</Page>
+			</ScrollToTop>
 		);
 	}
 }

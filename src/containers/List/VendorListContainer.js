@@ -3,6 +3,7 @@ import VendorList from 'components/List/VendorList';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as modalActions from 'store/modules/modal';
 import * as vendorActions from 'store/modules/vendor';
 
 class VendorListContainer extends React.Component {
@@ -13,6 +14,12 @@ class VendorListContainer extends React.Component {
 		history.push(`/vendors?page=${page}`);
 	};
 
+	handleOpen = (name) => () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.open(name);
+	};
+
 	componentDidMount() {
 		this.getVendors(1);
 	}
@@ -20,7 +27,15 @@ class VendorListContainer extends React.Component {
 	render() {
 		const { vendors, lastPage, page } = this.props;
 
-		return <VendorList page={page} lastPage={lastPage} data={vendors} onPage={this.getVendors} />;
+		return (
+			<VendorList
+				page={page}
+				lastPage={lastPage}
+				data={vendors}
+				onPage={this.getVendors}
+				onOpen={this.handleOpen}
+			/>
+		);
 	}
 }
 
@@ -31,6 +46,7 @@ export default connect(
 		loading: state.pender.pending['vendor/GET_VENDORS']
 	}),
 	(dispatch) => ({
+		ModalActions: bindActionCreators(modalActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch)
 	})
 )(withRouter(VendorListContainer));

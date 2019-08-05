@@ -6,6 +6,9 @@ import Mechnical from 'assets/img/part/mechnical.jpg';
 import Stationary from 'assets/img/part/stationary.jpg';
 import Electric from 'assets/img/part/electric.jpg';
 import Instrument from 'assets/img/part/instrument.jpg';
+import Piping from 'assets/img/part/pipe.jpg';
+import Firefight from 'assets/img/part/firefight.jpg';
+import HVAC from 'assets/img/part/hvac.jpg';
 
 const VendorCard = ({ vendor, className, ...restProps }) => {
 	const classes = classNames('can-click hover', className);
@@ -16,7 +19,21 @@ const VendorCard = ({ vendor, className, ...restProps }) => {
 			<CardImg
 				top
 				src={
-					part === '0001' ? Mechnical : part === '0002' ? Stationary : part === '0003' ? Electric : Instrument
+					part === '0001' ? (
+						Mechnical
+					) : part === '0002' ? (
+						Stationary
+					) : part === '0003' ? (
+						Electric
+					) : part === '0004' ? (
+						Instrument
+					) : part === '0005' ? (
+						Piping
+					) : part === '0006' ? (
+						Firefight
+					) : (
+						HVAC
+					)
 				}
 				height="150"
 			/>

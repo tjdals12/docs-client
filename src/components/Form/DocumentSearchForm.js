@@ -4,7 +4,7 @@ import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button
 const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
 	return (
 		<Form
-			className="bg-white mb-3 px-2 py-2 border rounded"
+			className="bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs"
 			onSubmit={(e) => {
 				e.preventDefault();
 
