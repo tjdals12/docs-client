@@ -4,6 +4,9 @@ import Page from 'components/Page';
 import VendorSearchFormContainer from 'containers/Form/VendorSearchFormContainer';
 import VendorListContainer from 'containers/List/VendorListContainer';
 import VendorAddModalContainer from 'containers/Modal/VendorAddModalContainer';
+import VendorDetailModalContainer from 'containers/Modal/VendorDetailModalContainer';
+import VendorEditModalContainer from 'containers/Modal/VendorEditModalContainer';
+import VendorPersonAddModalContainer from 'containers/Modal/VendorPersonAddModalContainer';
 import queryString from 'query-string';
 
 class VendorsPage extends React.Component {
@@ -16,6 +19,9 @@ class VendorsPage extends React.Component {
 					<VendorSearchFormContainer />
 					<VendorListContainer page={parseInt(page || 1, 10)} />
 					<VendorAddModalContainer />
+					<VendorDetailModalContainer />
+					<VendorEditModalContainer />
+					<VendorPersonAddModalContainer />
 				</Page>
 			</ScrollToTop>
 		);

@@ -2,9 +2,10 @@ import React from 'react';
 import DocumentDetailModal from 'components/Modal/DocumentDetailModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as documentActions from 'store/modules/document';
-import * as modalActions from 'store/modules/modal';
 import * as cmcodeActions from 'store/modules/cmcode';
+import * as modalActions from 'store/modules/modal';
+import * as documentActions from 'store/modules/document';
+import * as vendorActions from 'store/modules/vendor';
 
 class DocumentDetailModalContainer extends React.Component {
 	getCmcodes = async (major) => {
@@ -17,6 +18,12 @@ class DocumentDetailModalContainer extends React.Component {
 		const { DocumentActions } = this.props;
 
 		DocumentActions.setTarget(id);
+	};
+
+	handleTargetVendor = ({ id }) => {
+		const { VendorActions } = this.props;
+
+		VendorActions.setTarget(id);
 	};
 
 	handleOpen = (name) => () => {
@@ -103,6 +110,7 @@ class DocumentDetailModalContainer extends React.Component {
 				onStatus={this.handleStatus}
 				onDeleteStatus={this.handleDeleteStatus}
 				onTarget={this.handleTarget}
+				onTargetVendor={this.handleTargetVendor}
 			/>
 		);
 	}
@@ -121,8 +129,9 @@ export default connect(
 		loading: state.pender.pending['document/GET_DOCUMENT']
 	}),
 	(dispatch) => ({
-		DocumentActions: bindActionCreators(documentActions, dispatch),
+		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
-		CmcodeActions: bindActionCreators(cmcodeActions, dispatch)
+		DocumentActions: bindActionCreators(documentActions, dispatch),
+		VendorActions: bindActionCreators(vendorActions, dispatch)
 	})
 )(DocumentDetailModalContainer);

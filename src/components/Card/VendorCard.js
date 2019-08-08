@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardSubtitle, Badge } from 'reactstrap';
-import { MdSearch } from 'react-icons/md';
+import { MdAccountBox } from 'react-icons/md';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Mechnical from 'assets/img/part/mechnical.jpg';
 import Stationary from 'assets/img/part/stationary.jpg';
@@ -10,12 +11,12 @@ import Piping from 'assets/img/part/pipe.jpg';
 import Firefight from 'assets/img/part/firefight.jpg';
 import HVAC from 'assets/img/part/hvac.jpg';
 
-const VendorCard = ({ vendor, className, ...restProps }) => {
+const VendorCard = ({ vendor, onOpen, className, ...restProps }) => {
 	const classes = classNames('can-click hover', className);
 	const part = vendor.getIn([ 'part', 'cdMinor' ]);
 
 	return (
-		<Card className={classes} {...restProps}>
+		<Card className={classes} {...restProps} onClick={onOpen}>
 			<CardImg
 				top
 				src={
@@ -38,7 +39,10 @@ const VendorCard = ({ vendor, className, ...restProps }) => {
 				height="150"
 			/>
 			<CardBody className="position-relative">
-				<MdSearch size={25} className="position-absolute" style={{ top: 10, right: 10 }} />
+				<span className="position-absolute" style={{ top: 10, right: 10 }}>
+					<MdAccountBox size={25} className="pb-1" />
+					{vendor.get('vendorPerson').size}
+				</span>
 				<CardTitle>
 					{vendor.get('vendorName')}
 					<CardSubtitle tag="span" className="ml-2">
@@ -62,6 +66,15 @@ const VendorCard = ({ vendor, className, ...restProps }) => {
 			</CardBody>
 		</Card>
 	);
+};
+
+VendorCard.propTypes = {
+	vendor: PropTypes.object,
+	onOpen: PropTypes.func
+};
+
+VendorCard.defaultProps = {
+	onOpen: () => console.warn('Warning: onOpen is not defined')
 };
 
 export default VendorCard;

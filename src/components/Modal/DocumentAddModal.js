@@ -15,7 +15,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
+const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -35,10 +35,12 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 							<Label for="vendor">VENDOR</Label>
 							<Input type="select" name="vendor" onChange={onChange}>
 								<option value="">------ 업체를 선택해주세요. ------</option>
-								<option value="5d33ef877cceb91244d16fdd">바로</option>
-								<option value="5d33ef877cceb91244d16fdd">유니콘</option>
-								<option value="5d33ef877cceb91244d16fdd">신화전기</option>
-								<option value="5d33ef877cceb91244d16fdd">우아한형제</option>
+								{vendorList.map((vendor) => (
+									<option key={vendor.get('_id')} value={vendor.get('_id')}>
+										{vendor.get('vendorName')} ({vendor.getIn([ 'part', 'cdSName' ])},{' '}
+										{vendor.get('partNumber')})
+									</option>
+								))}
 							</Input>
 						</Col>
 
@@ -107,19 +109,22 @@ const DocumentAddModal = ({ vendors, parts, gbs, isOpen, onClose, onChange, onIn
 };
 
 DocumentAddModal.propTypes = {
-	vendors: PropTypes.arrayOf(PropTypes.string),
+	vendorList: PropTypes.object,
 	parts: PropTypes.object,
 	gbs: PropTypes.object,
 	isOpen: PropTypes.bool,
-	toggle: PropTypes.func,
+	onClose: PropTypes.func,
 	className: PropTypes.string
 };
 
 DocumentAddModal.defaultProps = {
-	vendors: [],
+	vendorList: [],
 	parts: {},
 	gbs: {},
-	isOpen: false
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onInsert: () => console.warn('Warning: onInsert is not defined')
 };
 
 export default DocumentAddModal;

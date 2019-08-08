@@ -17,7 +17,13 @@ export const deleteInOutDocument = ({ id, target }) =>
 
 /** Vendor */
 export const getVendors = ({ page }) => axios.get(`${real}/api/vendors?page=${page}`);
+export const getVendorsForSelect = () => axios.get(`${real}/api/vendors/forselect`);
+export const searchVendors = (page, param) => axios.post(`${real}/api/vendors/search?page=${page}`, { ...param });
+export const getVendor = ({ id }) => axios.get(`${real}/api/vendors/${id}`);
 export const addVendor = (vendor) => axios.post(`${real}/api/vendors`, { ...vendor });
+export const editVendor = ({ id, vendor }) => axios.patch(`${real}/api/vendors/${id}/edit`, { ...vendor });
+export const deleteVendor = ({ id }) => axios.patch(`${real}/api/vendors/${id}/delete`);
+export const addPerson = ({ id, persons }) => axios.post(`${real}/api/vendors/${id}/add`, { persons });
 
 /** Cmcode */
 export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${major}/minors`);

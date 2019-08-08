@@ -8,16 +8,34 @@ import * as vendorActions from 'store/modules/vendor';
 
 class VendorListContainer extends React.Component {
 	getVendors = async (page) => {
-		const { VendorActions, history } = this.props;
+		const { VendorActions, search, history, isSearch } = this.props;
 
-		await VendorActions.getVendors({ page: page });
+		if (isSearch) {
+			await VendorActions.searchVendors(page, search.toJS());
+		} else {
+			await VendorActions.getVendors({ page });
+		}
 		history.push(`/vendors?page=${page}`);
 	};
 
-	handleOpen = (name) => () => {
+	handleOpenAdd = () => {
 		const { ModalActions } = this.props;
 
-		ModalActions.open(name);
+		ModalActions.open('vendorAdd');
+	};
+
+	handleOpenPersonAdd = () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.open('vendorPersonAdd');
+	};
+
+	handleOpenDetail = (id) => async () => {
+		const { ModalActions, VendorActions } = this.props;
+
+		VendorActions.setTarget(id);
+
+		ModalActions.open('vendorDetail');
 	};
 
 	componentDidMount() {
@@ -33,7 +51,9 @@ class VendorListContainer extends React.Component {
 				lastPage={lastPage}
 				data={vendors}
 				onPage={this.getVendors}
-				onOpen={this.handleOpen}
+				onOpenAdd={this.handleOpenAdd}
+				onOpenPersonAdd={this.handleOpenPersonAdd}
+				onOpenDetail={this.handleOpenDetail}
 			/>
 		);
 	}
@@ -42,6 +62,8 @@ class VendorListContainer extends React.Component {
 export default connect(
 	(state) => ({
 		vendors: state.vendor.get('vendors'),
+		isSearch: state.vendor.getIn([ 'search', 'isSearch' ]),
+		search: state.vendor.get('search'),
 		lastPage: state.vendor.get('lastPage'),
 		loading: state.pender.pending['vendor/GET_VENDORS']
 	}),

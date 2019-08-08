@@ -1,9 +1,17 @@
 import React from 'react';
 import { Form, FormGroup, Label, Col, Input, InputGroup, InputGroupAddon, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const VendorSearchForm = ({ parts, search, onChange, onSearch }) => {
 	return (
-		<Form className="bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs">
+		<Form
+			className="bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs"
+			onSubmit={(e) => {
+				e.preventDefault();
+
+				onSearch();
+			}}
+		>
 			<FormGroup row>
 				<Label md={1} className="text-right">
 					Gb
@@ -87,7 +95,7 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch }) => {
 						</InputGroupAddon>
 						<Input defaultValue="~" className="bg-light" />
 						<InputGroupAddon addonType="append">
-							<Input type="date" name="effDtEnd" value={search.get('effEndDt')} onChange={onChange} />
+							<Input type="date" name="effEndDt" value={search.get('effEndDt')} onChange={onChange} />
 						</InputGroupAddon>
 					</InputGroup>
 				</Col>
@@ -107,6 +115,18 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch }) => {
 			</FormGroup>
 		</Form>
 	);
+};
+
+VendorSearchForm.propTypes = {
+	parts: PropTypes.object,
+	search: PropTypes.object,
+	onChange: PropTypes.func,
+	onSearch: PropTypes.func
+};
+
+VendorSearchForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onSearch: () => console.warn('Warning: onSearch is not defined')
 };
 
 export default VendorSearchForm;

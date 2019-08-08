@@ -13,19 +13,10 @@ import {
 	Input,
 	Col
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
-	const {
-		id,
-		vendor,
-		part,
-		documentGb,
-		documentTitle,
-		documentNumber,
-		documentRev,
-		officialNumber,
-		memo
-	} = data.toJS();
+const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
+	const { vendor, part, documentGb, documentTitle, documentNumber, documentRev, officialNumber, memo } = data.toJS();
 
 	return (
 		<Modal
@@ -46,10 +37,12 @@ const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit
 							<Label for="vendor">VENDOR</Label>
 							<Input type="select" name="vendor" value={vendor} onChange={onChange}>
 								<option value="">------ 업체를 선택해주세요. ------</option>
-								<option value="5d33ef877cceb91244d16fdd">바로</option>
-								<option value="5d33ef877cceb91244d16fdd">유니콘</option>
-								<option value="5d33ef877cceb91244d16fdd">신화전기</option>
-								<option value="5d33ef877cceb91244d16fdd">우아한형제</option>
+								{vendorList.map((vendor) => (
+									<option key={vendor.get('_id')} value={vendor.get('_id')}>
+										{vendor.get('vendorName')} ({vendor.getIn([ 'part', 'cdSName' ])},{' '}
+										{vendor.get('partNumber')})
+									</option>
+								))}
 							</Input>
 						</Col>
 
@@ -138,13 +131,31 @@ const DocumentEditModal = ({ data, parts, gbs, isOpen, onClose, onChange, onEdit
 				</Form>
 			</ModalBody>
 			<ModalFooter className="bg-light">
-				<Button color="primary" onClick={onEdit({ id })}>
+				<Button color="primary" onClick={onEdit}>
 					EDIT
 				</Button>
 				<Button onClick={onClose}>CANCEL</Button>
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentEditModal.propTypes = {
+	vendorList: PropTypes.object,
+	data: PropTypes.object,
+	parts: PropTypes.object,
+	gbs: PropTypes.object,
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onEdit: PropTypes.func
+};
+
+DocumentEditModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onEdit: () => console.warn('Warning: onEdit is not defined')
 };
 
 export default DocumentEditModal;

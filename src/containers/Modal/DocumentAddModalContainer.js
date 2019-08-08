@@ -2,15 +2,22 @@ import React from 'react';
 import DocumentAddModal from 'components/Modal/DocumentAddModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as documentActions from 'store/modules/document';
-import * as modalActions from 'store/modules/modal';
 import * as cmcodeActions from 'store/modules/cmcode';
+import * as modalActions from 'store/modules/modal';
+import * as documentActions from 'store/modules/document';
+import * as vendorActions from 'store/modules/vendor';
 
 class DocumentAddModalContainer extends React.Component {
-	getCmcodes = async (major) => {
+	getCmcodes = (major) => {
 		const { CmcodeActions } = this.props;
 
-		await CmcodeActions.getCmcodeByMajor({ major: major });
+		CmcodeActions.getCmcodeByMajor({ major: major });
+	};
+
+	getVendorList = () => {
+		const { VendorActions } = this.props;
+
+		VendorActions.getVendorsForSelect();
 	};
 
 	handleInsert = async () => {
@@ -37,16 +44,18 @@ class DocumentAddModalContainer extends React.Component {
 		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
 			this.getCmcodes('0001');
 			this.getCmcodes('0002');
+			this.getVendorList();
 		}
 	}
 
 	render() {
-		const { parts, gbs, isOpen } = this.props;
+		const { vendorList, parts, gbs, isOpen } = this.props;
 
-		if (!parts || !gbs) return null;
+		if (!parts || !gbs || !vendorList) return null;
 
 		return (
 			<DocumentAddModal
+				vendorList={vendorList}
 				parts={parts}
 				gbs={gbs}
 				isOpen={isOpen}
@@ -61,13 +70,15 @@ class DocumentAddModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		document: state.document.get('add'),
+		vendorList: state.vendor.get('vendorList'),
 		parts: state.cmcode.get('0001'),
 		gbs: state.cmcode.get('0002'),
 		isOpen: state.modal.get('documentAddModal')
 	}),
 	(dispatch) => ({
-		DocumentActions: bindActionCreators(documentActions, dispatch),
+		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
-		CmcodeActions: bindActionCreators(cmcodeActions, dispatch)
+		DocumentActions: bindActionCreators(documentActions, dispatch),
+		VendorActions: bindActionCreators(vendorActions, dispatch)
 	})
 )(DocumentAddModalContainer);

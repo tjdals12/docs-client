@@ -23,7 +23,7 @@ class VendorSearchFormContainer extends React.Component {
 	handleSearch = async () => {
 		const { VendorActions, search, history } = this.props;
 
-		console.log(search.toJS());
+		await VendorActions.searchVendors(1, search.toJS());
 		history.push('/vendors?page=1');
 	};
 

@@ -14,6 +14,7 @@ import {
 	Col
 } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
+import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import QuestionModal from 'components/Modal/QuestionModal';
 
@@ -33,6 +34,7 @@ const DocumentDetailModal = ({
 	onStatus,
 	onDeleteStatus,
 	onTarget,
+	onTargetVendor,
 	className,
 	...rest
 }) => {
@@ -82,7 +84,15 @@ const DocumentDetailModal = ({
 								업체 (공종)
 							</th>
 							<td>
-								{data.get('vendor')} ({data.getIn([ 'part', 'cdSName' ])})
+								<span
+									className="have-link"
+									onClick={() => {
+										onTargetVendor({ id: data.getIn([ 'vendor', '_id' ]) });
+										onOpen('vendorDetail')();
+									}}
+								>
+									{data.getIn([ 'vendor', 'vendorName' ])} ({data.getIn([ 'vendor', 'part', 'cdSName' ])})
+								</span>
 							</td>
 							<th scope="row" className="text-right bg-light">
 								구분
@@ -297,6 +307,41 @@ const DocumentDetailModal = ({
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentDetailModal.propTypes = {
+	codes: PropTypes.object,
+	date: PropTypes.object,
+	isOpen: PropTypes.bool,
+	isOpenQuestion: PropTypes.bool,
+	data: PropTypes.object,
+	reason: PropTypes.string,
+	onClose: PropTypes.func,
+	onHold: PropTypes.func,
+	onDelete: PropTypes.func,
+	onOpen: PropTypes.func,
+	onChange: PropTypes.func,
+	onDate: PropTypes.func,
+	onStatus: PropTypes.func,
+	onDeleteStatus: PropTypes.func,
+	onTarget: PropTypes.func,
+	onTargetVendor: PropTypes.func
+};
+
+DocumentDetailModal.defaultProps = {
+	isOpen: false,
+	isOpenQuestion: false,
+	reason: '',
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onHold: () => console.warn('Warning: onHold is not defined'),
+	onDelete: () => console.warn('Warning: onDelete is not defined'),
+	onOpen: () => console.warn('Warning: onOpen is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onDate: () => console.warn('Warning: onDate is not defined'),
+	onStatus: () => console.warn('Warning: onStatus is not defined'),
+	onDeleteStatus: () => console.warn('Warning: onDeleteStatus is not defined'),
+	onTarget: () => console.warn('Warning: onTarget is not defined'),
+	onTargetVendor: () => console.warn('Warning: onTargetVendor is not defined')
 };
 
 export default DocumentDetailModal;

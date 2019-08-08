@@ -1,5 +1,6 @@
 import React from 'react';
 import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
 	return (
@@ -124,7 +125,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
 					</Input>
 				</Col>
 				<Label md={1} for="delayGb" className="text-right">
-					Status
+					Delay
 				</Label>
 				<Col md={2}>
 					<Input
@@ -180,6 +181,19 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
 			</FormGroup>
 		</Form>
 	);
+};
+
+DocumentSearchForm.propTypes = {
+	gb: PropTypes.object,
+	status: PropTypes.object,
+	search: PropTypes.object,
+	onChange: PropTypes.func,
+	onSearch: PropTypes.func
+};
+
+DocumentSearchForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onSearch: () => console.warn('Warning: onSearch is not defined')
 };
 
 export default DocumentSearchForm;

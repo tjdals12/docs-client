@@ -12,11 +12,10 @@ class DocumentTableContainer extends React.Component {
 
 		if (isSearch) {
 			await DocumentActions.searchDocuments(page, search.toJS());
-			history.push(`/documents?page=${page}`);
 		} else {
 			await DocumentActions.getDocuments({ page });
-			history.push(`/documents?page=${page}`);
 		}
+		history.push(`/documents?page=${page}`);
 	};
 
 	getDocument = (id) => {
