@@ -44,6 +44,7 @@ const initialState = Map({
 		vendorGb: '',
 		countryCd: '',
 		vendorName: '',
+		itemName: '',
 		effStaDt: '',
 		effEndDt: '',
 		part: '',
@@ -55,6 +56,7 @@ const initialState = Map({
 		vendorGb: '',
 		countryCd: '',
 		vendorName: '',
+		itemName: '',
 		effStaDt: '',
 		effEndDt: '',
 		part: '',
@@ -126,6 +128,7 @@ export default handleActions(
 					.setIn([ 'edit', 'vendorGb' ], vendor.vendorGb === '계약' ? '01' : '02')
 					.setIn([ 'edit', 'countryCd' ], vendor.countryCd === '국내' ? '01' : '02')
 					.setIn([ 'edit', 'vendorName' ], vendor.vendorName)
+					.setIn([ 'edit', 'itemName' ], vendor.itemName)
 					.setIn([ 'edit', 'effStaDt' ], vendor.effStaDt)
 					.setIn([ 'edit', 'effEndDt' ], vendor.effEndDt)
 					.setIn([ 'edit', 'part' ], vendor.part._id)
@@ -151,6 +154,7 @@ export default handleActions(
 					.setIn([ 'edit', 'vendorGb' ], vendor.vendorGb === '계약' ? '01' : '02')
 					.setIn([ 'edit', 'countryCd' ], vendor.countryCd === '국내' ? '01' : '02')
 					.setIn([ 'edit', 'vendorName' ], vendor.vendorName)
+					.setIn([ 'edit', 'itemName' ], vendor.itemName)
 					.setIn([ 'edit', 'effStaDt' ], vendor.effStaDt)
 					.setIn([ 'edit', 'effEndDt' ], vendor.effEndDt)
 					.setIn([ 'edit', 'part' ], vendor.part._id)
@@ -174,6 +178,7 @@ export default handleActions(
 					.setIn([ 'edit', 'vendorGb' ], vendor.vendorGb === '계약' ? '01' : '02')
 					.setIn([ 'edit', 'countryCd' ], vendor.countryCd === '국내' ? '01' : '02')
 					.setIn([ 'edit', 'vendorName' ], vendor.vendorName)
+					.setIn([ 'edit', 'itemName' ], vendor.itemName)
 					.setIn([ 'edit', 'effStaDt' ], vendor.effStaDt)
 					.setIn([ 'edit', 'effEndDt' ], vendor.effEndDt)
 					.setIn([ 'edit', 'part' ], vendor.part._id)

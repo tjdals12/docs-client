@@ -60,7 +60,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 						</Col>
 					</FormGroup>
 					<FormGroup row>
-						<Col md={5}>
+						<Col md={4}>
 							<Label for="vendorName">업체명</Label>
 							<Input
 								type="text"
@@ -71,25 +71,16 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								defaultValue={data.get('vendorName')}
 							/>
 						</Col>
-						<Col md={7}>
-							<Label for="effDt">계약기간</Label>
-							<InputGroup id="effDt">
-								<Input
-									type="date"
-									name="effStaDt"
-									className="w-45 text-danger"
-									onChange={onChange}
-									value={data.get('effStaDt').substr(0, 10)}
-								/>
-								<Input defaultValue="~" className="bg-light w-10 text-center" />
-								<Input
-									type="date"
-									name="effEndDt"
-									className="w-45 text-danger"
-									onChange={onChange}
-									value={data.get('effEndDt').substr(0, 10)}
-								/>
-							</InputGroup>
+						<Col md={8}>
+							<Label for="itemName">Item명</Label>
+							<Input
+								type="text"
+								id="itemName"
+								name="itemName"
+								className="text-danger"
+								onChange={onChange}
+								defaultValue={data.get('itemName')}
+							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>
@@ -127,6 +118,28 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								onChange={onChange}
 								defaultValue={data.get('officialName')}
 							/>
+						</Col>
+					</FormGroup>
+					<FormGroup row>
+						<Col md={8}>
+							<Label for="effDt">계약기간</Label>
+							<InputGroup id="effDt">
+								<Input
+									type="date"
+									name="effStaDt"
+									className="w-45 text-danger"
+									onChange={onChange}
+									value={data.get('effStaDt').substr(0, 10)}
+								/>
+								<Input defaultValue="~" className="bg-light w-10 text-center" />
+								<Input
+									type="date"
+									name="effEndDt"
+									className="w-45 text-danger"
+									onChange={onChange}
+									value={data.get('effEndDt').substr(0, 10)}
+								/>
+							</InputGroup>
 						</Col>
 					</FormGroup>
 				</Form>

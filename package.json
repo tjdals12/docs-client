@@ -7,6 +7,7 @@
 		"bootstrap": "^4.3.1",
 		"immutable": "^4.0.0-rc.12",
 		"moment": "^2.24.0",
+		"node-sass": "^4.12.0",
 		"query-string": "^6.8.1",
 		"react": "^16.8.6",
 		"react-component-queries": "^2.3.0",
@@ -17,6 +18,7 @@
 		"react-scripts": "3.0.1",
 		"react-sizeme": "^2.6.7",
 		"reactstrap": "^8.0.1",
+		"recharts": "^1.7.1",
 		"redux": "^4.0.4",
 		"redux-actions": "^2.6.5",
 		"redux-pender": "^2.0.12"
@@ -31,7 +33,15 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
-		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	}
 }

@@ -47,17 +47,13 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 						</Col>
 					</FormGroup>
 					<FormGroup row>
-						<Col md={5}>
+						<Col md={4}>
 							<Label for="vendorName">업체명</Label>
 							<Input type="text" id="vendorName" name="vendorName" onChange={onChange} />
 						</Col>
-						<Col md={7}>
-							<Label for="effDt">계약기간</Label>
-							<InputGroup id="effDt">
-								<Input type="date" name="effStaDt" className="w-45" onChange={onChange} />
-								<Input defaultValue="~" className="bg-light w-10 text-center" />
-								<Input type="date" name="effEndDt" className="w-45" onChange={onChange} />
-							</InputGroup>
+						<Col md={8}>
+							<Label for="itemName">Item명</Label>
+							<Input type="text" id="itemName" name="itemName" onChange={onChange} />
 						</Col>
 					</FormGroup>
 					<FormGroup row>
@@ -91,6 +87,16 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 								placeholder="ex) MCU"
 								onChange={onChange}
 							/>
+						</Col>
+					</FormGroup>
+					<FormGroup row>
+						<Col md={8}>
+							<Label for="effDt">계약기간</Label>
+							<InputGroup id="effDt">
+								<Input type="date" name="effStaDt" className="w-45" onChange={onChange} />
+								<Input defaultValue="~" className="bg-light w-10 text-center" />
+								<Input type="date" name="effEndDt" className="w-45" onChange={onChange} />
+							</InputGroup>
 						</Col>
 					</FormGroup>
 				</Form>

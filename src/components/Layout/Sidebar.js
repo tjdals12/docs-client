@@ -1,7 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink as BSNavLink, Collapse } from 'reactstrap';
-import { MdDashboard, MdDescription, MdBusiness, MdKeyboardArrowDown, MdChevronRight } from 'react-icons/md';
+import {
+	MdDashboard,
+	MdDescription,
+	MdBusiness,
+	MdKeyboardArrowDown,
+	MdShowChart,
+	MdFormatListBulleted,
+	MdFindInPage
+} from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
 import sidebarBgImg from 'assets/img/sidebar/sidebar-9.jpg';
@@ -20,14 +28,14 @@ const navMenus = [
 	{ to: '/vendors', name: 'Vendors', exact: true, Icon: MdBusiness }
 ];
 
-const vendorMenus = [
-	{ to: '/vendors/overral', name: 'Overral', exact: true, Icon: MdChevronRight },
-	{ to: '/vendors/list', name: 'Vendor List', exact: true, Icon: MdChevronRight },
-	{ to: '/vendors/management', name: 'Management', exact: true, Icon: MdChevronRight }
+const indexMenus = [
+	{ to: '/indexes/overall', name: 'Overall', exact: true, Icon: MdShowChart },
+	{ to: '/indexes/documents', name: 'Documents', exact: true, Icon: MdFindInPage }
 ];
 
 class Sidebar extends React.Component {
 	state = {
+		isOpenIndexes: true,
 		isOpenVendors: true
 	};
 
@@ -71,24 +79,24 @@ class Sidebar extends React.Component {
 						))}
 
 						<NavItem className={bem.e('nav-item')}>
-							<BSNavLink className={bem.e('nav-collapse')} onClick={this.handleClick('Vendors')}>
+							<BSNavLink className={bem.e('nav-collapse')} onClick={this.handleClick('Indexes')}>
 								<div className="d-flex">
-									<MdBusiness className={bem.e('nav-item-icon')} />
-									<span>VENDORS</span>
+									<MdFormatListBulleted className={bem.e('nav-item-icon')} />
+									<span>INDEXES</span>
 								</div>
 								<MdKeyboardArrowDown
 									className={bem.e('nav-item-icon')}
 									style={{
 										padding: 0,
-										transform: this.state.isOpenVendors ? 'rotate(0deg)' : 'rotate(-90deg)',
+										transform: this.state.isOpenIndexes ? 'rotate(0deg)' : 'rotate(-90deg)',
 										transitionProperty: 'transform',
 										transitionDuration: '.2s'
 									}}
 								/>
 							</BSNavLink>
 						</NavItem>
-						<Collapse isOpen={this.state.isOpenVendors} className="pl-2">
-							{vendorMenus.map(({ to, name, exact, Icon }, index) => (
+						<Collapse isOpen={this.state.isOpenIndexes} className="pl-2">
+							{indexMenus.map(({ to, name, exact, Icon }, index) => (
 								<NavItem key={index} className={bem.e('nav-item')}>
 									<BSNavLink
 										id={`navItem-${name}-${index}`}

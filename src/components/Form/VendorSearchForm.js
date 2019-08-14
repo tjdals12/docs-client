@@ -40,7 +40,7 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch }) => {
 					<Input
 						type="text"
 						name="vendorName"
-						placeholder="업체명"
+						placeholder="ex) 한화건설"
 						value={search.get('vendorName')}
 						onChange={onChange}
 					/>
@@ -81,7 +81,7 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch }) => {
 						type="text"
 						name="partNumber"
 						value={search.get('partNumber')}
-						placeholder="R-001"
+						placeholder="ex) R-001"
 						onChange={onChange}
 					/>
 				</Col>
