@@ -15,6 +15,9 @@ const initialState = Map({
 	vendorDetailModal: false,
 	vendorEditModal: false,
 	vendorPersonAddModal: false,
+	documentIndexAddModal: false,
+	documentIndexEditModal: false,
+	documentInfoAddModal: false,
 	questionModal: false
 });
 

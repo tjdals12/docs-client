@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const real = 'http://192.168.7.9';
+// const real = 'http://192.168.7.9';
+const real = '';
 
 /** Document */
 export const getDocuments = ({ page }) => axios.get(`${real}/api/documents?page=${page}`);
@@ -30,3 +31,9 @@ export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${
 
 /** indexes */
 export const getIndexes = ({ page }) => axios.get(`${real}/api/documentindex?page=${page}`);
+export const getIndexesForSelect = () => axios.get(`${real}/api/documentindex/forselect`);
+export const getIndex = ({ id }) => axios.get(`${real}/api/documentindex/${id}`);
+export const addIndex = (param) => axios.post(`${real}/api/documentindex`, { ...param });
+export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindex/${id}/add`, { list });
+export const editIndex = (id, param) => axios.patch(`${real}/api/documentindex/${id}/edit`, { ...param });
+export const deleteIndex = ({ id }) => axios.patch(`${real}/api/documentindex/${id}/delete`);

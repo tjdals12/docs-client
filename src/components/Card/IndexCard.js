@@ -19,7 +19,7 @@ const fontStyle = {
 	fontFamily: 'Do Hyeon, sans-serif'
 };
 
-const IndexCard = ({ data, onDetail }) => {
+const IndexCard = ({ data, onDetail, onOpenQuestion, onTarget, onOpenEdit }) => {
 	return (
 		<Card className="mb-3">
 			<CardHeader className="bg-white">
@@ -60,8 +60,26 @@ const IndexCard = ({ data, onDetail }) => {
 					</Col>
 					<Col md={4} className="d-flex align-items-center justify-content-end">
 						<ButtonGroup className="mr-4">
-							<Button color="primary">EDIT</Button>
-							<Button color="danger">DELETE</Button>
+							<Button
+								color="primary"
+								onClick={() => {
+									onTarget(data.get('_id'));
+
+									onOpenEdit(data.get('_id'))();
+								}}
+							>
+								EDIT
+							</Button>
+							<Button
+								color="danger"
+								onClick={() => {
+									onTarget(data.get('_id'));
+
+									onOpenQuestion();
+								}}
+							>
+								DELETE
+							</Button>
 						</ButtonGroup>
 						<MdSearch size={25} onClick={onDetail} className="can-click hover" />
 					</Col>

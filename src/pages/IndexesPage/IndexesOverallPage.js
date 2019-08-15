@@ -3,6 +3,9 @@ import ScrollToTop from 'components/ScrollToTop';
 import Page from 'components/Page';
 import IndexesSearchFormContainer from 'containers/Form/IndexesSearchFormContainer';
 import IndexListContainer from 'containers/List/IndexListContainer';
+import DocumentIndexAddModalContainer from 'containers/Modal/DocumentIndexAddModalContainer';
+import DocumentIndexEditModalContainer from 'containers/Modal/DocumentIndexEditModalContainer';
+import DocumentInfoAddModalContainer from 'containers/Modal/DocumentInfoAddModalContainer';
 import queryString from 'query-string';
 
 class IndexesOverallPage extends React.Component {
@@ -17,6 +20,9 @@ class IndexesOverallPage extends React.Component {
 				>
 					<IndexesSearchFormContainer />
 					<IndexListContainer page={parseInt(page || 1, 10)} />
+					<DocumentIndexAddModalContainer />
+					<DocumentIndexEditModalContainer />
+					<DocumentInfoAddModalContainer />
 				</Page>
 			</ScrollToTop>
 		);

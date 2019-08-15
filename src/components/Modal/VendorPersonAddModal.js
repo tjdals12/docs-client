@@ -18,7 +18,14 @@ const VendorPersonAddModal = ({
 	...rest
 }) => {
 	return (
-		<Modal isOpen={isOpen} className={className} contentClassName="border-light rounded" {...rest} size="md">
+		<Modal
+			isOpen={isOpen}
+			toggle={onClose}
+			className={className}
+			contentClassName="border-light rounded"
+			{...rest}
+			size="md"
+		>
 			<ModalHeader toggle={onClose} className="bg-light">
 				Vendor Person 추가
 			</ModalHeader>
