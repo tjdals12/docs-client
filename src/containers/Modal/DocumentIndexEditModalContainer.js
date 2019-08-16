@@ -27,6 +27,19 @@ class DocumentIndexEditModalContainer extends React.Component {
 		IndexesActions.onChangeEdit({ name, value });
 	};
 
+	handleChangeInfo = (id) => (e) => {
+		const { IndexesActions } = this.props;
+		const { name, value } = e.target;
+
+		IndexesActions.onChangeEditInfo({ id, name, value });
+	};
+
+	handleChangeList = (id, type) => () => {
+		const { IndexesActions } = this.props;
+
+		IndexesActions.onChangeEditList({ id, type });
+	};
+
 	handleEdit = async () => {
 		const { IndexesActions, target, edit } = this.props;
 
@@ -71,6 +84,8 @@ class DocumentIndexEditModalContainer extends React.Component {
 				vendorList={vendorList}
 				isOpen={isOpen}
 				onChange={this.handleChange}
+				onChangeInfo={this.handleChangeInfo}
+				onChangeList={this.handleChangeList}
 				onClose={this.handleClose}
 				onExcelUpload={this.handleExcelUpload}
 				onEdit={this.handleEdit}

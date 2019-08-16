@@ -12,6 +12,8 @@ const EDIT_INDEX = 'indexes/EDIT_INDEX';
 const DELETE_INDEX = 'indexes/DELETE_INDEX';
 const ON_CHANGE = 'indexes/ON_CHANGE';
 const ON_CHANGE_EDIT = 'indexes/ON_CHANGE_EDIT';
+const ON_CHANGE_EDIT_INFO = 'indexes/ON_CHANGE_EDIT_INFO';
+const ON_CHANGE_EDIT_LIST = 'indexes/ON_CHANGE_EDIT_LIST';
 const ON_CHANGE_SEARCH = 'indexes/ON_CHANGE_SEARCH';
 const ON_CHANGE_INFO = 'indexes/ON_CHNAGE_INFO';
 const SET_TARGET = 'indexes/SET_TARGET';
@@ -28,6 +30,8 @@ export const editIndex = createAction(EDIT_INDEX, api.editIndex);
 export const deleteIndex = createAction(DELETE_INDEX, api.deleteIndex);
 export const onChange = createAction(ON_CHANGE);
 export const onChangeEdit = createAction(ON_CHANGE_EDIT);
+export const onChangeEditInfo = createAction(ON_CHANGE_EDIT_INFO);
+export const onChangeEditList = createAction(ON_CHANGE_EDIT_LIST);
 export const onChangeSearch = createAction(ON_CHANGE_SEARCH);
 export const onChangeInfo = createAction(ON_CHANGE_INFO);
 export const setTarget = createAction(SET_TARGET);
@@ -45,7 +49,8 @@ const initialState = Map({
 	}),
 	edit: Map({
 		vendor: '',
-		list: []
+		list: List(),
+		deleteList: List()
 	}),
 	search: Map({
 		part: '',
@@ -89,10 +94,18 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: index } = action.payload.data;
 
+				const list = [];
+				const deleteList = [];
+
+				index.list.forEach((document) => {
+					document.removeYn.yn === 'YES' ? deleteList.push(document) : list.push(document);
+				});
+
 				return state
 					.set('index', fromJS(index))
 					.setIn([ 'edit', 'vendor' ], index.vendor._id)
-					.setIn([ 'edit', 'list' ], index.list);
+					.setIn([ 'edit', 'list' ], fromJS(list))
+					.setIn([ 'edit', 'deleteList' ], fromJS(deleteList));
 			}
 		}),
 		...pender({
@@ -114,9 +127,7 @@ export default handleActions(
 		...pender({
 			type: EDIT_INDEX,
 			onSuccess: (state, action) => {
-				const { data: index } = action.payload.data;
-
-				return state.set('edit', initialState.get('edit')).set('indexe', fromJS(index));
+				return state.set('edit', initialState.get('edit'));
 			}
 		}),
 		...pender({
@@ -137,6 +148,45 @@ export default handleActions(
 			const { name, value } = action.payload;
 
 			return state.setIn([ 'edit', name ], value);
+		},
+		[ON_CHANGE_EDIT_INFO]: (state, action) => {
+			const { id, name, value } = action.payload;
+			const list = state.getIn([ 'edit', 'list' ]);
+
+			const target = list.findIndex((document) => document.get('_id') === id);
+
+			return state.setIn([ 'edit', 'list', target, name ], value);
+		},
+		[ON_CHANGE_EDIT_LIST]: (state, action) => {
+			const { id, type } = action.payload;
+			const list = state.getIn([ 'edit', 'list' ]);
+			const deleteList = state.getIn([ 'edit', 'deleteList' ]);
+
+			let target;
+			let index;
+
+			switch (type) {
+				case 'REMOVE':
+					index = list.findIndex((document) => document.get('_id') === id);
+					target = list.get(index);
+
+					return state
+						.setIn([ 'edit', 'list' ], list.splice(index, 1))
+						.setIn([ 'edit', 'deleteList' ], deleteList.push(target));
+				case 'RECOVERY':
+					index = deleteList.findIndex((document) => document.get('_id') === id);
+					target = deleteList.get(index);
+
+					console.log(index);
+					console.log(target);
+
+					return state
+						.setIn([ 'edit', 'deleteList' ], deleteList.splice(index, 1))
+						.setIn([ 'edit', 'list' ], list.push(target));
+
+				default:
+					return state;
+			}
 		},
 		[ON_CHANGE_SEARCH]: (state, action) => {
 			const { name, value } = action.payload;

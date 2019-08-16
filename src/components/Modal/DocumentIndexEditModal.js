@@ -12,6 +12,7 @@ import {
 	Input,
 	Table
 } from 'reactstrap';
+import { MdClose, MdKeyboardCapslock } from 'react-icons/md';
 
 const DocumentIndexAddModal = ({
 	data,
@@ -19,6 +20,8 @@ const DocumentIndexAddModal = ({
 	isOpen,
 	onClose,
 	onChange,
+	onChangeInfo,
+	onChangeList,
 	onExcelUpload,
 	onEdit,
 	className,
@@ -45,8 +48,8 @@ const DocumentIndexAddModal = ({
 								type="select"
 								id="vendor"
 								name="vendor"
-								value={data.get('vendor')}
 								onChange={onChange}
+								value={data.get('vendor')}
 							>
 								<option>--- 업체를 선택해주세요. ---</option>
 								{vendorList.map((vendor) => (
@@ -62,25 +65,28 @@ const DocumentIndexAddModal = ({
 						<Label for="list" md={2}>
 							문서목록
 						</Label>
-						<Col md={4}>
-							<Button className="custom-file-uploader">
-								<Input
-									type="file"
-									name="indexes"
-									onChange={(e) => {
-										onExcelUpload(e.target.files[0]);
-									}}
-								/>
-								Select a file
-							</Button>
-						</Col>
+						{data.get('list').size === 0 && (
+							<Col md={4}>
+								<Button className="custom-file-uploader">
+									<Input
+										type="file"
+										name="indexes"
+										onChange={(e) => {
+											onExcelUpload(e.target.files[0]);
+										}}
+									/>
+									Select a file
+								</Button>
+							</Col>
+						)}
 					</FormGroup>
-					<Table bordered striped>
+					<Table bordered striped className="mb-5">
 						<colgroup>
 							<col with="5%" />
-							<col width="40%" />
+							<col width="35%" />
 							<col width="40%" />
 							<col width="15%" />
+							<col width="5%" />
 						</colgroup>
 						<thead>
 							<tr style={{ background: '#e7f5ff' }}>
@@ -88,24 +94,113 @@ const DocumentIndexAddModal = ({
 								<th>Number</th>
 								<th>Title</th>
 								<th className="text-center">Plan</th>
+								<th />
 							</tr>
 						</thead>
 						<tbody>
-							{data.get('list').length === 0 ? (
+							{data.get('list').size === 0 ? (
 								<tr>
-									<td colSpan={4} className="text-center text-muted font-italic">
+									<td colSpan={5} className="text-center text-muted font-italic">
 										양식에 맞게 작성된 엑셀 파일을 선택해주세요.
 									</td>
 								</tr>
 							) : (
-								data.get('list').map((document, index) => (
-									<tr key={index}>
-										<td className="text-right">{index + 1}</td>
-										<td>{document.documentNumber}</td>
-										<td>{document.documentTitle}</td>
-										<td className="text-center">{document.plan.substr(0, 10)}</td>
-									</tr>
-								))
+								data.get('list').map((document, index) => {
+									const { _id = '', documentNumber, documentTitle, plan } = document.toJS();
+
+									return (
+										<tr key={index}>
+											<td className="text-right">{index + 1}</td>
+											<td>
+												<Input
+													type="text"
+													name="documentNumber"
+													value={documentNumber}
+													onChange={onChangeInfo(_id)}
+													bsSize="sm"
+												/>
+											</td>
+											<td>
+												<Input
+													type="text"
+													name="documentTitle"
+													value={documentTitle}
+													onChange={onChangeInfo(_id)}
+													bsSize="sm"
+												/>
+											</td>
+											<td className="text-center">
+												<Input
+													type="date"
+													name="plan"
+													value={plan.substr(0, 10)}
+													onChange={onChangeInfo(_id)}
+													bsSize="sm"
+												/>
+											</td>
+											<td className="text-center">
+												<MdClose
+													size={20}
+													className="text-danger can-click"
+													onClick={onChangeList(_id, 'REMOVE')}
+												/>
+											</td>
+										</tr>
+									);
+								})
+							)}
+						</tbody>
+					</Table>
+
+					<FormGroup row>
+						<Label for="deleteList" md={2}>
+							삭제된 문서목록
+						</Label>
+					</FormGroup>
+					<Table bordered striped>
+						<colgroup>
+							<col with="5%" />
+							<col width="35%" />
+							<col width="40%" />
+							<col width="15%" />
+							<col width="5%" />
+						</colgroup>
+						<thead>
+							<tr style={{ background: '#ffe3e3' }}>
+								<th>#</th>
+								<th>Number</th>
+								<th>Title</th>
+								<th className="text-center">Plan</th>
+								<th />
+							</tr>
+						</thead>
+						<tbody>
+							{data.get('deleteList').size === 0 ? (
+								<tr>
+									<td colSpan={5} className="text-center text-muted font-italic">
+										삭제된 문서가 없습니다.
+									</td>
+								</tr>
+							) : (
+								data.get('deleteList').map((document, index) => {
+									const { _id = '', documentNumber, documentTitle, plan } = document.toJS();
+
+									return (
+										<tr key={index}>
+											<td>{index + 1}</td>
+											<td>{documentNumber}</td>
+											<td>{documentTitle}</td>
+											<td>{plan.substr(0, 10).replace(/-/g, '. ')}</td>
+											<td className="text-center">
+												<MdKeyboardCapslock
+													size={20}
+													className="text-danger can-click"
+													onClick={onChangeList(_id, 'RECOVERY')}
+												/>
+											</td>
+										</tr>
+									);
+								})
 							)}
 						</tbody>
 					</Table>
