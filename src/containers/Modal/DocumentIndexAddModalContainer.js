@@ -24,7 +24,7 @@ class DocumentIndexAddModalContainer extends React.Component {
 		const { IndexesActions } = this.props;
 		const { name, value } = e.target;
 
-		IndexesActions.onChange({ name, value });
+		IndexesActions.onChange({ target: 'add', name, value });
 	};
 
 	handleExcelUpload = async (file) => {
@@ -41,6 +41,7 @@ class DocumentIndexAddModalContainer extends React.Component {
 			config: { headers: { 'Content-Type': 'multipart/form-data' } }
 		}).then((response) => {
 			IndexesActions.onChange({
+				target: 'add',
 				name: 'list',
 				value: response.data.data
 			});

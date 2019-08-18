@@ -1,5 +1,6 @@
 import React from 'react';
 import IndexesSearchForm from 'components/Form/IndexesSearchForm';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as cmcodeActions from 'store/modules/cmcode';
@@ -16,7 +17,18 @@ class IndexesSearchFormContainer extends React.Component {
 		const { IndexesActions } = this.props;
 		const { name, value } = e.target;
 
-		IndexesActions.onChangeSearch({ name, value });
+		IndexesActions.onChange({
+			target: 'search',
+			name,
+			value
+		});
+	};
+
+	handleSearch = async () => {
+		const { IndexesActions, search, history } = this.props;
+
+		await IndexesActions.searchIndexes(1, search.toJS());
+		history.push('/indexes/overall?page=1');
 	};
 
 	componentDidMount() {
@@ -28,7 +40,14 @@ class IndexesSearchFormContainer extends React.Component {
 
 		if (!parts) return null;
 
-		return <IndexesSearchForm parts={parts} search={search} onChange={this.handleChange} />;
+		return (
+			<IndexesSearchForm
+				parts={parts}
+				search={search}
+				onChange={this.handleChange}
+				onSearch={this.handleSearch}
+			/>
+		);
 	}
 }
 
@@ -41,4 +60,4 @@ export default connect(
 		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		IndexesActions: bindActionCreators(indexesActions, dispatch)
 	})
-)(IndexesSearchFormContainer);
+)(withRouter(IndexesSearchFormContainer));

@@ -24,7 +24,7 @@ class DocumentIndexEditModalContainer extends React.Component {
 		const { IndexesActions } = this.props;
 		const { name, value } = e.target;
 
-		IndexesActions.onChangeEdit({ name, value });
+		IndexesActions.onChange({ target: 'edit', name, value });
 	};
 
 	handleChangeInfo = (id) => (e) => {
@@ -60,7 +60,8 @@ class DocumentIndexEditModalContainer extends React.Component {
 			data: formData,
 			config: { headers: { 'Content-Type': 'multipart/form-data' } }
 		}).then((response) => {
-			IndexesActions.onChangeEdit({
+			IndexesActions.onChange({
+				target: 'edit',
 				name: 'list',
 				value: response.data.data
 			});

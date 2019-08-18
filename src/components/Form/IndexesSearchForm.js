@@ -1,9 +1,21 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Form, FormGroup, Col, Label, Input, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-const IndexesSearchForm = ({ parts, search, onChange }) => {
+const IndexesSearchForm = ({ parts, search, onChange, onSearch, className, ...rest }) => {
+	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
+
 	return (
-		<Form className="bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs">
+		<Form
+			className={classes}
+			{...rest}
+			onSubmit={(e) => {
+				e.preventDefault();
+
+				onSearch();
+			}}
+		>
 			<FormGroup row>
 				<Label md={1} className="text-right">
 					공종명
@@ -57,13 +69,26 @@ const IndexesSearchForm = ({ parts, search, onChange }) => {
 			</FormGroup>
 			<FormGroup row className="mb-0">
 				<Col md={{ size: 3, offset: 9 }}>
-					<Button color="primary" className="w-100">
+					<Button color="primary" className="w-100" onClick={onSearch}>
 						SEARCH
 					</Button>
 				</Col>
 			</FormGroup>
 		</Form>
 	);
+};
+
+IndexesSearchForm.propTypes = {
+	parts: PropTypes.object,
+	search: PropTypes.object,
+	onChange: PropTypes.func,
+	onSearch: PropTypes.func,
+	className: PropTypes.string
+};
+
+IndexesSearchForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onSearch: () => console.warn('Warning: onSearch is not defined')
 };
 
 export default IndexesSearchForm;

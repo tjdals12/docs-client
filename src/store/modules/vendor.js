@@ -187,19 +187,9 @@ export default handleActions(
 			}
 		}),
 		[ON_CHANGE]: (state, action) => {
-			const { name, value } = action.payload;
+			const { target, name, value } = action.payload;
 
-			return state.setIn([ 'add', name ], value);
-		},
-		[ON_CHANGE_EDIT]: (state, action) => {
-			const { name, value } = action.payload;
-
-			return state.setIn([ 'edit', name ], value);
-		},
-		[ON_CHANGE_SEARCH]: (state, action) => {
-			const { name, value } = action.payload;
-
-			return state.setIn([ 'search', name ], value);
+			return !target ? state.set(name, value) : state.setIn([ target, name ], value);
 		},
 		[ON_CHANGE_PERSON]: (state, action) => {
 			const { index, name, value } = action.payload;

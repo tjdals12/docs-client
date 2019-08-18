@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Label, Input, Form, FormGroup, Col } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 const VendorPersonAddForm = ({ onChange, onDelete, className, ...rest }) => {
 	const classes = classNames('mb-2 p-4 border rounded bg-light position-relative', className);
@@ -53,6 +54,17 @@ const VendorPersonAddForm = ({ onChange, onDelete, className, ...rest }) => {
 			</FormGroup>
 		</Form>
 	);
+};
+
+VendorPersonAddForm.propTypes = {
+	onChange: PropTypes.func,
+	onDelete: PropTypes.func,
+	className: PropTypes.string
+};
+
+VendorPersonAddForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onDelete: () => console.warn('Warning: onDelete is not defined')
 };
 
 export default VendorPersonAddForm;

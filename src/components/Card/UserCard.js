@@ -5,7 +5,7 @@ import Avatar from 'components/Avatar';
 import PropTypes from 'prop-types';
 
 const UserCard = ({ avatar, avatarSize, title, subtitle, text, children, className, ...restProps }) => {
-	const classes = classNames('bg-gradient-theme', 'border-0', className);
+	const classes = classNames('bg-gradient-theme border-0 w-100 h-100', className);
 
 	return (
 		<Card inverse className={classes} {...restProps}>
@@ -13,9 +13,7 @@ const UserCard = ({ avatar, avatarSize, title, subtitle, text, children, classNa
 				<Avatar src={avatar} size={avatarSize} alt="Avatar" />
 				<CardTitle>{title}</CardTitle>
 				<CardSubtitle>{subtitle}</CardSubtitle>
-				<CardText>
-					<small>{subtitle}</small>
-				</CardText>
+				<CardText>{text}</CardText>
 			</CardBody>
 			{children}
 		</Card>

@@ -25,7 +25,7 @@ class VendorEditModalContainer extends React.Component {
 		const { VendorActions } = this.props;
 		const { name, value } = e.target;
 
-		VendorActions.onChangeEdit({ name, value });
+		VendorActions.onChange({ target: 'edit', name, value });
 	};
 
 	handleClose = (name) => () => {

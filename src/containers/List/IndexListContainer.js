@@ -8,9 +8,15 @@ import * as indexesActions from 'store/modules/indexes';
 
 class IndexListContainer extends React.Component {
 	getIndexes = async (page) => {
-		const { IndexesActions } = this.props;
+		const { IndexesActions, search, history, isSearch } = this.props;
 
-		await IndexesActions.getIndexes({ page });
+		if (isSearch) {
+			await IndexesActions.searchIndexes(page, search.toJS());
+		} else {
+			await IndexesActions.getIndexes({ page });
+		}
+
+		history.push(`/indexes/overall?page=${page}`);
 	};
 
 	handleOpenAdd = () => {
@@ -50,9 +56,9 @@ class IndexListContainer extends React.Component {
 		IndexesActions.setTarget(id);
 	};
 
-	handleDetailPage = () => {
+	handleDetailPage = (id) => () => {
 		const { history } = this.props;
-		history.push('/documents?page=1');
+		history.push(`/indexes/detail?id=${id}`);
 	};
 
 	handleDeleteIndex = async () => {
@@ -66,21 +72,15 @@ class IndexListContainer extends React.Component {
 		this.getIndexes(1);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (nextProps.indexes.toJS() !== this.props.indexes.toJS()) {
-			return true;
-		}
-
-		return false;
-	}
-
 	render() {
-		const { isOpenQuestion, indexes, loading } = this.props;
+		const { isOpenQuestion, page, lastPage, indexes, loading } = this.props;
 
 		if (loading) return null;
 
 		return (
 			<IndexList
+				page={page}
+				lastPage={lastPage}
 				data={indexes}
 				isOpenQuestion={isOpenQuestion}
 				onOpenQuestion={this.handleOpenQuestion}
@@ -91,6 +91,7 @@ class IndexListContainer extends React.Component {
 				onDeleteIndex={this.handleDeleteIndex}
 				onOpenEdit={this.handleOpenEdit}
 				onOpenInfoAdd={this.handleOpenInfoAdd}
+				onPage={this.getIndexes}
 			/>
 		);
 	}
@@ -98,9 +99,12 @@ class IndexListContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		lastPage: state.indexes.get('lastPage'),
 		isOpenQuestion: state.modal.get('questionModal'),
 		indexes: state.indexes.get('indexes'),
 		target: state.indexes.get('target'),
+		isSearch: state.indexes.getIn([ 'search', 'isSearch' ]),
+		search: state.indexes.get('search'),
 		loading: state.pender.pending['indexes/GET_INDEXES']
 	}),
 	(dispatch) => ({

@@ -12,6 +12,7 @@ import {
 	InputGroup,
 	Col
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
 	return (
@@ -111,6 +112,22 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+VendorAddModal.propTypes = {
+	parts: PropTypes.object,
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onInsert: PropTypes.func,
+	className: PropTypes.string
+};
+
+VendorAddModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not definec'),
+	onChange: () => console.warn('Warning: onChange is not definec'),
+	onInsert: () => console.warn('Warning: onInsert is not definec')
 };
 
 export default VendorAddModal;

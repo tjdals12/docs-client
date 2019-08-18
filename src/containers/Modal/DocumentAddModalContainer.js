@@ -31,7 +31,7 @@ class DocumentAddModalContainer extends React.Component {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
 
-		DocumentActions.onChange({ name, value });
+		DocumentActions.onChange({ target: 'add', name, value });
 	};
 
 	handleClose = () => {

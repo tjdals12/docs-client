@@ -148,7 +148,8 @@ DocumentEditModal.propTypes = {
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,
-	onEdit: PropTypes.func
+	onEdit: PropTypes.func,
+	className: PropTypes.string
 };
 
 DocumentEditModal.defaultProps = {

@@ -66,14 +66,7 @@ const VendorDetailModal = ({
 							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
 								업체명
 							</th>
-							<td
-								rowSpan="2"
-								style={{
-									fontSize: '1.2rem',
-									fontFamily: 'Do Hyeon, sans-serif',
-									letterSpacing: '0.2rem'
-								}}
-							>
+							<td className="title-font" rowSpan="2">
 								{data.get('vendorName')}
 							</td>
 							<th scope="row" className="text-right bg-light">

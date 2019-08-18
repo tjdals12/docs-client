@@ -32,7 +32,7 @@ class DocumentEditModalContainer extends React.Component {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
 
-		DocumentActions.onChangeEdit({ name, value });
+		DocumentActions.onChange({ target: 'edit', name, value });
 	};
 
 	handleClose = () => {

@@ -59,7 +59,7 @@ class DocumentTableContainer extends React.Component {
 		const { DocumentActions, documents } = this.props;
 		const { checked } = e.target;
 
-		documents.map((document) => {
+		documents.forEach((document) => {
 			DocumentActions.setCheckedList({ checked: checked, value: document.get('_id') });
 		});
 	};
@@ -91,11 +91,11 @@ class DocumentTableContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		lastPage: state.document.get('lastPage'),
 		documents: state.document.get('documents'),
 		checkedList: state.document.get('checkedList'),
 		isSearch: state.document.getIn([ 'search', 'isSearch' ]),
 		search: state.document.get('search'),
-		lastPage: state.document.get('lastPage'),
 		loading: state.pender.pending['document/GET_DOCUMENTS']
 	}),
 	(dispatch) => ({

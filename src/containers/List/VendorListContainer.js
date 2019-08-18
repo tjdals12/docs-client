@@ -43,7 +43,9 @@ class VendorListContainer extends React.Component {
 	}
 
 	render() {
-		const { vendors, lastPage, page } = this.props;
+		const { vendors, lastPage, page, loading } = this.props;
+
+		if (loading) return null;
 
 		return (
 			<VendorList

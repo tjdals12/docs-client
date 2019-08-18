@@ -23,7 +23,7 @@ class VendorAddModalContainer extends React.Component {
 		const { VendorActions } = this.props;
 		const { name, value } = e.target;
 
-		VendorActions.onChange({ name, value });
+		VendorActions.onChange({ target: 'add', name, value });
 	};
 
 	handleInsert = async () => {

@@ -60,13 +60,13 @@ class DocumentDetailModalContainer extends React.Component {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
 
-		DocumentActions.onChangeOther({ name, value });
+		DocumentActions.onChange({ name, value });
 	};
 
 	handleDate = (date) => {
 		const { DocumentActions } = this.props;
 
-		DocumentActions.onChangeOther({ name: 'date', value: date });
+		DocumentActions.onChange({ name: 'date', value: date });
 	};
 
 	handleStatus = ({ id }) => async () => {

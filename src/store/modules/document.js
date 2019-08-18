@@ -115,7 +115,7 @@ export default handleActions(
 
 				return state
 					.set('document', fromJS(document))
-					.setIn([ 'edit', 'vendor' ], document.vendor)
+					.setIn([ 'edit', 'vendor' ], document.vendor._id)
 					.setIn([ 'edit', 'part' ], document.part._id)
 					.setIn([ 'edit', 'documentTitle' ], document.documentTitle)
 					.setIn([ 'edit', 'documentNumber' ], document.documentNumber)
@@ -184,25 +184,11 @@ export default handleActions(
 			}
 		}),
 		[ON_CHANGE]: (state, action) => {
-			const { name, value } = action.payload;
+			const { target, name, value } = action.payload;
 
-			return state.setIn([ 'add', name ], value);
+			return !target ? state.set(name, value) : state.setIn([ target, name ], value);
 		},
-		[ON_CHANGE_EDIT]: (state, action) => {
-			const { name, value } = action.payload;
 
-			return state.setIn([ 'edit', name ], value);
-		},
-		[ON_CHANGE_OTHER]: (state, action) => {
-			const { name, value } = action.payload;
-
-			return state.set(name, value);
-		},
-		[ON_CHANGE_SEARCH]: (state, action) => {
-			const { name, value } = action.payload;
-
-			return state.setIn([ 'search', name ], value);
-		},
 		[SET_TARGET]: (state, action) => {
 			const { payload } = action;
 

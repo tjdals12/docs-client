@@ -32,6 +32,7 @@ export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${
 /** indexes */
 export const getIndexes = ({ page }) => axios.get(`${real}/api/documentindex?page=${page}`);
 export const getIndexesForSelect = () => axios.get(`${real}/api/documentindex/forselect`);
+export const searchIndexes = (page, param) => axios.post(`/api/documentindex/search?page=${page}`, { ...param });
 export const getIndex = ({ id }) => axios.get(`${real}/api/documentindex/${id}`);
 export const addIndex = (param) => axios.post(`${real}/api/documentindex`, { ...param });
 export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindex/${id}/add`, { list });

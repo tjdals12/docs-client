@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
 import { TiPlus, TiMinus } from 'react-icons/ti';
+import PropTypes from 'prop-types';
 
 const DocumentInfoAddModal = ({
 	vendorList,
@@ -146,6 +147,31 @@ const DocumentInfoAddModal = ({
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentInfoAddModal.propTypes = {
+	vendorList: PropTypes.object,
+	infos: PropTypes.object,
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onTarget: PropTypes.func,
+	onChange: PropTypes.func,
+	onExcelUpload: PropTypes.func,
+	onAddInfoForm: PropTypes.func,
+	onDeleteInfoForm: PropTypes.func,
+	onAddInfo: PropTypes.func,
+	className: PropTypes.string
+};
+
+DocumentInfoAddModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onTarget: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onClose is not defined'),
+	onExcelUpload: () => console.warn('Warning: onClose is not defined'),
+	onAddInfoForm: () => console.warn('Warning: onClose is not defined'),
+	onDeleteInfoForm: () => console.warn('Warning: onClose is not defined'),
+	onAddInfo: () => console.warn('Warning: onClose is not defined')
 };
 
 export default DocumentInfoAddModal;

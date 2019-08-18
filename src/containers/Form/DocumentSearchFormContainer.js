@@ -17,7 +17,7 @@ class DocumentSearchFormContainer extends React.Component {
 		const { DocumentActions } = this.props;
 		const { name, value } = e.target;
 
-		DocumentActions.onChangeSearch({ name, value });
+		DocumentActions.onChange({ target: 'search', name, value });
 	};
 
 	handleSearch = async () => {

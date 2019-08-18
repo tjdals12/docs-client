@@ -12,6 +12,7 @@ import {
 	Input,
 	Table
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const DocumentIndexAddModal = ({
 	data,
@@ -92,14 +93,18 @@ const DocumentIndexAddModal = ({
 									</td>
 								</tr>
 							) : (
-								data.get('list').map((document, index) => (
-									<tr key={index}>
-										<td className="text-right">{index + 1}</td>
-										<td>{document.documentNumber}</td>
-										<td>{document.documentTitle}</td>
-										<td className="text-center">{document.plan.substr(0, 10)}</td>
-									</tr>
-								))
+								data.get('list').map((document, index) => {
+									const { documentNumber, documentTitle, plan } = document.toJS();
+
+									return (
+										<tr key={index}>
+											<td className="text-right">{index + 1}</td>
+											<td>{documentNumber}</td>
+											<td>{documentTitle}</td>
+											<td className="text-center">{plan.substr(0, 10)}</td>
+										</tr>
+									);
+								})
 							)}
 						</tbody>
 					</Table>
@@ -115,6 +120,25 @@ const DocumentIndexAddModal = ({
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentIndexAddModal.propTyps = {
+	data: PropTypes.object,
+	vendorList: PropTypes.object,
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onExcelUpload: PropTypes.func,
+	onInsert: PropTypes.func,
+	className: PropTypes.string
+};
+
+DocumentIndexAddModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onExcelUpload: () => console.warn('Warning: onExcelUpload is not defined'),
+	onInsert: () => console.warn('Warning: onInsert is not defined')
 };
 
 export default DocumentIndexAddModal;

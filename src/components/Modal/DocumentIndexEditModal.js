@@ -13,6 +13,7 @@ import {
 	Table
 } from 'reactstrap';
 import { MdClose, MdKeyboardCapslock } from 'react-icons/md';
+import PropTypes from 'prop-types';
 
 const DocumentIndexAddModal = ({
 	data,
@@ -142,7 +143,13 @@ const DocumentIndexAddModal = ({
 												<MdClose
 													size={20}
 													className="text-danger can-click"
-													onClick={onChangeList(_id, 'REMOVE')}
+													onClick={
+														_id === '' ? (
+															onChangeList(index, 'DELETE')
+														) : (
+															onChangeList(_id, 'REMOVE')
+														)
+													}
 												/>
 											</td>
 										</tr>
@@ -216,6 +223,29 @@ const DocumentIndexAddModal = ({
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentIndexAddModal.propTypes = {
+	data: PropTypes.object,
+	vendorList: PropTypes.object,
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onChangeInfo: PropTypes.func,
+	onChangeList: PropTypes.func,
+	onExcelUpload: PropTypes.func,
+	onEdit: PropTypes.func,
+	className: PropTypes.string
+};
+
+DocumentIndexAddModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onChangeInfo: () => console.warn('Warning: onChangeInfo is not defined'),
+	onChangeList: () => console.warn('Warning: onChangeList is not defined'),
+	onExcelUpload: () => console.warn('Warning: onExcelUpload is not defined'),
+	onEdit: () => console.warn('Warning: onEdit is not defined')
 };
 
 export default DocumentIndexAddModal;

@@ -5,6 +5,7 @@ import * as api from 'lib/api';
 
 const GET_INDEXES = 'indexes/GET_INDEXES';
 const GET_INDEXES_FOR_SELECT = 'indexes/GET_INDEXES_FOR_SELECT';
+const SEARCH_INDEXES = 'indexes/SEARCH_INDEXES';
 const GET_INDEX = 'indexes/GET_INDEX';
 const ADD_INDEX = 'indexes/ADD_INDEX';
 const ADD_PARTIAL = 'indexes/ADD_PARTIAL';
@@ -23,6 +24,7 @@ const ADD_INFO_BY_EXCEL = 'indexes/ADD_INFO_BY_EXCEL';
 
 export const getIndexes = createAction(GET_INDEXES, api.getIndexes);
 export const getIndexesForSelect = createAction(GET_INDEXES_FOR_SELECT, api.getIndexesForSelect);
+export const searchIndexes = createAction(SEARCH_INDEXES, api.searchIndexes);
 export const getIndex = createAction(GET_INDEX, api.getIndex);
 export const addIndex = createAction(ADD_INDEX, api.addIndex);
 export const addPartial = createAction(ADD_PARTIAL, api.addPartial);
@@ -56,7 +58,8 @@ const initialState = Map({
 		part: '',
 		partNumber: '',
 		vendorName: '',
-		officialName: ''
+		officialName: '',
+		isSearch: false
 	}),
 	infos: List([
 		Map({
@@ -87,6 +90,18 @@ export default handleActions(
 				const { data: vendorList } = action.payload.data;
 
 				return state.set('vendorList', fromJS(vendorList));
+			}
+		}),
+		...pender({
+			type: SEARCH_INDEXES,
+			onSuccess: (state, action) => {
+				const { data: indexes } = action.payload.data;
+				const lastPage = action.payload.headers['last-page'];
+
+				return state
+					.set('indexes', fromJS(indexes))
+					.set('lastPage', parseInt(lastPage, 10))
+					.setIn([ 'search', 'isSearch' ], true);
 			}
 		}),
 		...pender({
@@ -140,14 +155,16 @@ export default handleActions(
 			}
 		}),
 		[ON_CHANGE]: (state, action) => {
-			const { name, value } = action.payload;
+			const { target, name, value } = action.payload;
 
-			return state.setIn([ 'add', name ], value);
+			return !target ? state.set(name, fromJS(value)) : state.setIn([ target, name ], fromJS(value));
 		},
-		[ON_CHANGE_EDIT]: (state, action) => {
-			const { name, value } = action.payload;
+		[ON_CHANGE_INFO]: (state, action) => {
+			const { index, name, value } = action.payload;
+			const infos = state.get('infos');
+			const target = infos.findIndex((info) => info.get('index') === index);
 
-			return state.setIn([ 'edit', name ], value);
+			return state.setIn([ 'infos', target, name ], value);
 		},
 		[ON_CHANGE_EDIT_INFO]: (state, action) => {
 			const { id, name, value } = action.payload;
@@ -177,28 +194,18 @@ export default handleActions(
 					index = deleteList.findIndex((document) => document.get('_id') === id);
 					target = deleteList.get(index);
 
-					console.log(index);
-					console.log(target);
-
 					return state
 						.setIn([ 'edit', 'deleteList' ], deleteList.splice(index, 1))
 						.setIn([ 'edit', 'list' ], list.push(target));
 
+				case 'DELETE':
+					console.log('DELETE 진입');
+
+					return state.setIn([ 'edit', 'list' ], list.splice(id, 1));
+
 				default:
 					return state;
 			}
-		},
-		[ON_CHANGE_SEARCH]: (state, action) => {
-			const { name, value } = action.payload;
-
-			return state.setIn([ 'search', name ], value);
-		},
-		[ON_CHANGE_INFO]: (state, action) => {
-			const { index, name, value } = action.payload;
-			const infos = state.get('infos');
-			const target = infos.findIndex((info) => info.get('index') === index);
-
-			return state.setIn([ 'infos', target, name ], value);
 		},
 		[SET_TARGET]: (state, action) => {
 			const { payload } = action;

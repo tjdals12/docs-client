@@ -17,7 +17,7 @@ class VendorSearchFormContainer extends React.Component {
 		const { VendorActions } = this.props;
 		const { name, value } = e.target;
 
-		VendorActions.onChangeSearch({ name, value });
+		VendorActions.onChange({ target: 'search', name, value });
 	};
 
 	handleSearch = async () => {
