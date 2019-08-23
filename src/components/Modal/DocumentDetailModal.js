@@ -67,7 +67,7 @@ const DocumentDetailModal = ({
 			<ModalHeader toggle={onClose('documentDetail')} className="bg-light">
 				Document 상세{' '}
 				<span className="text-primary">
-					({data.get('documentNumber')}_{data.get('documentTitle')}_{data.get('documentRev')})
+					({data.get('documentNumber')}_{data.get('documentTitle')}_Rev.{data.get('documentRev')})
 				</span>
 			</ModalHeader>
 			<ModalBody className="p-0">

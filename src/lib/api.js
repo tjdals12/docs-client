@@ -34,6 +34,7 @@ export const getIndexes = ({ page }) => axios.get(`${real}/api/documentindex?pag
 export const getIndexesForSelect = () => axios.get(`${real}/api/documentindex/forselect`);
 export const searchIndexes = (page, param) => axios.post(`/api/documentindex/search?page=${page}`, { ...param });
 export const getIndex = ({ id }) => axios.get(`${real}/api/documentindex/${id}`);
+export const getIndexDetail = ({ id }) => axios.get(`${real}/api/documentindex/${id}/detail`);
 export const addIndex = (param) => axios.post(`${real}/api/documentindex`, { ...param });
 export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindex/${id}/add`, { list });
 export const editIndex = (id, param) => axios.patch(`${real}/api/documentindex/${id}/edit`, { ...param });

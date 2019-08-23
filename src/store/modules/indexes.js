@@ -7,6 +7,7 @@ const GET_INDEXES = 'indexes/GET_INDEXES';
 const GET_INDEXES_FOR_SELECT = 'indexes/GET_INDEXES_FOR_SELECT';
 const SEARCH_INDEXES = 'indexes/SEARCH_INDEXES';
 const GET_INDEX = 'indexes/GET_INDEX';
+const GET_INDEX_DETAIL = 'indexes/GET_INDEX_DETAIL';
 const ADD_INDEX = 'indexes/ADD_INDEX';
 const ADD_PARTIAL = 'indexes/ADD_PARTIAL';
 const EDIT_INDEX = 'indexes/EDIT_INDEX';
@@ -26,6 +27,7 @@ export const getIndexes = createAction(GET_INDEXES, api.getIndexes);
 export const getIndexesForSelect = createAction(GET_INDEXES_FOR_SELECT, api.getIndexesForSelect);
 export const searchIndexes = createAction(SEARCH_INDEXES, api.searchIndexes);
 export const getIndex = createAction(GET_INDEX, api.getIndex);
+export const getIndexDetail = createAction(GET_INDEX_DETAIL, api.getIndexDetail);
 export const addIndex = createAction(ADD_INDEX, api.addIndex);
 export const addPartial = createAction(ADD_PARTIAL, api.addPartial);
 export const editIndex = createAction(EDIT_INDEX, api.editIndex);
@@ -45,6 +47,7 @@ const initialState = Map({
 	indexes: List(),
 	vendorList: List(),
 	index: Map(),
+	indexDetail: Map(),
 	add: Map({
 		vendor: '',
 		list: []
@@ -121,6 +124,14 @@ export default handleActions(
 					.setIn([ 'edit', 'vendor' ], index.vendor._id)
 					.setIn([ 'edit', 'list' ], fromJS(list))
 					.setIn([ 'edit', 'deleteList' ], fromJS(deleteList));
+			}
+		}),
+		...pender({
+			type: GET_INDEX_DETAIL,
+			onSuccess: (state, action) => {
+				const { data: indexDetail } = action.payload.data;
+
+				return state.set('indexDetail', fromJS(indexDetail));
 			}
 		}),
 		...pender({
