@@ -1,16 +1,20 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DocumentSearchForm = ({ gb, status, search, onChange, onSearch }) => {
+const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className, ...rest }) => {
+	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
+
 	return (
 		<Form
-			className="bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs"
+			className={classes}
 			onSubmit={(e) => {
 				e.preventDefault();
 
 				onSearch();
 			}}
+			{...rest}
 		>
 			<FormGroup row>
 				<Label md={1} for="documentGb" className="text-right">

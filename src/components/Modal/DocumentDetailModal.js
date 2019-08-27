@@ -91,11 +91,13 @@ const DocumentDetailModal = ({
 										onOpen('vendorDetail')();
 									}}
 								>
-									{data.getIn([ 'vendor', 'vendorName' ])} ({data.getIn([ 'vendor', 'part', 'cdSName' ])})
+									{data.getIn([ 'vendor', 'vendorName' ])}
+									({data.getIn([ 'vendor', 'partNumber' ])} /{' '}
+									{data.getIn([ 'vendor', 'part', 'cdSName' ])})
 								</span>
 							</td>
 							<th scope="row" className="text-right bg-light">
-								구분
+								문서 구분
 							</th>
 							<td>{data.getIn([ 'documentGb', 'cdSName' ])}</td>
 						</tr>
@@ -103,11 +105,13 @@ const DocumentDetailModal = ({
 							<th scope="row" className="text-right bg-light">
 								문서번호
 							</th>
-							<td>{data.get('documentNumber')}</td>
+							<td colSpan={3}>{data.get('documentNumber')}</td>
+						</tr>
+						<tr className="border-bottom">
 							<th scope="row" className="text-right bg-light">
 								문서명
 							</th>
-							<td>{data.get('documentTitle')}</td>
+							<td colSpan={3}>{data.get('documentTitle')}</td>
 						</tr>
 						<tr className="border-bottom">
 							<th scope="row" className="text-right bg-light">

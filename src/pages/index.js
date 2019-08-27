@@ -3,3 +3,5 @@ export { default as DocumentsPage } from './DocumentsPage';
 export { default as VendorsPage } from './VendorsPage';
 export { default as IndexesOverallPage } from './IndexesPage/IndexesOverallPage';
 export { default as IndexesDetailPage } from './IndexesPage/IndexesDetailPage';
+export { default as IndexesInfosPage } from './IndexesPage/IndexesInfosPage';
+export { default as TransmittalsPage } from './TransmittalsPage';

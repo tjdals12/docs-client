@@ -18,6 +18,7 @@ import PropTypes from 'prop-types';
 const DocumentIndexAddModal = ({
 	data,
 	vendorList,
+	gbs,
 	isOpen,
 	onClose,
 	onChange,
@@ -84,8 +85,9 @@ const DocumentIndexAddModal = ({
 					<Table bordered striped className="mb-5">
 						<colgroup>
 							<col with="5%" />
+							<col width="25%" />
 							<col width="35%" />
-							<col width="40%" />
+							<col width="15%" />
 							<col width="15%" />
 							<col width="5%" />
 						</colgroup>
@@ -94,6 +96,7 @@ const DocumentIndexAddModal = ({
 								<th>#</th>
 								<th>Number</th>
 								<th>Title</th>
+								<th>Gb</th>
 								<th className="text-center">Plan</th>
 								<th />
 							</tr>
@@ -107,7 +110,13 @@ const DocumentIndexAddModal = ({
 								</tr>
 							) : (
 								data.get('list').map((document, index) => {
-									const { _id = '', documentNumber, documentTitle, plan } = document.toJS();
+									const {
+										_id = '',
+										documentNumber,
+										documentTitle,
+										documentGb,
+										plan
+									} = document.toJS();
 
 									return (
 										<tr key={index}>
@@ -129,6 +138,21 @@ const DocumentIndexAddModal = ({
 													onChange={onChangeInfo(_id)}
 													bsSize="sm"
 												/>
+											</td>
+											<td>
+												<Input
+													type="select"
+													name="documentGb"
+													value={documentGb}
+													onChange={onChangeInfo(_id)}
+												>
+													<option value="">-- 구분 --</option>
+													{gbs.get('cdMinors').map((gb) => (
+														<option key={gb.get('_id')} value={gb.get('_id')}>
+															{gb.get('cdSName')}
+														</option>
+													))}
+												</Input>
 											</td>
 											<td className="text-center">
 												<Input

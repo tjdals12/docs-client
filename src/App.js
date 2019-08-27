@@ -1,7 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import { LayoutRoute, MainLayout } from 'components/Layout';
-import { DashboardPage, DocumentsPage, VendorsPage, IndexesOverallPage, IndexesDetailPage } from 'pages';
+import {
+	DashboardPage,
+	DocumentsPage,
+	VendorsPage,
+	IndexesOverallPage,
+	IndexesDetailPage,
+	IndexesInfosPage,
+	TransmittalsPage
+} from 'pages';
 
 class App extends React.Component {
 	render() {
@@ -13,6 +21,8 @@ class App extends React.Component {
 					<LayoutRoute exact path="/vendors" layout={MainLayout} component={VendorsPage} />
 					<LayoutRoute exact path="/indexes/overall" layout={MainLayout} component={IndexesOverallPage} />
 					<LayoutRoute exact path="/indexes/detail" layout={MainLayout} component={IndexesDetailPage} />
+					<LayoutRoute exact path="/indexes/infos" layout={MainLayout} component={IndexesInfosPage} />
+					<LayoutRoute exact path="/transmittals" layout={MainLayout} component={TransmittalsPage} />
 				</Switch>
 			</BrowserRouter>
 		);

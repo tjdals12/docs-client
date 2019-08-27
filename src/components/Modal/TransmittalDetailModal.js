@@ -1,0 +1,226 @@
+import React from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
+import { MdClose } from 'react-icons/md';
+import QuestionModal from 'components/Modal/QuestionModal';
+
+const TransmittalDetailModal = ({
+	isOpen,
+	isOpenQuestion,
+	data,
+	onClose,
+	onTarget,
+	onTargetVendor,
+	onOpen,
+	onOpenDetail,
+	className,
+	...rest
+}) => {
+	return (
+		<Modal
+			isOpen={isOpen}
+			toggle={onClose('transmittalDetail')}
+			className={className}
+			contentClassName="border-light rouned"
+			{...rest}
+			size="xl"
+		>
+			<QuestionModal
+				isOpen={isOpen && isOpenQuestion}
+				onClose={onClose}
+				size="md"
+				header="상태 삭제"
+				body={
+					<div>
+						<p className="m-0">선택 값을 삭제하시겠습니까?</p>
+						<p className="m-0 text-danger">(* 삭제된 데이터 복구되지 않습니다.)</p>
+					</div>
+				}
+				footer={<Button color="primary">DELETE</Button>}
+			/>
+			<ModalHeader className="bg-light" toggle={onClose('transmittalDetail')}>
+				Transmittal 상세 <span className="text-primary">({data.get('officialNumber')})</span>
+			</ModalHeader>
+			<ModalBody className="p-0">
+				<Table borderless className="rounded m-0">
+					<colgroup>
+						<col width="20%" />
+						<col width="30%" />
+						<col width="20%" />
+						<col width="30%" />
+					</colgroup>
+					<tbody>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								업체
+							</th>
+							<td>
+								<span
+									className="have-link"
+									onClick={() => {
+										onTargetVendor(data.getIn([ 'vendor', '_id' ]));
+										onOpen('vendorDetail')();
+									}}
+								>
+									{data.getIn([ 'vendor', 'vendorName' ])} ({data.getIn([ 'vendor', 'partNumber' ])} /{' '}
+									{data.getIn([ 'vendor', 'part', 'cdSName' ])})
+								</span>
+							</td>
+							<th scope="row" className="text-right bg-light">
+								접수 번호
+							</th>
+							<td>{data.get('officialNumber')}</td>
+						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								발신
+							</th>
+							<td>
+								{data.get('senderGb')}: {data.get('sender')}
+							</td>
+							<th scope="row" className="text-right bg-light">
+								수신
+							</th>
+							<td>
+								{data.get('receiverGb')}: {data.get('receiver')}
+							</td>
+						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								접수일
+							</th>
+							<td>
+								<span className="text-success font-weight-bold">
+									{data.get('receiveDate').substr(0, 10)}
+								</span>
+							</td>
+							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
+								삭제여부
+							</th>
+							<td rowSpan="2">
+								{data.getIn([ 'cancelYn', 'yn' ])}{' '}
+								{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' && (
+									<span className="text-danger">
+										({data.getIn([ 'cancelYn', 'deleteDt' ]).substr(0, 10)})
+									</span>
+								)}
+							</td>
+						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								회신요청일
+							</th>
+							<td>
+								<span className="text-success font-weight-bold">
+									{data.get('targetDate').substr(0, 10)}
+								</span>
+							</td>
+						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right  bg-light">
+								상태
+							</th>
+							<td>
+								{data.get('letterStatus').map((item, index) => {
+									return (
+										<div key={index} className="mb-2">
+											<span key={index}>
+												{item.get('status')}
+												{!!item.get('resultCode') && ` (${item.get('resultCode')})`}
+												{!!item.get('replyCode') && ` - ${item.get('replyCode')}`}
+												{'  '}
+												<MdClose
+													size={15}
+													className="text-danger can-click"
+													onClick={() => {
+														onTarget({ id: item.get('_id') });
+														onOpen('question')();
+													}}
+												/>
+											</span>
+											<br />
+
+											<span className="text-danger">
+												({item.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)})
+											</span>
+										</div>
+									);
+								})}
+							</td>
+						</tr>
+						<tr className="border-bottom">
+							<td colSpan={4}>
+								<Table bordered className="mb-0">
+									<thead>
+										<tr className="border-bottom" style={{ background: '#e7f5ff' }}>
+											<th className="text-left">문서번호</th>
+											<th className="text-left">문서명</th>
+											<th className="text-center">Rev.</th>
+											<th className="text-center">접수일</th>
+											<th className="text-right">상태</th>
+										</tr>
+									</thead>
+									<tbody>
+										{data.get('documents').size === 0 ? (
+											<tr>
+												<td colSpan={5} className="text-center font-italic">
+													접수된 문서가 없습니다.
+												</td>
+											</tr>
+										) : (
+											data.get('documents').map((document, index) => (
+												<tr key={index} className="border-bottom">
+													<td className="text-left">{document.get('documentNumber')}</td>
+													<td className="text-left">
+														<span
+															className="have-link"
+															onClick={onOpenDetail(document.get('_id'))}
+														>
+															{document.get('documentTitle')}
+														</span>
+													</td>
+													<td className="text-center">{document.get('documentRev')}</td>
+													<td className="text-center">
+														{document.getIn([ 'timestamp', 'regDt' ]).substr(0, 10)}
+													</td>
+													<td className="text-right">
+														{document.getIn([ 'documentStatus', -1, 'statusName' ])}{' '}
+														<span className="text-danger">
+															({document
+																.getIn([ 'documentStatus', -1, 'timestamp', 'regDt' ])
+																.substr(0, 10)})
+														</span>
+													</td>
+												</tr>
+											))
+										)}
+									</tbody>
+								</Table>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row" className="text-right bg-light">
+								등록정보
+							</th>
+							<td colSpan={3}>
+								<span className="text-danger">
+									등록: {data.getIn([ 'timestamp', 'regId' ])} ({data.getIn([ 'timestamp', 'regDt' ])})
+								</span>
+								<br />
+								<span className="text-danger">
+									수정: {data.getIn([ 'timestamp', 'updId' ])} ({data.getIn([ 'timestamp', 'updDt' ])})
+								</span>
+							</td>
+						</tr>
+					</tbody>
+				</Table>
+			</ModalBody>
+			<ModalFooter className="bg-light">
+				<Button color="secondary" onClick={onClose('transmittalDetail')}>
+					CANCEL
+				</Button>
+			</ModalFooter>
+		</Modal>
+	);
+};
+
+export default TransmittalDetailModal;

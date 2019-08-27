@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 
 const DocumentInfoAddModal = ({
 	vendorList,
+	gbs,
 	infos,
 	isOpen,
 	onClose,
@@ -78,8 +79,9 @@ const DocumentInfoAddModal = ({
 					</FormGroup>
 					<Table bordered striped>
 						<colgroup>
-							<col width="40%" />
-							<col width="40%" />
+							<col width="25%" />
+							<col width="35%" />
+							<col width="15%" />
 							<col width="15%" />
 							<col with="5%" />
 						</colgroup>
@@ -87,13 +89,14 @@ const DocumentInfoAddModal = ({
 							<tr style={{ background: '#e7f5ff' }}>
 								<th>Number</th>
 								<th>Title</th>
+								<th>Gb</th>
 								<th>Plan</th>
 								<th />
 							</tr>
 						</thead>
 						<tbody>
 							{infos.map((info) => {
-								const { index, documentNumber, documentTitle, plan } = info.toJS();
+								const { index, documentNumber, documentTitle, documentGb, plan } = info.toJS();
 
 								return (
 									<tr key={index + 1}>
@@ -113,6 +116,22 @@ const DocumentInfoAddModal = ({
 												onChange={onChange(index)}
 											/>
 										</td>
+										<td>
+											<Input
+												type="select"
+												name="documentGb"
+												value={documentGb}
+												onChange={onChange(index)}
+											>
+												<option value="">-- 구분 --</option>
+												{gbs.get('cdMinors').map((gb) => (
+													<option key={gb.get('_id')} value={gb.get('_id')}>
+														{gb.get('cdSName')}
+													</option>
+												))}
+											</Input>
+										</td>
+
 										<td>
 											<Input type="date" name="plan" value={plan} onChange={onChange(index)} />
 										</td>

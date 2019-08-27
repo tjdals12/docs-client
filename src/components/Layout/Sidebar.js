@@ -8,7 +8,8 @@ import {
 	MdKeyboardArrowDown,
 	MdShowChart,
 	MdFormatListBulleted,
-	MdFindInPage
+	MdFindInPage,
+	MdStorage
 } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
@@ -30,13 +31,16 @@ const navMenus = [
 
 const indexMenus = [
 	{ to: '/indexes/overall', name: 'Overall', exact: true, Icon: MdShowChart },
-	{ to: '/indexes/documents', name: 'Documents', exact: true, Icon: MdFindInPage }
+	{ to: '/indexes/infos', name: 'Documents', exact: true, Icon: MdFindInPage }
 ];
+
+const transmittalMenus = [ { to: '/transmittals', name: 'Transmittals', exact: true, Icon: MdStorage } ];
 
 class Sidebar extends React.Component {
 	state = {
 		isOpenIndexes: true,
-		isOpenVendors: true
+		isOpenVendors: true,
+		isOpenTransmittals: true
 	};
 
 	handleClick = (name) => () => {
@@ -95,8 +99,43 @@ class Sidebar extends React.Component {
 								/>
 							</BSNavLink>
 						</NavItem>
-						<Collapse isOpen={this.state.isOpenIndexes} className="pl-2">
+						<Collapse isOpen={this.state.isOpenIndexes} className="pl-3">
 							{indexMenus.map(({ to, name, exact, Icon }, index) => (
+								<NavItem key={index} className={bem.e('nav-item')}>
+									<BSNavLink
+										id={`navItem-${name}-${index}`}
+										className="text-uppercase"
+										activeClassName="active"
+										to={to}
+										exact={exact}
+										tag={NavLink}
+									>
+										<Icon className={bem.e('nav-item-icon')} />
+										<span className="text-white">{name}</span>
+									</BSNavLink>
+								</NavItem>
+							))}
+						</Collapse>
+
+						<NavItem className={bem.e('nav-item')}>
+							<BSNavLink className={bem.e('nav-collapse')} onClick={this.handleClick('Transmittals')}>
+								<div className="d-flex">
+									<MdStorage className={bem.e('nav-item-icon')} />
+									<span>TRANSMITTALS</span>
+								</div>
+								<MdKeyboardArrowDown
+									className={bem.e('nav-item-icon')}
+									style={{
+										padding: 0,
+										transform: this.state.isOpenTransmittals ? 'rotate(0deg)' : 'rotate(-90deg)',
+										transitionProperty: 'transform',
+										transitionDuration: '.2s'
+									}}
+								/>
+							</BSNavLink>
+						</NavItem>
+						<Collapse isOpen={this.state.isOpenTransmittals} className="pl-3">
+							{transmittalMenus.map(({ to, name, exact, Icon }, index) => (
 								<NavItem key={index} className={bem.e('nav-item')}>
 									<BSNavLink
 										id={`navItem-${name}-${index}`}

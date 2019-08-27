@@ -1,35 +1,87 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import DocumentInfoTable from 'components/Table/DocumentInfoTable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as modalActions from 'store/modules/modal';
-import * as documentActions from 'store/modules/document';
+import * as vendorActions from 'store/modules/vendor';
+import * as infoActions from 'store/modules/info';
 
 class DocumentInfoTableContainer extends React.Component {
-	getDocument = (id) => {
-		const { DocumentActions } = this.props;
+	getInfos = async (page) => {
+		const { InfoActions, isSearch, search, history } = this.props;
 
-		DocumentActions.getDocument({ id });
+		if (isSearch) {
+			await InfoActions.searchInfos(page, search.toJS());
+		} else {
+			await InfoActions.getInfos({ page });
+		}
+
+		history.push(`/indexes/infos?page=${page}`);
 	};
 
-	handleOpen = ({ id }) => async () => {
+	getInfo = (id) => {
+		const { InfoActions } = this.props;
+
+		InfoActions.getInfo({ id });
+	};
+
+	handleTargetVendor = ({ id }) => {
+		const { VendorActions } = this.props;
+
+		VendorActions.setTarget(id);
+	};
+
+	handleOpen = (name) => () => {
 		const { ModalActions } = this.props;
 
-		await this.getDocument(id);
-		ModalActions.open('documentDetail');
+		ModalActions.open(name);
 	};
 
-	render() {
-		const { data } = this.props;
+	handleOpenDetail = (id) => async () => {
+		const { ModalActions } = this.props;
 
-		return <DocumentInfoTable data={data} onOpen={this.handleOpen} />;
+		await this.getInfo(id);
+		ModalActions.open('documentInfoDetail');
+	};
+
+	componentDidMount() {
+		this.getInfos(1);
+	}
+
+	render() {
+		const { infos, page, lastPage, loading } = this.props;
+
+		if (loading || loading === undefined) return null;
+
+		return (
+			<DocumentInfoTable
+				page={page}
+				lastPage={lastPage}
+				data={infos}
+				onPage={this.getInfos}
+				onTargetVendor={this.handleTargetVendor}
+				onOpen={this.handleOpen}
+				onOpenDetail={this.handleOpenDetail}
+				bordered
+				striped
+				hover
+			/>
+		);
 	}
 }
 
 export default connect(
-	(state) => ({}),
+	(state) => ({
+		infos: state.info.get('infos'),
+		lastPage: state.info.get('lastPage'),
+		isSearch: state.info.getIn([ 'search', 'isSearch' ]),
+		search: state.info.get('search'),
+		loading: state.pender.pending['info/GET_INFOS']
+	}),
 	(dispatch) => ({
 		ModalActions: bindActionCreators(modalActions, dispatch),
-		DocumentActions: bindActionCreators(documentActions, dispatch)
+		VendorActions: bindActionCreators(vendorActions, dispatch),
+		InfoActions: bindActionCreators(infoActions, dispatch)
 	})
-)(DocumentInfoTableContainer);
+)(withRouter(DocumentInfoTableContainer));

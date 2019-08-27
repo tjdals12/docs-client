@@ -15,11 +15,13 @@ import {
 import PropTypes from 'prop-types';
 
 const DocumentIndexAddModal = ({
+	gbs,
 	data,
 	vendorList,
 	isOpen,
 	onClose,
 	onChange,
+	onChangeGb,
 	onExcelUpload,
 	onInsert,
 	className,
@@ -73,8 +75,9 @@ const DocumentIndexAddModal = ({
 					<Table bordered striped>
 						<colgroup>
 							<col with="5%" />
+							<col width="25%" />
 							<col width="40%" />
-							<col width="40%" />
+							<col width="15%" />
 							<col width="15%" />
 						</colgroup>
 						<thead>
@@ -82,13 +85,14 @@ const DocumentIndexAddModal = ({
 								<th>#</th>
 								<th>Number</th>
 								<th>Title</th>
+								<th>Gb</th>
 								<th>Plan</th>
 							</tr>
 						</thead>
 						<tbody>
 							{data.get('list').length === 0 ? (
 								<tr>
-									<td colSpan={4} className="text-center text-muted font-italic">
+									<td colSpan={5} className="text-center text-muted font-italic">
 										양식에 맞게 작성된 엑셀 파일을 선택해주세요.
 									</td>
 								</tr>
@@ -101,6 +105,16 @@ const DocumentIndexAddModal = ({
 											<td className="text-right">{index + 1}</td>
 											<td>{documentNumber}</td>
 											<td>{documentTitle}</td>
+											<td>
+												<Input type="select" name="documentGb" onChange={onChangeGb(index)}>
+													<option value="">-- 구분 --</option>
+													{gbs.get('cdMinors').map((gb) => (
+														<option key={gb.get('_id')} value={gb.get('_id')}>
+															{gb.get('cdSName')}
+														</option>
+													))}
+												</Input>
+											</td>
 											<td className="text-center">{plan.substr(0, 10)}</td>
 										</tr>
 									);

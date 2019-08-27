@@ -3,11 +3,17 @@ import DocumentIndexEditModal from 'components/Modal/DocumentIndexEditModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import * as cmcodeActions from 'store/modules/cmcode';
 import * as modalActions from 'store/modules/modal';
 import * as indexesActions from 'store/modules/indexes';
 import * as vendorActions from 'store/modules/vendor';
 
 class DocumentIndexEditModalContainer extends React.Component {
+	getCmcodes = (major) => {
+		const { CmcodeActions } = this.props;
+
+		CmcodeActions.getCmcodeByMajor({ major: major });
+	};
 	getVendorList = () => {
 		const { VendorActions } = this.props;
 
@@ -55,8 +61,8 @@ class DocumentIndexEditModalContainer extends React.Component {
 
 		await axios({
 			method: 'POST',
-			// url: 'http://192.168.7.9/api/documentindex/readexcel',
-			url: '/api/documentindex/readexcel',
+			// url: 'http://192.168.7.9/api/documentindexes/readexcel',
+			url: '/api/documentindexes/readexcel',
 			data: formData,
 			config: { headers: { 'Content-Type': 'multipart/form-data' } }
 		}).then((response) => {
@@ -71,18 +77,20 @@ class DocumentIndexEditModalContainer extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
 			this.getVendorList();
+			this.getCmcodes('0002');
 		}
 	}
 
 	render() {
-		const { edit, vendorList, isOpen, loading } = this.props;
+		const { edit, vendorList, gbs, isOpen, loading } = this.props;
 
-		if (!vendorList || loading) return null;
+		if (!vendorList || !gbs || loading) return null;
 
 		return (
 			<DocumentIndexEditModal
 				data={edit}
 				vendorList={vendorList}
+				gbs={gbs}
 				isOpen={isOpen}
 				onChange={this.handleChange}
 				onChangeInfo={this.handleChangeInfo}
@@ -99,11 +107,13 @@ export default connect(
 	(state) => ({
 		edit: state.indexes.get('edit'),
 		vendorList: state.vendor.get('vendorList'),
+		gbs: state.cmcode.get('0002'),
 		isOpen: state.modal.get('documentIndexEditModal'),
 		target: state.indexes.get('target'),
 		loading: state.pender.pending['indexes/GET_INDEX']
 	}),
 	(dispatch) => ({
+		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		IndexesActions: bindActionCreators(indexesActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch)

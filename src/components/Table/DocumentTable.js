@@ -80,7 +80,7 @@ const DocumentTable = ({
 
 						return (
 							<tr key={id}>
-								<td>
+								<td className="text-center">
 									<input
 										type="checkbox"
 										value={id}

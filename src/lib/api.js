@@ -29,13 +29,22 @@ export const addPerson = ({ id, persons }) => axios.post(`${real}/api/vendors/${
 /** Cmcode */
 export const getCmcodeByMajor = ({ major }) => axios.get(`${real}/api/cmcodes/${major}/minors`);
 
-/** indexes */
-export const getIndexes = ({ page }) => axios.get(`${real}/api/documentindex?page=${page}`);
-export const getIndexesForSelect = () => axios.get(`${real}/api/documentindex/forselect`);
-export const searchIndexes = (page, param) => axios.post(`/api/documentindex/search?page=${page}`, { ...param });
-export const getIndex = ({ id }) => axios.get(`${real}/api/documentindex/${id}`);
-export const getIndexDetail = ({ id }) => axios.get(`${real}/api/documentindex/${id}/detail`);
-export const addIndex = (param) => axios.post(`${real}/api/documentindex`, { ...param });
-export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindex/${id}/add`, { list });
-export const editIndex = (id, param) => axios.patch(`${real}/api/documentindex/${id}/edit`, { ...param });
-export const deleteIndex = ({ id }) => axios.patch(`${real}/api/documentindex/${id}/delete`);
+/** Index */
+export const getIndexes = ({ page }) => axios.get(`${real}/api/documentindexes?page=${page}`);
+export const getIndexesForSelect = () => axios.get(`${real}/api/documentindexes/forselect`);
+export const searchIndexes = (page, param) => axios.post(`/api/documentindexes/search?page=${page}`, { ...param });
+export const getIndex = ({ id }) => axios.get(`${real}/api/documentindexes/${id}`);
+export const getIndexDetail = ({ id }) => axios.get(`${real}/api/documentindexes/${id}/detail`);
+export const addIndex = (param) => axios.post(`${real}/api/documentindexes`, { ...param });
+export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindexes/${id}/add`, { list });
+export const editIndex = (id, param) => axios.patch(`${real}/api/documentindexes/${id}/edit`, { ...param });
+export const deleteIndex = ({ id }) => axios.patch(`${real}/api/documentindexes/${id}/delete`);
+
+/** Index -> Info */
+export const getInfos = ({ page }) => axios.get(`${real}/api/documentinfos?page=${page}`);
+export const searchInfos = (page, param) => axios.post(`${real}/api/documentinfos/search?page=${page}`, { ...param });
+export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
+
+/** Transmittal */
+export const getTransmittals = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
+export const getTransmittal = ({ id }) => axios.get(`${real}/api/vendorletters/${id}`);

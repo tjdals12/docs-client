@@ -3,10 +3,16 @@ import DocumentInfoAddModal from 'components/Modal/DocumentInfoAddModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import * as cmcodeActions from 'store/modules/cmcode';
 import * as modalActions from 'store/modules/modal';
 import * as indexesActions from 'store/modules/indexes';
 
 class DocumentInfoAddModalContainer extends React.Component {
+	getCmcodes = (major) => {
+		const { CmcodeActions } = this.props;
+
+		CmcodeActions.getCmcodeByMajor({ major: major });
+	};
 	getVendorList = () => {
 		const { IndexesActions } = this.props;
 
@@ -41,7 +47,8 @@ class DocumentInfoAddModalContainer extends React.Component {
 
 		axios({
 			method: 'POST',
-			url: '/api/documentindex/readexcel',
+			// url: 'http://192.168.7.9/api/documentindexes/readexcel',
+			url: '/api/documentindexes/readexcel',
 			data: formData
 		}).then((response) => {
 			IndexesActions.addInfoByExcel(response.data.data);
@@ -70,17 +77,19 @@ class DocumentInfoAddModalContainer extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
 			this.getVendorList();
+			this.getCmcodes('0002');
 		}
 	}
 
 	render() {
-		const { vendorList, infos, isOpen } = this.props;
+		const { vendorList, gbs, infos, isOpen } = this.props;
 
-		if (!vendorList) return null;
+		if (!vendorList || !gbs) return null;
 
 		return (
 			<DocumentInfoAddModal
 				vendorList={vendorList}
+				gbs={gbs}
 				infos={infos}
 				isOpen={isOpen}
 				onClose={this.handleClose}
@@ -98,11 +107,13 @@ class DocumentInfoAddModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		vendorList: state.indexes.get('vendorList'),
+		gbs: state.cmcode.get('0002'),
 		target: state.indexes.get('target'),
 		infos: state.indexes.get('infos'),
 		isOpen: state.modal.get('documentInfoAddModal')
 	}),
 	(dispatch) => ({
+		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		IndexesActions: bindActionCreators(indexesActions, dispatch)
 	})

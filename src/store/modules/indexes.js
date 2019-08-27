@@ -13,6 +13,7 @@ const ADD_PARTIAL = 'indexes/ADD_PARTIAL';
 const EDIT_INDEX = 'indexes/EDIT_INDEX';
 const DELETE_INDEX = 'indexes/DELETE_INDEX';
 const ON_CHANGE = 'indexes/ON_CHANGE';
+const ON_CHANGE_ADD = 'indexes/ON_CHANGE_ADD';
 const ON_CHANGE_EDIT = 'indexes/ON_CHANGE_EDIT';
 const ON_CHANGE_EDIT_INFO = 'indexes/ON_CHANGE_EDIT_INFO';
 const ON_CHANGE_EDIT_LIST = 'indexes/ON_CHANGE_EDIT_LIST';
@@ -33,6 +34,7 @@ export const addPartial = createAction(ADD_PARTIAL, api.addPartial);
 export const editIndex = createAction(EDIT_INDEX, api.editIndex);
 export const deleteIndex = createAction(DELETE_INDEX, api.deleteIndex);
 export const onChange = createAction(ON_CHANGE);
+export const onChangeAdd = createAction(ON_CHANGE_ADD);
 export const onChangeEdit = createAction(ON_CHANGE_EDIT);
 export const onChangeEditInfo = createAction(ON_CHANGE_EDIT_INFO);
 export const onChangeEditList = createAction(ON_CHANGE_EDIT_LIST);
@@ -112,11 +114,18 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: index } = action.payload.data;
 
-				const list = [];
-				const deleteList = [];
+				let list = [];
+				let deleteList = [];
 
 				index.list.forEach((document) => {
 					document.removeYn.yn === 'YES' ? deleteList.push(document) : list.push(document);
+				});
+
+				list = list.map((document) => {
+					return {
+						...document,
+						documentGb: document.documentGb._id
+					};
 				});
 
 				return state
@@ -169,6 +178,11 @@ export default handleActions(
 			const { target, name, value } = action.payload;
 
 			return !target ? state.set(name, fromJS(value)) : state.setIn([ target, name ], fromJS(value));
+		},
+		[ON_CHANGE_ADD]: (state, action) => {
+			const { target, index, name, value } = action.payload;
+
+			return state.setIn([ target, 'list', index, name ], value);
 		},
 		[ON_CHANGE_INFO]: (state, action) => {
 			const { index, name, value } = action.payload;

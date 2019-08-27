@@ -18,6 +18,8 @@ const initialState = Map({
 	documentIndexAddModal: false,
 	documentIndexEditModal: false,
 	documentInfoAddModal: false,
+	documentInfoDetailModal: false,
+	transmittalDetailModal: false,
 	questionModal: false
 });
 

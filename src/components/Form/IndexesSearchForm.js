@@ -69,7 +69,7 @@ const IndexesSearchForm = ({ parts, search, onChange, onSearch, className, ...re
 			</FormGroup>
 			<FormGroup row className="mb-0">
 				<Col md={{ size: 3, offset: 9 }}>
-					<Button color="primary" className="w-100" onClick={onSearch}>
+					<Button type="submit" color="primary" className="w-100">
 						SEARCH
 					</Button>
 				</Col>

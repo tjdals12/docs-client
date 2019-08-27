@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Card, CardHeader, CardBody } from 'reactstrap';
-import DocumentInfoTableContainer from 'containers/Table/DocumentInfoTableContainer';
+import DocumentInfoDetailTableContainer from 'containers/Table/DocumentInfoDetailTableContainer';
 import Typography from 'components/Typography';
 import PropTypes from 'prop-types';
 
@@ -32,7 +32,7 @@ const DocumentInfoCard = ({ data, height, className, ...rest }) => {
 						데이터가 없습니다.
 					</Typography>
 				) : (
-					<DocumentInfoTableContainer data={data} />
+					<DocumentInfoDetailTableContainer data={data} />
 				)}
 			</CardBody>
 		</Card>
