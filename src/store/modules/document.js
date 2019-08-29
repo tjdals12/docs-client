@@ -15,9 +15,6 @@ const EDIT_DOCUMENT = 'document/EDIT_DOCUMENT';
 const INOUT_DOCUMENT = 'document/INOUT_DOCUMENT';
 const DELETE_INOUT_DOCUMENT = 'document/DELETE_INOUT_DOCUMENT';
 const ON_CHANGE = 'document/ON_CHANGE';
-const ON_CHANGE_EDIT = 'document/ON_CHANGE_EDIT';
-const ON_CHANGE_OTHER = 'document/ON_CHANGE_OTHER';
-const ON_CHANGE_SEARCH = 'document/ON_CHANGE_SEARCH';
 const SET_TARGET = 'document/SET_TARGET';
 const SET_CHECKED_LIST = 'document/SET_CHECKED_LIST';
 
@@ -32,9 +29,6 @@ export const editDocument = createAction(EDIT_DOCUMENT, api.editDocument);
 export const inOutDocument = createAction(INOUT_DOCUMENT, api.inOutDocument);
 export const deleteInOutDocument = createAction(DELETE_INOUT_DOCUMENT, api.deleteInOutDocument);
 export const onChange = createAction(ON_CHANGE);
-export const onChangeEdit = createAction(ON_CHANGE_EDIT);
-export const onChangeOther = createAction(ON_CHANGE_OTHER);
-export const onChangeSearch = createAction(ON_CHANGE_SEARCH);
 export const setTarget = createAction(SET_TARGET);
 export const setCheckedList = createAction(SET_CHECKED_LIST);
 

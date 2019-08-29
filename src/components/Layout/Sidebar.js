@@ -9,7 +9,7 @@ import {
 	MdShowChart,
 	MdFormatListBulleted,
 	MdFindInPage,
-	MdStorage
+	MdAssignment
 } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
@@ -34,7 +34,7 @@ const indexMenus = [
 	{ to: '/indexes/infos', name: 'Documents', exact: true, Icon: MdFindInPage }
 ];
 
-const transmittalMenus = [ { to: '/transmittals', name: 'Transmittals', exact: true, Icon: MdStorage } ];
+const transmittalMenus = [ { to: '/transmittals/overall', name: 'overall', exact: true, Icon: MdShowChart } ];
 
 class Sidebar extends React.Component {
 	state = {
@@ -120,7 +120,7 @@ class Sidebar extends React.Component {
 						<NavItem className={bem.e('nav-item')}>
 							<BSNavLink className={bem.e('nav-collapse')} onClick={this.handleClick('Transmittals')}>
 								<div className="d-flex">
-									<MdStorage className={bem.e('nav-item-icon')} />
+									<MdAssignment className={bem.e('nav-item-icon')} />
 									<span>TRANSMITTALS</span>
 								</div>
 								<MdKeyboardArrowDown

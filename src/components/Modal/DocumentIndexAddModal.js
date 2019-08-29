@@ -82,11 +82,11 @@ const DocumentIndexAddModal = ({
 						</colgroup>
 						<thead>
 							<tr style={{ background: '#e7f5ff' }}>
-								<th>#</th>
+								<th className="text-right">#</th>
 								<th>Number</th>
 								<th>Title</th>
 								<th>Gb</th>
-								<th>Plan</th>
+								<th className="text-center">Plan</th>
 							</tr>
 						</thead>
 						<tbody>

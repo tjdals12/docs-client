@@ -22,7 +22,7 @@ class App extends React.Component {
 					<LayoutRoute exact path="/indexes/overall" layout={MainLayout} component={IndexesOverallPage} />
 					<LayoutRoute exact path="/indexes/detail" layout={MainLayout} component={IndexesDetailPage} />
 					<LayoutRoute exact path="/indexes/infos" layout={MainLayout} component={IndexesInfosPage} />
-					<LayoutRoute exact path="/transmittals" layout={MainLayout} component={TransmittalsPage} />
+					<LayoutRoute exact path="/transmittals/overall" layout={MainLayout} component={TransmittalsPage} />
 				</Switch>
 			</BrowserRouter>
 		);

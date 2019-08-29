@@ -19,7 +19,9 @@ const initialState = Map({
 	documentIndexEditModal: false,
 	documentInfoAddModal: false,
 	documentInfoDetailModal: false,
+	transmittalReceiveModal: false,
 	transmittalDetailModal: false,
+	transmittalEditModal: false,
 	questionModal: false
 });
 

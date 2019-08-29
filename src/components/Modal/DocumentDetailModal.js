@@ -17,6 +17,7 @@ import { MdClose } from 'react-icons/md';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import QuestionModal from 'components/Modal/QuestionModal';
+import Typography from 'components/Typography';
 
 const DocumentDetailModal = ({
 	codes,
@@ -118,19 +119,19 @@ const DocumentDetailModal = ({
 								Revision
 							</th>
 							<td>{data.get('documentRev')}</td>
-							<th scope="row" className="text-right bg-light">
+							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
 								중요도
 							</th>
-							<td>
+							<td rowSpan="2">
 								<div className="pb-1">{data.get('level')} (Max: 5)</div>
 								<Progress max={5} value={data.get('level')} />
 							</td>
 						</tr>
 						<tr className="border-bottom">
-							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
+							<th scope="row" className="text-right bg-light">
 								지연여부
 							</th>
-							<td rowSpan="2">
+							<td>
 								{data.get('delayGb') === '01' ? (
 									'여유'
 								) : data.get('delayGb') ? (
@@ -141,31 +142,43 @@ const DocumentDetailModal = ({
 									'지연'
 								)}
 							</td>
-							<th scope="row" className="text-right bg-light">
-								삭제여부
-							</th>
-							<td className="">
-								{data.getIn([ 'deleteYn', 'yn' ])}{' '}
-								{data.getIn([ 'deleteYn', 'yn' ]) === 'YES' && (
-									<span className="text-danger">({data.getIn([ 'deleteYn', 'deleteDt' ])})</span>
-								)}
-							</td>
 						</tr>
 						<tr className="border-bottom">
-							<th scope="row" className="text-right bg-light">
+							<th scope="row" className="text-right align-middle bg-light">
+								삭제여부
+							</th>
+							<td>
+								{data.getIn([ 'deleteYn', 'yn' ])}{' '}
+								{data.getIn([ 'deleteYn', 'yn' ]) === 'YES' && (
+									<React.Fragment>
+										<Typography tag="span" className="text-danger">
+											({data.getIn([ 'deleteYn', 'deleteDt' ])})
+										</Typography>
+										<Typography type="p" className="m-0 pt-2">
+											사유: {data.getIn([ 'deleteYn', 'reason' ])}
+										</Typography>
+									</React.Fragment>
+								)}
+							</td>
+							<th scope="row" className="text-right align-middle bg-light">
 								보류여부
 							</th>
 							<td>
 								{data.getIn([ 'holdYn', -1, 'yn' ])}{' '}
 								{data.getIn([ 'holdYn', -1, 'yn' ]) === 'YES' && (
-									<span className="text-danger">
-										({data.getIn([ 'holdYn', -1, 'effStaDt' ]).substr(0, 10)} ~{' '}
-										{data.getIn([ 'holdYn', -1, 'effEndDt' ]).substr(0, 10) === '9999-12-31' ? (
-											'진행중'
-										) : (
-											data.getIn([ 'holdYn', -1, 'effEndDt' ]).substr(0, 10)
-										)})
-									</span>
+									<React.Fragment>
+										<Typography tag="span" className="text-danger">
+											({data.getIn([ 'holdYn', -1, 'effStaDt' ]).substr(0, 10)} ~{' '}
+											{data.getIn([ 'holdYn', -1, 'effEndDt' ]).substr(0, 10) === '9999-12-31' ? (
+												'진행중'
+											) : (
+												data.getIn([ 'holdYn', -1, 'effEndDt' ]).substr(0, 10)
+											)})
+										</Typography>
+										<Typography type="p" className="pt-2">
+											사유: {data.getIn([ 'holdYn', -1, 'reason' ])}
+										</Typography>
+									</React.Fragment>
 								)}
 							</td>
 						</tr>

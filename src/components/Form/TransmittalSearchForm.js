@@ -2,11 +2,18 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 
-const TransmittalSearchForm = ({ vendors, search, onChange, className, ...rest }) => {
+const TransmittalSearchForm = ({ status, vendors, search, onChange, onSearch, className, ...rest }) => {
 	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
 
 	return (
-		<Form className={classes} {...rest}>
+		<Form
+			className={classes}
+			{...rest}
+			onSubmit={(e) => {
+				e.preventDefault();
+				onSearch();
+			}}
+		>
 			<FormGroup row>
 				<Label md={1} for="senderGb" className="text-right">
 					발신 구분
@@ -134,10 +141,12 @@ const TransmittalSearchForm = ({ vendors, search, onChange, className, ...rest }
 						value={search.get('letterStatus')}
 						onChange={onChange}
 					>
-						<option value="">-- 성태 --</option>
-						<option value="01">접수</option>
-						<option value="02">내부 검토중</option>
-						<option value="03">회신</option>
+						<option value="">-- 상태 --</option>
+						{status.get('cdMinors').map((code) => (
+							<option key={code.get('_id')} value={code.getIn([ 'cdRef1', 'status' ])}>
+								{code.get('cdSName')}
+							</option>
+						))}
 					</Input>
 				</Col>
 				<Label md={1} for="cancelYn" className="text-right">
@@ -152,8 +161,8 @@ const TransmittalSearchForm = ({ vendors, search, onChange, className, ...rest }
 						onChange={onChange}
 					>
 						<option value="">-- Y/N -- </option>
-						<option value="01">YES</option>
-						<option value="02">NO</option>
+						<option value="YES">YES</option>
+						<option value="NO">NO</option>
 					</Input>
 				</Col>
 				<Col md={{ size: 3, offset: 3 }}>

@@ -10,7 +10,7 @@ const TransmittalTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOp
 		<React.Fragment>
 			<Row className="hidden-md hidden-sm -hidden-xs">
 				<Col md={4}>
-					<Button color="primary" className="mr-2">
+					<Button color="primary" className="mr-2" onClick={onOpen('transmittalReceive')}>
 						RECEIVE
 					</Button>
 				</Col>
@@ -58,7 +58,7 @@ const TransmittalTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOp
 										className="have-link"
 										onClick={() => {
 											onTarget(transmittal.getIn([ 'vendor', '_id' ]));
-											onOpen('vendorDetail');
+											onOpen('vendorDetail')();
 										}}
 									>
 										{transmittal.getIn([ 'vendor', 'vendorName' ])} <br />

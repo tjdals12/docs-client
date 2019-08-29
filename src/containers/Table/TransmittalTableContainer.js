@@ -9,10 +9,15 @@ import * as transmittalActions from 'store/modules/transmittal';
 
 class TransmittalTableContainer extends React.Component {
 	getTransmittals = async (page) => {
-		const { TransmittalActions, history } = this.props;
+		const { TransmittalActions, isSearch, search, history } = this.props;
 
-		await TransmittalActions.getTransmittals({ page });
-		history.push(`/transmittals?page=${page}`);
+		if (isSearch) {
+			await TransmittalActions.searchTransmittals(1, search.toJS());
+		} else {
+			await TransmittalActions.getTransmittals({ page });
+		}
+
+		history.push(`/transmittals/overall?page=${page}`);
 	};
 
 	getTransmittal = (id) => {
@@ -27,7 +32,7 @@ class TransmittalTableContainer extends React.Component {
 		VendorActions.setTarget(id);
 	};
 
-	handleOpen = (name) => {
+	handleOpen = (name) => () => {
 		const { ModalActions } = this.props;
 
 		ModalActions.open(name);
@@ -67,6 +72,8 @@ export default connect(
 	(state) => ({
 		transmittals: state.transmittal.get('transmittals'),
 		lastPage: state.transmittal.get('lastPage'),
+		isSearch: state.transmittal.getIn([ 'search', 'isSearch' ]),
+		search: state.transmittal.get('search'),
 		loading: state.pender.pending['transmittal/GET_TRANSMITTALS']
 	}),
 	(dispatch) => ({

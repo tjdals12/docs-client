@@ -8,7 +8,7 @@ import * as cmcodeActions from 'store/modules/cmcode';
 import * as infoActions from 'store/modules/info';
 
 class DocumentInfoSearchFormContainer extends React.Component {
-	getVendors = () => {
+	getVendorList = () => {
 		const { VendorActions } = this.props;
 
 		VendorActions.getVendorsForSelect();
@@ -36,7 +36,7 @@ class DocumentInfoSearchFormContainer extends React.Component {
 
 	componentDidMount() {
 		this.getCmcodes('0002');
-		this.getVendors();
+		this.getVendorList();
 	}
 
 	render() {

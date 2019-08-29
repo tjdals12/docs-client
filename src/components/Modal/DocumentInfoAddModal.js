@@ -135,7 +135,7 @@ const DocumentInfoAddModal = ({
 										<td>
 											<Input type="date" name="plan" value={plan} onChange={onChange(index)} />
 										</td>
-										<td>
+										<td className="text-center">
 											<MdClose
 												className="can-click text-danger"
 												onClick={onDeleteInfoForm(index)}

@@ -1,17 +1,37 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
+import {
+	Modal,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	Col,
+	Input,
+	InputGroup,
+	InputGroupAddon,
+	Button,
+	Table
+} from 'reactstrap';
 import { MdClose } from 'react-icons/md';
 import QuestionModal from 'components/Modal/QuestionModal';
+import Typography from 'components/Typography';
+import DatePicker from 'react-datepicker';
 
 const TransmittalDetailModal = ({
+	codes,
+	date,
 	isOpen,
 	isOpenQuestion,
 	data,
 	onClose,
+	onChange,
 	onTarget,
 	onTargetVendor,
 	onOpen,
 	onOpenDetail,
+	onDelete,
+	onDate,
+	onStatus,
+	onDeleteStatus,
 	className,
 	...rest
 }) => {
@@ -35,7 +55,11 @@ const TransmittalDetailModal = ({
 						<p className="m-0 text-danger">(* 삭제된 데이터 복구되지 않습니다.)</p>
 					</div>
 				}
-				footer={<Button color="primary">DELETE</Button>}
+				footer={
+					<Button color="primary" onClick={onDeleteStatus}>
+						DELETE
+					</Button>
+				}
 			/>
 			<ModalHeader className="bg-light" toggle={onClose('transmittalDetail')}>
 				Transmittal 상세 <span className="text-primary">({data.get('officialNumber')})</span>
@@ -99,9 +123,14 @@ const TransmittalDetailModal = ({
 							<td rowSpan="2">
 								{data.getIn([ 'cancelYn', 'yn' ])}{' '}
 								{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' && (
-									<span className="text-danger">
-										({data.getIn([ 'cancelYn', 'deleteDt' ]).substr(0, 10)})
-									</span>
+									<React.Fragment>
+										<Typography tag="span" className="text-danger">
+											({data.getIn([ 'cancelYn', 'deleteDt' ])})
+										</Typography>
+										<Typography type="p" className="m-0 pt-2">
+											사유: {data.getIn([ 'cancelYn', 'reason' ])}
+										</Typography>
+									</React.Fragment>
 								)}
 							</td>
 						</tr>
@@ -215,6 +244,43 @@ const TransmittalDetailModal = ({
 				</Table>
 			</ModalBody>
 			<ModalFooter className="bg-light">
+				<Col className="pr-5 hidden-md hidden-sm hidden-xs">
+					<InputGroup>
+						<Input type="select" name="status" className="text-center" onChange={onChange}>
+							<option value="">--- 변경할 상태 선택 --</option>
+							{codes.get('cdMinors').map((code) => (
+								<option key={code.get('_id')} value={JSON.stringify(code.get('cdRef1'))}>
+									{code.get('cdSName')}
+								</option>
+							))}
+						</Input>
+						<InputGroupAddon addonType="prepend">
+							<DatePicker
+								dateFormat="yyyy-MM-dd"
+								className="text-center"
+								name="date"
+								selected={date}
+								onChange={onDate}
+							/>
+						</InputGroupAddon>
+						<InputGroupAddon addonType="append">
+							<Button onClick={onStatus({ id: data.get('_id') })}>변경</Button>
+						</InputGroupAddon>
+					</InputGroup>
+				</Col>
+				<Input type="text" name="reason" placeholder="DELETE 사유 (필수)" className="w-25" onChange={onChange} />
+				{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' ? (
+					<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'NO' })}>
+						DELETE 취소
+					</Button>
+				) : (
+					<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'YES' })}>
+						DELETE
+					</Button>
+				)}
+				<Button color="primary" onClick={onOpen('transmittalEdit')}>
+					EDIT
+				</Button>
 				<Button color="secondary" onClick={onClose('transmittalDetail')}>
 					CANCEL
 				</Button>
