@@ -13,6 +13,9 @@ const TransmittalTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOp
 					<Button color="primary" className="mr-2" onClick={onOpen('transmittalReceive')}>
 						RECEIVE
 					</Button>
+					<Button color="secondary" className="mr-2" onClick={onOpen('transmittalAdditionalReceive')}>
+						ADD DOCUMENT
+					</Button>
 				</Col>
 			</Row>
 			<Table className={classes} {...rest} bordered striped hover>

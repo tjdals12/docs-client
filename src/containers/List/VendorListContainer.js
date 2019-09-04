@@ -19,14 +19,18 @@ class VendorListContainer extends React.Component {
 	};
 
 	handleOpenAdd = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, VendorActions } = this.props;
 
+		VendorActions.initialize('errors');
 		ModalActions.open('vendorAdd');
 	};
 
 	handleOpenPersonAdd = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, VendorActions } = this.props;
 
+		VendorActions.setTarget('');
+		VendorActions.initialize('targetError');
+		VendorActions.initialize('personsError');
 		ModalActions.open('vendorPersonAdd');
 	};
 

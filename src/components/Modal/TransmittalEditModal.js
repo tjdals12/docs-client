@@ -20,6 +20,7 @@ const TransmittalEditModal = ({
 	vendorList,
 	isOpen,
 	data,
+	errors,
 	onClose,
 	onChange,
 	onSetDeleteDocument,
@@ -48,6 +49,7 @@ const TransmittalEditModal = ({
 								name="vendor"
 								value={data.get('vendor')}
 								onChange={onChange}
+								invalid={errors.get('vendorError')}
 							>
 								<option value="">-- 업체 --</option>
 								{vendorList.map((vendor) => (
@@ -67,6 +69,7 @@ const TransmittalEditModal = ({
 								placeholder="ex) ABC-DEF-T-R-001-001"
 								value={data.get('officialNumber')}
 								onChange={onChange}
+								invalid={errors.get('officialNumberError')}
 							/>
 						</Col>
 					</FormGroup>
@@ -84,11 +87,14 @@ const TransmittalEditModal = ({
 												'01'
 											) : data.get('senderGb') === 'CONTRACTOR' ? (
 												'02'
-											) : (
+											) : data.get('senderGb') === 'VENDOR' ? (
 												'03'
+											) : (
+												data.get('senderGb')
 											)
 										}
 										onChange={onChange}
+										invalid={errors.get('senderGbError')}
 									>
 										<option value="">-- 구분 --</option>
 										<option value="01">CLIENT</option>
@@ -103,6 +109,7 @@ const TransmittalEditModal = ({
 									placeholder="ex) 홍길동 대리"
 									value={data.get('sender')}
 									onChange={onChange}
+									invalid={errors.get('senderError')}
 								/>
 							</InputGroup>
 						</Col>
@@ -118,11 +125,14 @@ const TransmittalEditModal = ({
 												'01'
 											) : data.get('receiverGb') === 'CONTRACTOR' ? (
 												'02'
-											) : (
+											) : data.get('receiverGb') === 'VENDOR' ? (
 												'03'
+											) : (
+												data.get('receiverGb')
 											)
 										}
 										onChange={onChange}
+										invalid={errors.get('receiverGbError')}
 									>
 										<option value="">-- 구분 --</option>
 										<option value="01">CLIENT</option>
@@ -137,6 +147,7 @@ const TransmittalEditModal = ({
 									placeholder="ex) 이성민 사원"
 									value={data.get('receiver')}
 									onChange={onChange}
+									invalid={errors.get('receiverError')}
 								/>
 							</InputGroup>
 						</Col>
@@ -216,6 +227,7 @@ const TransmittalEditModal = ({
 								name="receiveDate"
 								value={data.get('receiveDate').substr(0, 10)}
 								onChange={onChange}
+								invalid={errors.get('receiveDateError')}
 							/>
 						</Col>
 						<Col md={6}>
@@ -226,6 +238,7 @@ const TransmittalEditModal = ({
 								name="targetDate"
 								value={data.get('targetDate').substr(0, 10)}
 								onChange={onChange}
+								invalid={errors.get('targetDateError')}
 							/>
 						</Col>
 					</FormGroup>

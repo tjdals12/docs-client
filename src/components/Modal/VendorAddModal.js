@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
+const VendorAddModal = ({ parts, errors, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -32,7 +32,13 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="vendorGb">구분</Label>
-							<Input type="select" id="vendorGb" name="vendorGb" onChange={onChange}>
+							<Input
+								type="select"
+								id="vendorGb"
+								name="vendorGb"
+								onChange={onChange}
+								invalid={errors.get('vendorGbError')}
+							>
 								<option>------ 구분 ------</option>
 								<option value="01">계약</option>
 								<option value="02">관리</option>
@@ -40,7 +46,13 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 						</Col>
 						<Col md={6}>
 							<Label for="countryCd">국가</Label>
-							<Input type="select" id="countryCd" name="countryCd" onChange={onChange}>
+							<Input
+								type="select"
+								id="countryCd"
+								name="countryCd"
+								onChange={onChange}
+								invalid={errors.get('countryCdError')}
+							>
 								<option>------ 국내 / 해외 ------</option>
 								<option value="01">국내</option>
 								<option value="02">해외</option>
@@ -50,17 +62,35 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 					<FormGroup row>
 						<Col md={4}>
 							<Label for="vendorName">업체명</Label>
-							<Input type="text" id="vendorName" name="vendorName" onChange={onChange} />
+							<Input
+								type="text"
+								id="vendorName"
+								name="vendorName"
+								onChange={onChange}
+								invalid={errors.get('vendorNameError')}
+							/>
 						</Col>
 						<Col md={8}>
 							<Label for="itemName">Item명</Label>
-							<Input type="text" id="itemName" name="itemName" onChange={onChange} />
+							<Input
+								type="text"
+								id="itemName"
+								name="itemName"
+								onChange={onChange}
+								invalid={errors.get('itemNameError')}
+							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>
 						<Col md={4}>
 							<Label for="part">공종</Label>
-							<Input type="select" id="part" name="part" onChange={onChange}>
+							<Input
+								type="select"
+								id="part"
+								name="part"
+								onChange={onChange}
+								invalid={errors.get('partError')}
+							>
 								<option>------ 공종 ------</option>
 								{parts.get('cdMinors').map((code) => (
 									<option key={code.get('_id')} value={code.get('_id')}>
@@ -77,6 +107,7 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 								name="partNumber"
 								placeholder="ex) R-001"
 								onChange={onChange}
+								invalid={errors.get('partNumberError')}
 							/>
 						</Col>
 						<Col md={4}>
@@ -87,6 +118,7 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 								name="officialName"
 								placeholder="ex) MCU"
 								onChange={onChange}
+								invalid={errors.get('officialNameError')}
 							/>
 						</Col>
 					</FormGroup>
@@ -94,9 +126,21 @@ const VendorAddModal = ({ parts, isOpen, onClose, onChange, onInsert, className,
 						<Col md={8}>
 							<Label for="effDt">계약기간</Label>
 							<InputGroup id="effDt">
-								<Input type="date" name="effStaDt" className="w-45" onChange={onChange} />
+								<Input
+									type="date"
+									name="effStaDt"
+									className="w-45"
+									onChange={onChange}
+									invalid={errors.get('effStaDtError')}
+								/>
 								<Input defaultValue="~" className="bg-light w-10 text-center" />
-								<Input type="date" name="effEndDt" className="w-45" onChange={onChange} />
+								<Input
+									type="date"
+									name="effEndDt"
+									className="w-45"
+									onChange={onChange}
+									invalid={errors.get('effEndDtError')}
+								/>
 							</InputGroup>
 						</Col>
 					</FormGroup>

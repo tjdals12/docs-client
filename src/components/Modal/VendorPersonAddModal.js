@@ -6,7 +6,9 @@ import VendorPersonAddForm from 'components/Form/VendorPersonAddForm';
 
 const VendorPersonAddModal = ({
 	vendorList,
+	targetError,
 	persons,
+	personsError,
 	isOpen,
 	onClose,
 	onChange,
@@ -30,7 +32,7 @@ const VendorPersonAddModal = ({
 				Vendor Person 추가
 			</ModalHeader>
 			<ModalBody>
-				<Input type="select" name="vendor" className="mb-3" onChange={onTarget}>
+				<Input type="select" name="vendor" className="mb-3" onChange={onTarget} invalid={targetError}>
 					<option value="">--- 업체를 선택해주세요. ---</option>
 					{vendorList.map((vendor) => (
 						<option key={vendor.get('_id')} value={vendor.get('_id')}>
@@ -42,12 +44,14 @@ const VendorPersonAddModal = ({
 
 				{persons.map((person) => {
 					let index = person.get('index');
+					let isError = personsError.indexOf(index) > -1;
 
 					return (
 						<VendorPersonAddForm
 							key={index}
 							onChange={onChange(index)}
 							onDelete={onDeletePersonForm(person.get('index'))}
+							className={isError ? 'border-danger' : ''}
 						/>
 					);
 				})}
@@ -75,7 +79,9 @@ const VendorPersonAddModal = ({
 
 VendorPersonAddModal.propTypes = {
 	vendorList: PropTypes.object,
+	targetError: PropTypes.bool,
 	persons: PropTypes.object,
+	personsError: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

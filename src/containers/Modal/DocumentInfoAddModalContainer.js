@@ -82,7 +82,7 @@ class DocumentInfoAddModalContainer extends React.Component {
 	}
 
 	render() {
-		const { vendorList, gbs, infos, isOpen } = this.props;
+		const { vendorList, gbs, infos, error, infosError, isOpen } = this.props;
 
 		if (!vendorList || !gbs) return null;
 
@@ -91,6 +91,8 @@ class DocumentInfoAddModalContainer extends React.Component {
 				vendorList={vendorList}
 				gbs={gbs}
 				infos={infos}
+				error={error}
+				infosError={infosError}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onTarget={this.handleTarget}
@@ -110,6 +112,8 @@ export default connect(
 		gbs: state.cmcode.get('0002'),
 		target: state.indexes.get('target'),
 		infos: state.indexes.get('infos'),
+		error: state.indexes.get('error'),
+		infosError: state.indexes.get('infosError'),
 		isOpen: state.modal.get('documentInfoAddModal')
 	}),
 	(dispatch) => ({

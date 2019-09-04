@@ -41,7 +41,7 @@ class VendorEditModalContainer extends React.Component {
 	}
 
 	render() {
-		const { parts, vendor, isOpen } = this.props;
+		const { parts, vendor, errors, isOpen } = this.props;
 
 		if (!parts) return null;
 
@@ -49,6 +49,7 @@ class VendorEditModalContainer extends React.Component {
 			<VendorEditModal
 				parts={parts}
 				data={vendor}
+				errors={errors}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
@@ -61,8 +62,9 @@ class VendorEditModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		id: state.vendor.getIn([ 'vendor', 'id' ]),
-		vendor: state.vendor.get('edit'),
 		parts: state.cmcode.get('0001'),
+		vendor: state.vendor.get('edit'),
+		errors: state.vendor.get('errors'),
 		isOpen: state.modal.get('vendorEditModal')
 	}),
 	(dispatch) => ({

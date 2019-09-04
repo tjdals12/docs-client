@@ -3,8 +3,11 @@ import classNames from 'classnames';
 import { Col, Form, FormGroup, InputGroup, InputGroupAddon, Input, Label, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className, ...rest }) => {
-	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
+const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, onFullPeriod, className, ...rest }) => {
+	const classes = classNames(
+		'bg-white mb-3 px-2 py-2 border rounded hidden-lg hidden-md hidden-sm hidden-xs',
+		className
+	);
 
 	return (
 		<Form
@@ -31,7 +34,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 					</Input>
 				</Col>
 				<Label md={1} for="documentNumber" className="text-right">
-					No.
+					문서번호
 				</Label>
 				<Col md={2}>
 					<Input
@@ -43,7 +46,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 					/>
 				</Col>
 				<Label md={1} for="documentTitle" className="text-right">
-					Title
+					문서명
 				</Label>
 				<Col md={2}>
 					<Input
@@ -73,7 +76,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 
 			<FormGroup row>
 				<Label md={1} for="documentStatus" className="text-right">
-					Status
+					현재 상태
 				</Label>
 				<Col md={2}>
 					<Input
@@ -97,7 +100,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 					</Input>
 				</Col>
 				<Label md={1} for="holdYn" className="text-right">
-					Hold
+					보류 여부
 				</Label>
 				<Col md={2}>
 					<Input
@@ -112,8 +115,29 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 						<option value="NO">NO</option>
 					</Input>
 				</Col>
+				<Label md={1} for="regDt" className="text-right">
+					접수일
+				</Label>
+				<Col md={4}>
+					<InputGroup id="regDt">
+						<InputGroupAddon addonType="prepend">
+							<Input type="date" name="regDtSta" value={search.get('regDtSta')} onChange={onChange} />
+						</InputGroupAddon>
+						<Input defaultValue="~" className="bg-light text-center" />
+						<InputGroupAddon addonType="append">
+							<Input type="date" name="regDtEnd" value={search.get('regDtEnd')} onChange={onChange} />
+						</InputGroupAddon>
+					</InputGroup>
+				</Col>
+				<Col md={1}>
+					<Button color="dark" className="w-100" onClick={onFullPeriod}>
+						전체기간
+					</Button>
+				</Col>
+			</FormGroup>
+			<FormGroup row className="mb-0">
 				<Label md={1} for="deleteYn" className="text-right">
-					Delete
+					삭제 여부
 				</Label>
 				<Col md={2}>
 					<Input
@@ -129,7 +153,7 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 					</Input>
 				</Col>
 				<Label md={1} for="delayGb" className="text-right">
-					Delay
+					지연 여부
 				</Label>
 				<Col md={2}>
 					<Input
@@ -146,24 +170,8 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, className,
 						<option value="04">지연</option>
 					</Input>
 				</Col>
-			</FormGroup>
-			<FormGroup row className="mb-0">
-				<Label md={1} for="regDt" className="text-right">
-					접수일
-				</Label>
-				<Col md={4}>
-					<InputGroup id="regDt">
-						<InputGroupAddon addonType="prepend">
-							<Input type="date" name="regDtSta" value={search.get('regDtSta')} onChange={onChange} />
-						</InputGroupAddon>
-						<Input defaultValue="~" className="bg-light" />
-						<InputGroupAddon addonType="append">
-							<Input type="date" name="regDtEnd" value={search.get('regDtEnd')} onChange={onChange} />
-						</InputGroupAddon>
-					</InputGroup>
-				</Col>
-				<Label md={{ size: 1, offset: 1 }} for="level" className="text-right">
-					Level
+				<Label md={1} for="level" className="text-right">
+					중요도
 				</Label>
 				<Col md={2}>
 					<Input type="select" name="level" id="level" value={search.get('level')} onChange={onChange}>
@@ -197,7 +205,8 @@ DocumentSearchForm.propTypes = {
 
 DocumentSearchForm.defaultProps = {
 	onChange: () => console.warn('Warning: onChange is not defined'),
-	onSearch: () => console.warn('Warning: onSearch is not defined')
+	onSearch: () => console.warn('Warning: onSearch is not defined'),
+	onFullPeriod: () => console.warn('Waring: onFullPeriod is not defined')
 };
 
 export default DocumentSearchForm;

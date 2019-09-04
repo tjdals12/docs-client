@@ -27,6 +27,12 @@ class DocumentSearchFormContainer extends React.Component {
 		history.push('/documents?page=1');
 	};
 
+	handleFullPeriod = () => {
+		const { DocumentActions } = this.props;
+
+		DocumentActions.setToFullPeriod();
+	};
+
 	componentDidMount() {
 		this.getCmcodes('0002');
 		this.getCmcodes('0003');
@@ -44,6 +50,7 @@ class DocumentSearchFormContainer extends React.Component {
 				search={search}
 				onChange={this.handleChange}
 				onSearch={this.handleSearch}
+				onFullPeriod={this.handleFullPeriod}
 			/>
 		);
 	}

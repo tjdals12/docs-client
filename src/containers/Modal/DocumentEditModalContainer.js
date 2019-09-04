@@ -50,16 +50,17 @@ class DocumentEditModalContainer extends React.Component {
 	}
 
 	render() {
-		const { vendorList, parts, gbs, document, isOpen } = this.props;
+		const { vendorList, parts, gbs, document, errors, isOpen } = this.props;
 
 		if (!parts || !gbs || !vendorList) return null;
 
 		return (
 			<DocumentEditModal
 				vendorList={vendorList}
-				data={document}
 				parts={parts}
 				gbs={gbs}
+				data={document}
+				errors={errors}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
@@ -73,9 +74,10 @@ export default connect(
 	(state) => ({
 		id: state.document.getIn([ 'document', 'id' ]),
 		vendorList: state.vendor.get('vendorList'),
-		document: state.document.get('edit'),
 		parts: state.cmcode.get('0001'),
 		gbs: state.cmcode.get('0002'),
+		document: state.document.get('edit'),
+		errors: state.document.get('errors'),
 		isOpen: state.modal.get('documentEditModal')
 	}),
 	(dispatch) => ({

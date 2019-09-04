@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
+const VendorEditModal = ({ parts, data, errors, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -38,8 +38,9 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								name="vendorGb"
 								onChange={onChange}
 								value={data.get('vendorGb')}
+								invalid={errors.get('vendorGbError')}
 							>
-								<option>------ 구분 ------</option>
+								<option value="">------ 구분 ------</option>
 								<option value="01">계약</option>
 								<option value="02">관리</option>
 							</Input>
@@ -52,8 +53,9 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								name="countryCd"
 								onChange={onChange}
 								value={data.get('countryCd')}
+								invalid={errors.get('countryCdError')}
 							>
-								<option>------ 국내 / 해외 ------</option>
+								<option value="">------ 국내 / 해외 ------</option>
 								<option value="01">국내</option>
 								<option value="02">해외</option>
 							</Input>
@@ -69,6 +71,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								className="text-danger"
 								onChange={onChange}
 								defaultValue={data.get('vendorName')}
+								invalid={errors.get('vendorNameError')}
 							/>
 						</Col>
 						<Col md={8}>
@@ -80,14 +83,22 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								className="text-danger"
 								onChange={onChange}
 								defaultValue={data.get('itemName')}
+								invalid={errors.get('itemNameError')}
 							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>
 						<Col md={4}>
 							<Label for="part">공종</Label>
-							<Input type="select" id="part" name="part" onChange={onChange} value={data.get('part')}>
-								<option>------ 공종 ------</option>
+							<Input
+								type="select"
+								id="part"
+								name="part"
+								onChange={onChange}
+								value={data.get('part')}
+								invalid={errors.get('partError')}
+							>
+								<option value="">------ 공종 ------</option>
 								{parts.get('cdMinors').map((code) => (
 									<option key={code.get('_id')} value={code.get('_id')}>
 										{code.get('cdSName')}
@@ -105,6 +116,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								className="text-danger"
 								onChange={onChange}
 								defaultValue={data.get('partNumber')}
+								invalid={errors.get('partNumberError')}
 							/>
 						</Col>
 						<Col md={4}>
@@ -117,6 +129,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 								className="text-danger"
 								onChange={onChange}
 								defaultValue={data.get('officialName')}
+								invalid={errors.get('officialNameError')}
 							/>
 						</Col>
 					</FormGroup>
@@ -130,6 +143,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 									className="w-45 text-danger"
 									onChange={onChange}
 									value={data.get('effStaDt').substr(0, 10)}
+									invalid={errors.get('effStaDtError')}
 								/>
 								<Input defaultValue="~" className="bg-light w-10 text-center" />
 								<Input
@@ -138,6 +152,7 @@ const VendorEditModal = ({ parts, data, isOpen, onClose, onChange, onEdit, class
 									className="w-45 text-danger"
 									onChange={onChange}
 									value={data.get('effEndDt').substr(0, 10)}
+									invalid={errors.get('effEndDtError')}
 								/>
 							</InputGroup>
 						</Col>

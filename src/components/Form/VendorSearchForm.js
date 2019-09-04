@@ -3,8 +3,11 @@ import classNames from 'classnames';
 import { Form, FormGroup, Label, Col, Input, InputGroup, InputGroupAddon, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const VendorSearchForm = ({ parts, search, onChange, onSearch, className, ...rest }) => {
-	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
+const VendorSearchForm = ({ parts, search, onChange, onSearch, onFullPeriod, className, ...rest }) => {
+	const classes = classNames(
+		'bg-white mb-3 px-2 py-2 border rounded hidden-lg hidden-md hidden-sm hidden-xs',
+		className
+	);
 
 	return (
 		<Form
@@ -97,15 +100,15 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch, className, ...res
 						<InputGroupAddon addonType="prepend">
 							<Input type="date" name="effStaDt" value={search.get('effStaDt')} onChange={onChange} />
 						</InputGroupAddon>
-						<Input defaultValue="~" className="bg-light" />
+						<Input defaultValue="~" className="bg-light text-center" />
 						<InputGroupAddon addonType="append">
 							<Input type="date" name="effEndDt" value={search.get('effEndDt')} onChange={onChange} />
 						</InputGroupAddon>
 					</InputGroup>
 				</Col>
 				<Col md={1}>
-					<Button color="dark" className="w-100">
-						초기화
+					<Button color="dark" className="w-100" onClick={onFullPeriod}>
+						전체기간
 					</Button>
 				</Col>
 			</FormGroup>

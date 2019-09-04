@@ -8,24 +8,24 @@ import {
 	Form,
 	FormGroup,
 	Label,
-	Col,
 	Input,
-	InputGroup,
-	InputGroupAddon,
+	Col,
 	Table
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 import { MdClose } from 'react-icons/md';
 
-const TransmittalReceiveModal = ({
+const TransmittalAdditionalReceiveModal = ({
 	vendorList,
-	isOpen,
+	transmittalsByVendor,
 	data,
 	errors,
+	isOpen,
 	onClose,
 	onChange,
 	onReadDirectory,
 	onDeleteReceiveDocument,
-	onReceive,
+	onAdditionalReceive,
 	className,
 	...rest
 }) => {
@@ -34,13 +34,11 @@ const TransmittalReceiveModal = ({
 			isOpen={isOpen}
 			toggle={onClose}
 			className={className}
-			contentClassName="border rounded"
+			contentClassName="border-light rounded"
 			{...rest}
 			size="lg"
 		>
-			<ModalHeader toggle={onClose} className="bg-light">
-				Transmittal 접수
-			</ModalHeader>
+			<ModalHeader toggle={onClose}>Transmittal 추가 접수</ModalHeader>
 			<ModalBody>
 				<Form>
 					<FormGroup row>
@@ -65,68 +63,20 @@ const TransmittalReceiveModal = ({
 						<Col md={6}>
 							<Label for="officialNumber">접수번호</Label>
 							<Input
-								type="text"
+								type="select"
 								id="officialNumber"
-								name="officialNumber"
-								placeholder="ex) ABC-DEF-T-R-001-001"
+								name="id"
+								placeholder="ex) ABC-DEF-T-R-001-002"
 								onChange={onChange}
 								invalid={errors.get('officialNumberError')}
-							/>
-						</Col>
-					</FormGroup>
-
-					<FormGroup row>
-						<Col md={6}>
-							<Label for="sender">발신</Label>
-							<InputGroup id="sender">
-								<InputGroupAddon addonType="prepend">
-									<Input
-										type="select"
-										name="senderGb"
-										onChange={onChange}
-										invalid={errors.get('senderGbError')}
-									>
-										<option value="">-- 구분 --</option>
-										<option value="01">CLIENT</option>
-										<option value="02">CONTRACTOR</option>
-										<option value="03">VENDOR</option>
-									</Input>
-								</InputGroupAddon>
-								<Input
-									type="text"
-									name="sender"
-									className="ml-1"
-									placeholder="ex) 홍길동 대리"
-									onChange={onChange}
-									invalid={errors.get('senderError')}
-								/>
-							</InputGroup>
-						</Col>
-						<Col md={6}>
-							<Label for="receiver">수신</Label>
-							<InputGroup id="receiver">
-								<InputGroupAddon addonType="append">
-									<Input
-										type="select"
-										name="receiverGb"
-										onChange={onChange}
-										invalid={errors.get('receiverGbError')}
-									>
-										<option value="">-- 구분 --</option>
-										<option value="01">CLIENT</option>
-										<option value="02">CONTRACTOR</option>
-										<option value="03">VENDOR</option>
-									</Input>
-								</InputGroupAddon>
-								<Input
-									type="text"
-									name="receiver"
-									className="ml-1"
-									placeholder="ex) 이성민 사원"
-									onChange={onChange}
-									invalid={errors.get('receiverError')}
-								/>
-							</InputGroup>
+							>
+								<option value="">--- 접수번호 ---</option>
+								{transmittalsByVendor.map((transmittal) => (
+									<option key={transmittal.get('_id')} value={transmittal.get('_id')}>
+										{transmittal.get('officialNumber')}
+									</option>
+								))}
+							</Input>
 						</Col>
 					</FormGroup>
 
@@ -190,36 +140,11 @@ const TransmittalReceiveModal = ({
 							)}
 						</tbody>
 					</Table>
-
-					<FormGroup row className="mt-5">
-						<Col md={6}>
-							<Label for="receiveDate">접수일</Label>
-							<Input
-								type="date"
-								id="receiveDate"
-								name="receiveDate"
-								value={data.get('receiveDate')}
-								onChange={onChange}
-								invalid={errors.get('receiveDateError')}
-							/>
-						</Col>
-						<Col md={6}>
-							<Label for="targetDate">회신요청일</Label>
-							<Input
-								type="date"
-								id="targetDate"
-								name="targetDate"
-								value={data.get('targetDate')}
-								onChange={onChange}
-								invalid={errors.get('targetDateError')}
-							/>
-						</Col>
-					</FormGroup>
 				</Form>
 			</ModalBody>
-			<ModalFooter className="bg-light">
-				<Button color="primary" onClick={onReceive}>
-					RECEIVE
+			<ModalFooter>
+				<Button color="primary" onClick={onAdditionalReceive}>
+					ADD
 				</Button>
 				<Button color="secondary" onClick={onClose}>
 					CANCEL
@@ -229,4 +154,23 @@ const TransmittalReceiveModal = ({
 	);
 };
 
-export default TransmittalReceiveModal;
+TransmittalAdditionalReceiveModal.propTypes = {
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onReadDirectory: PropTypes.func,
+	onDeleteReceiveDocument: PropTypes.func,
+	onAdditionalReceive: PropTypes.func,
+	className: PropTypes.string
+};
+
+TransmittalAdditionalReceiveModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onReadDirectory: () => console.warn('Warrning: onReadDirectory is not defined'),
+	onDeleteReceiveDocument: () => console.warn('Warning: onDeleteReceiveDocument is not defined'),
+	onAdditionalReceive: () => console.warn('Warning: onAdditionalReceive is not defined')
+};
+
+export default TransmittalAdditionalReceiveModal;

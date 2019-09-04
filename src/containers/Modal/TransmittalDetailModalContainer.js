@@ -95,7 +95,7 @@ class TransmittalDetailModalContainer extends React.Component {
 	}
 
 	render() {
-		const { codes, date, isOpen, isOpenQuestion, transmittal, loading } = this.props;
+		const { codes, date, isOpen, isOpenQuestion, transmittal, reasonError, loading } = this.props;
 
 		if (!codes || loading || loading === undefined) return null;
 
@@ -103,6 +103,7 @@ class TransmittalDetailModalContainer extends React.Component {
 			<TransmittalDetailModal
 				codes={codes}
 				date={date}
+				reasonError={reasonError}
 				isOpen={isOpen}
 				isOpenQuestion={isOpenQuestion}
 				data={transmittal}
@@ -130,6 +131,7 @@ export default connect(
 		isOpenQuestion: state.modal.get('questionModal'),
 		transmittal: state.transmittal.get('transmittal'),
 		reason: state.transmittal.get('reason'),
+		reasonError: state.transmittal.get('reasonError'),
 		target: state.transmittal.get('target'),
 		loading: state.pender.pending['transmittal/GET_TRANSMITTAL']
 	}),

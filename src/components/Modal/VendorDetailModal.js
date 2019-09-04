@@ -63,6 +63,14 @@ const VendorDetailModal = ({
 							<td>{data.get('countryCd')}</td>
 						</tr>
 						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								Item 명
+							</th>
+							<td colSpan="3" className="title-font">
+								{data.get('itemName')}
+							</td>
+						</tr>
+						<tr className="border-bottom">
 							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
 								업체명
 							</th>

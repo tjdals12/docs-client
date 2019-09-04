@@ -20,8 +20,9 @@ class IndexListContainer extends React.Component {
 	};
 
 	handleOpenAdd = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, IndexesActions } = this.props;
 
+		IndexesActions.initialize('error');
 		ModalActions.open('documentIndexAdd');
 	};
 
@@ -34,13 +35,16 @@ class IndexListContainer extends React.Component {
 	handleOpenEdit = (id) => async () => {
 		const { ModalActions, IndexesActions } = this.props;
 
+		IndexesActions.initialize('infosError');
 		await IndexesActions.getIndex({ id });
 		ModalActions.open('documentIndexEdit');
 	};
 
 	handleOpenInfoAdd = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, IndexesActions } = this.props;
 
+		IndexesActions.setTarget('');
+		IndexesActions.initialize('error');
 		ModalActions.open('documentInfoAdd');
 	};
 

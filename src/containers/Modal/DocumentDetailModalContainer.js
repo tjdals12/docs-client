@@ -27,12 +27,13 @@ class DocumentDetailModalContainer extends React.Component {
 	};
 
 	handleOpen = (name) => () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, DocumentActions } = this.props;
 
 		if (name === 'documentEdit') {
 			ModalActions.close('documentDetail');
 		}
 
+		DocumentActions.initialize('errors');
 		ModalActions.open(name);
 	};
 
@@ -89,7 +90,7 @@ class DocumentDetailModalContainer extends React.Component {
 	}
 
 	render() {
-		const { codes, date, isOpen, isOpenQuestion, document, reason, loading } = this.props;
+		const { codes, date, isOpen, isOpenQuestion, document, reason, reasonError, loading } = this.props;
 
 		if (!codes || (loading === undefined || loading)) return null;
 
@@ -101,6 +102,7 @@ class DocumentDetailModalContainer extends React.Component {
 				isOpenQuestion={isOpenQuestion}
 				data={document}
 				reason={reason}
+				reasonError={reasonError}
 				onOpen={this.handleOpen}
 				onClose={this.handleClose}
 				onHold={this.handleHold}
@@ -125,6 +127,7 @@ export default connect(
 		isOpenQuestion: state.modal.get('questionModal'),
 		document: state.document.get('document'),
 		reason: state.document.get('reason'),
+		reasonError: state.document.get('reasonError'),
 		target: state.document.get('target'),
 		loading: state.pender.pending['document/GET_DOCUMENT']
 	}),

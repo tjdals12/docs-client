@@ -15,7 +15,19 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
+const DocumentEditModal = ({
+	vendorList,
+	parts,
+	gbs,
+	data,
+	errors,
+	isOpen,
+	onClose,
+	onChange,
+	onEdit,
+	className,
+	...rest
+}) => {
 	const { vendor, part, documentGb, documentTitle, documentNumber, documentRev, officialNumber, memo } = data.toJS();
 
 	return (
@@ -35,7 +47,13 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="vendor">VENDOR</Label>
-							<Input type="select" name="vendor" value={vendor} onChange={onChange}>
+							<Input
+								type="select"
+								name="vendor"
+								value={vendor}
+								onChange={onChange}
+								invalid={errors.get('vendorError')}
+							>
 								<option value="">------ 업체를 선택해주세요. ------</option>
 								{vendorList.map((vendor) => (
 									<option key={vendor.get('_id')} value={vendor.get('_id')}>
@@ -48,7 +66,13 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 
 						<Col md={6}>
 							<Label for="part">PART</Label>
-							<Input type="select" name="part" value={part} onChange={onChange}>
+							<Input
+								type="select"
+								name="part"
+								value={part}
+								onChange={onChange}
+								invalid={errors.get('partError')}
+							>
 								<option value="">------ 공종을 선택해주세요. ------</option>
 								{parts.get('cdMinors').map((part) => (
 									<option key={part.get('_id')} value={part.get('_id')}>
@@ -67,6 +91,7 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 							className="text-danger"
 							onChange={onChange}
 							defaultValue={documentTitle}
+							invalid={errors.get('documentTitleError')}
 						/>
 					</FormGroup>
 					<FormGroup>
@@ -77,6 +102,7 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 							className="text-danger"
 							onChange={onChange}
 							defaultValue={documentNumber}
+							invalid={errors.get('documentNumberError')}
 						/>
 					</FormGroup>
 					<FormGroup row>
@@ -90,13 +116,20 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 									className="text-danger"
 									onChange={onChange}
 									defaultValue={documentRev}
+									invalid={errors.get('documentRevError')}
 								/>
 							</InputGroup>
 						</Col>
 
 						<Col md={6}>
 							<Label for="gb">구분</Label>
-							<Input type="select" name="documentGb" value={documentGb} onChange={onChange}>
+							<Input
+								type="select"
+								name="documentGb"
+								value={documentGb}
+								onChange={onChange}
+								invalid={errors.get('documentGbError')}
+							>
 								<option value="">------ 구분을 선택해주세요. ------</option>
 								{gbs.get('cdMinors').map((gb) => (
 									<option key={gb.get('_id')} value={gb.get('_id')}>
@@ -114,6 +147,7 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 							className="text-danger"
 							onChange={onChange}
 							defaultValue={officialNumber}
+							invalid={errors.get('officialNumberError')}
 						/>
 					</FormGroup>
 					<FormGroup>
@@ -126,6 +160,7 @@ const DocumentEditModal = ({ vendorList, data, parts, gbs, isOpen, onClose, onCh
 							style={{ fontSize: '.9rem' }}
 							onChange={onChange}
 							defaultValue={memo}
+							invalid={errors.get('memoError')}
 						/>
 					</FormGroup>
 				</Form>

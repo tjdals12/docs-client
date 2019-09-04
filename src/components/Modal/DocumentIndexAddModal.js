@@ -16,8 +16,9 @@ import PropTypes from 'prop-types';
 
 const DocumentIndexAddModal = ({
 	gbs,
-	data,
 	vendorList,
+	data,
+	error,
 	isOpen,
 	onClose,
 	onChange,
@@ -44,7 +45,7 @@ const DocumentIndexAddModal = ({
 					<FormGroup row>
 						<Col md={12}>
 							<Label for="vendor">업체</Label>
-							<Input type="select" name="vendor" onChange={onChange}>
+							<Input type="select" name="vendor" onChange={onChange} invalid={error}>
 								<option>--- 업체를 선택해주세요. ---</option>
 								{vendorList.map((vendor) => (
 									<option key={vendor.get('_id')} value={vendor.get('_id')}>

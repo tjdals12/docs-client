@@ -59,14 +59,16 @@ class VendorPersonAddModalContainer extends React.Component {
 	}
 
 	render() {
-		const { vendorList, persons, isOpen } = this.props;
+		const { vendorList, targetError, persons, personsError, isOpen } = this.props;
 
 		if (!vendorList) return null;
 
 		return (
 			<VendorPersonAddModal
 				vendorList={vendorList}
+				targetError={targetError}
 				persons={persons}
+				personsError={personsError}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
@@ -83,7 +85,9 @@ export default connect(
 	(state) => ({
 		vendorList: state.vendor.get('vendorList'),
 		target: state.vendor.get('target'),
+		targetError: state.vendor.get('targetError'),
 		persons: state.vendor.get('persons'),
+		personsError: state.vendor.get('personsError'),
 		isOpen: state.modal.get('vendorPersonAddModal')
 	}),
 	(dispatch) => ({

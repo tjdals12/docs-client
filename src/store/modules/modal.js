@@ -22,6 +22,7 @@ const initialState = Map({
 	transmittalReceiveModal: false,
 	transmittalDetailModal: false,
 	transmittalEditModal: false,
+	transmittalAdditionalReceiveModal: false,
 	questionModal: false
 });
 

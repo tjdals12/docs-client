@@ -49,7 +49,7 @@ class DocumentAddModalContainer extends React.Component {
 	}
 
 	render() {
-		const { vendorList, parts, gbs, isOpen } = this.props;
+		const { vendorList, parts, gbs, errors, isOpen } = this.props;
 
 		if (!parts || !gbs || !vendorList) return null;
 
@@ -58,6 +58,7 @@ class DocumentAddModalContainer extends React.Component {
 				vendorList={vendorList}
 				parts={parts}
 				gbs={gbs}
+				errors={errors}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
@@ -69,10 +70,11 @@ class DocumentAddModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
-		document: state.document.get('add'),
 		vendorList: state.vendor.get('vendorList'),
 		parts: state.cmcode.get('0001'),
 		gbs: state.cmcode.get('0002'),
+		document: state.document.get('add'),
+		errors: state.document.get('errors'),
 		isOpen: state.modal.get('documentAddModal')
 	}),
 	(dispatch) => ({

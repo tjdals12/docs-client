@@ -19,6 +19,7 @@ import DatePicker from 'react-datepicker';
 const TransmittalDetailModal = ({
 	codes,
 	date,
+	reasonError,
 	isOpen,
 	isOpenQuestion,
 	data,
@@ -268,7 +269,7 @@ const TransmittalDetailModal = ({
 						</InputGroupAddon>
 					</InputGroup>
 				</Col>
-				<Input type="text" name="reason" placeholder="DELETE 사유 (필수)" className="w-25" onChange={onChange} />
+				<Input type="text" name="reason" placeholder="DELETE 사유 (필수)" className="w-25" onChange={onChange} invalid={reasonError}/>
 				{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' ? (
 					<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'NO' })}>
 						DELETE 취소

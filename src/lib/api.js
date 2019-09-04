@@ -46,11 +46,14 @@ export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
 
 /** Transmittal */
 export const getTransmittals = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
+export const getTransmittalsByVendor = ({ vendor }) => axios.get(`${real}/api/vendorletters/${vendor}/letters`);
 export const searchTransmittals = (page, param) =>
 	axios.post(`${real}/api/vendorletters/search?page=${page}`, { ...param });
 export const getTransmittal = ({ id }) => axios.get(`${real}/api/vendorletters/${id}`);
 export const receiveTransmittal = (param) => axios.post(`${real}/api/vendorletters`, { ...param });
 export const editTransmittal = ({ id, param }) => axios.patch(`${real}/api/vendorletters/${id}/edit`, { ...param });
+export const additionalReceiveTransmittal = ({ id, param }) =>
+	axios.patch(`${real}/api/vendorletters/${id}/add`, { receiveDocuments: param });
 export const deleteTransmittal = ({ id, yn, reason }) =>
 	axios.patch(`${real}/api/vendorletters/${id}/delete`, { yn, reason });
 export const inOutTransmittal = (id, param) => axios.patch(`${real}/api/vendorletters/${id}/inout`, { ...param });

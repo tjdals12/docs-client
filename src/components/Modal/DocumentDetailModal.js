@@ -26,6 +26,7 @@ const DocumentDetailModal = ({
 	isOpenQuestion,
 	data,
 	reason,
+	reasonError,
 	onClose,
 	onHold,
 	onDelete,
@@ -294,6 +295,7 @@ const DocumentDetailModal = ({
 					className="w-25"
 					onChange={onChange}
 					value={reason}
+					invalid={reasonError}
 				/>
 				<ButtonGroup>
 					{data.getIn([ 'deleteYn', 'yn' ]) === 'NO' ? (

@@ -70,7 +70,7 @@ class TransmittalEditModalContainer extends React.Component {
 	}
 
 	render() {
-		const { vendorList, isOpen, edit, loading } = this.props;
+		const { vendorList, isOpen, edit, errors, loading } = this.props;
 
 		if (loading || loading === undefined) return null;
 
@@ -79,6 +79,7 @@ class TransmittalEditModalContainer extends React.Component {
 				vendorList={vendorList}
 				isOpen={isOpen}
 				data={edit}
+				errors={errors}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
 				onSetDeleteDocument={this.handleSetDeleteDocument}
@@ -93,6 +94,7 @@ export default connect(
 		vendorList: state.vendor.get('vendorList'),
 		isOpen: state.modal.get('transmittalEditModal'),
 		edit: state.transmittal.get('edit'),
+		errors: state.transmittal.get('errors'),
 		loading: state.pender.pending['transmittal/GET_TRANSMITTAL']
 	}),
 	(dispatch) => ({

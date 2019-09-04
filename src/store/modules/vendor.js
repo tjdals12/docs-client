@@ -19,6 +19,8 @@ const SET_TARGET = 'vendor/SET_TARGET';
 const ADD_PERSON_FORM = 'vendor/ADD_PERSON_FORM';
 const DELETE_PERSON_FORM = 'vendor/DELETE_PERSON_FORM';
 const ADD_PERSON = 'vendor/ADD_PERSON';
+const SET_TO_FULL_PERIOD = 'vendor/SET_TO_FULL_PERIOD';
+const INITIALIZE = 'vendor/INITIALIZE';
 
 export const getVendors = createAction(GET_VENDORS, api.getVendors);
 export const getVendorsForSelect = createAction(GET_VENDORS_FOR_SELECT, api.getVendorsForSelect);
@@ -35,6 +37,8 @@ export const setTarget = createAction(SET_TARGET);
 export const addPersonForm = createAction(ADD_PERSON_FORM);
 export const deletePersonForm = createAction(DELETE_PERSON_FORM);
 export const addPerson = createAction(ADD_PERSON, api.addPerson);
+export const setToFullPeriod = createAction(SET_TO_FULL_PERIOD);
+export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	vendors: List(),
@@ -74,6 +78,16 @@ const initialState = Map({
 		effEndDt: moment().add(3, 'months').format('YYYY-MM-DD'),
 		isSearch: false
 	}),
+	errors: Map({
+		vendorGbError: false,
+		countryCdError: false,
+		vendorNameError: false,
+		officialNameError: false,
+		partError: false,
+		partNumberError: false,
+		effStaDtError: false,
+		effEndDtError: false
+	}),
 	persons: List([
 		Map({
 			index: 0,
@@ -84,7 +98,9 @@ const initialState = Map({
 			contactNumber: ''
 		})
 	]),
-	target: ''
+	personsError: List(),
+	target: '',
+	targetError: false
 });
 
 export default handleActions(
@@ -142,6 +158,20 @@ export default handleActions(
 				const { data: vendor } = action.payload.data;
 
 				return state.set('add', initialState.get('add')).set('vendor', fromJS(vendor));
+			},
+			onFailure: (state, action) => {
+				const vendor = state.get('add');
+
+				return state
+					.setIn([ 'errors', 'vendorGbError' ], vendor.get('vendorGb') === '')
+					.setIn([ 'errors', 'countryCdError' ], vendor.get('countryCd') === '')
+					.setIn([ 'errors', 'vendorNameError' ], vendor.get('vendorName') === '')
+					.setIn([ 'errors', 'itemNameError' ], vendor.get('itemName') === '')
+					.setIn([ 'errors', 'effStaDtError' ], vendor.get('effStaDt') === '')
+					.setIn([ 'errors', 'effEndDtError' ], vendor.get('effEndDt') === '')
+					.setIn([ 'errors', 'partError' ], vendor.get('part') === '')
+					.setIn([ 'errors', 'partNumberError' ], vendor.get('partNumber') === '')
+					.setIn([ 'errors', 'officialNameError' ], vendor.get('officialName') === '');
 			}
 		}),
 		...pender({
@@ -160,6 +190,20 @@ export default handleActions(
 					.setIn([ 'edit', 'part' ], vendor.part._id)
 					.setIn([ 'edit', 'partNumber' ], vendor.partNumber)
 					.setIn([ 'edit', 'officialName' ], vendor.officialName);
+			},
+			onFailure: (state, action) => {
+				const vendor = state.get('edit');
+
+				return state
+					.setIn([ 'errors', 'vendorGbError' ], vendor.get('vendorGb') === '')
+					.setIn([ 'errors', 'countryCdError' ], vendor.get('countryCd') === '')
+					.setIn([ 'errors', 'vendorNameError' ], vendor.get('vendorName') === '')
+					.setIn([ 'errors', 'itemNameError' ], vendor.get('itemName') === '')
+					.setIn([ 'errors', 'effStaDtError' ], vendor.get('effStaDt') === '')
+					.setIn([ 'errors', 'effEndDtError' ], vendor.get('effEndDt') === '')
+					.setIn([ 'errors', 'partError' ], vendor.get('part') === '')
+					.setIn([ 'errors', 'partNumberError' ], vendor.get('partNumber') === '')
+					.setIn([ 'errors', 'officialNameError' ], vendor.get('officialName') === '');
 			}
 		}),
 		...pender({
@@ -184,6 +228,22 @@ export default handleActions(
 					.setIn([ 'edit', 'part' ], vendor.part._id)
 					.setIn([ 'edit', 'partNumber' ], vendor.partNumber)
 					.setIn([ 'edit', 'officialName' ], vendor.officialName);
+			},
+			onFailure: (state, action) => {
+				const target = state.get('target');
+				let persons = state.get('persons');
+
+				persons = persons
+					.filter((person) => {
+						const { name, position, task, email, contactNumber } = person.toJS();
+
+						return name === '' || position === '' || task === '' || email === '' || contactNumber === ''
+							? true
+							: false;
+					})
+					.map((person) => person.get('index'));
+
+				return state.set('targetError', target === '').set('personsError', fromJS(persons));
 			}
 		}),
 		[ON_CHANGE]: (state, action) => {
@@ -195,7 +255,7 @@ export default handleActions(
 			const { index, name, value } = action.payload;
 			const persons = state.get('persons');
 
-			const target = persons.findIndex((person) => person.index === index);
+			const target = persons.findIndex((person) => person.get('index') === index);
 
 			return state.setIn([ 'persons', target, name ], value);
 		},
@@ -208,7 +268,7 @@ export default handleActions(
 			return state.update('persons', (persons) =>
 				persons.push(
 					Map({
-						...persons.get(0).toJS(),
+						...initialState.getIn([ 'persons', 0 ]).toJS(),
 						index: persons.getIn([ persons.size - 1, 'index' ]) + 1
 					})
 				)
@@ -221,6 +281,16 @@ export default handleActions(
 			const target = index === -1 ? -1 : persons.findIndex((person) => person.get('index') === index);
 
 			return persons.size === 1 ? state : state.update('persons', (persons) => persons.remove(target));
+		},
+		[SET_TO_FULL_PERIOD]: (state, action) => {
+			return state
+				.setIn([ 'search', 'effStaDt' ], moment().subtract(10, 'years').format('YYYY-MM-DD'))
+				.setIn([ 'search', 'effEndDt' ], moment().add(10, 'years').format('YYYY-MM-DD'));
+		},
+		[INITIALIZE]: (state, action) => {
+			const { payload } = action;
+
+			return state.set(payload, initialState.get(payload));
 		}
 	},
 	initialState

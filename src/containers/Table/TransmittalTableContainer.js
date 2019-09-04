@@ -33,14 +33,22 @@ class TransmittalTableContainer extends React.Component {
 	};
 
 	handleOpen = (name) => () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, TransmittalActions } = this.props;
 
+		if (name === 'transmittalReceive') {
+			TransmittalActions.initialize('receive');
+		} else if (name === 'transmittalAdditionalReceive') {
+			TransmittalActions.initialize('additionalReceive');
+		}
+
+		TransmittalActions.initialize('errors');
 		ModalActions.open(name);
 	};
 
 	handleOpenDetail = (id) => async () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, TransmittalActions } = this.props;
 
+		TransmittalActions.initialize('reasonError');
 		await this.getTransmittal(id);
 		ModalActions.open('transmittalDetail');
 	};

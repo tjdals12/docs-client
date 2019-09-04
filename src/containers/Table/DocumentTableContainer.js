@@ -29,8 +29,9 @@ class DocumentTableContainer extends React.Component {
 	}
 
 	handleOpenAdd = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, DocumentActions } = this.props;
 
+		DocumentActions.initialize('errors');
 		ModalActions.open('documentAdd');
 	};
 
@@ -41,10 +42,11 @@ class DocumentTableContainer extends React.Component {
 	};
 
 	handleOpenDetail = ({ id }) => async () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, DocumentActions } = this.props;
 
 		await this.getDocument(id);
 
+		DocumentActions.initialize('reasonError');
 		ModalActions.open('documentDetail');
 	};
 

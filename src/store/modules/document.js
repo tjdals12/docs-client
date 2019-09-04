@@ -17,6 +17,8 @@ const DELETE_INOUT_DOCUMENT = 'document/DELETE_INOUT_DOCUMENT';
 const ON_CHANGE = 'document/ON_CHANGE';
 const SET_TARGET = 'document/SET_TARGET';
 const SET_CHECKED_LIST = 'document/SET_CHECKED_LIST';
+const SET_TO_FULL_PERIOD = 'document/SET_TO_FULL_PERIOD';
+const INITIALIZE = 'document/INITIALIZE';
 
 export const getDocuments = createAction(GET_DOCUMENTS, api.getDocuments);
 export const searchDocuments = createAction(SEARCH_DOCUMENTS, api.searchDocuments);
@@ -31,6 +33,8 @@ export const deleteInOutDocument = createAction(DELETE_INOUT_DOCUMENT, api.delet
 export const onChange = createAction(ON_CHANGE);
 export const setTarget = createAction(SET_TARGET);
 export const setCheckedList = createAction(SET_CHECKED_LIST);
+export const setToFullPeriod = createAction(SET_TO_FULL_PERIOD);
+export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	documents: List(),
@@ -63,7 +67,17 @@ const initialState = Map({
 		regDtEnd: moment().add(1, 'days').format('YYYY-MM-DD'),
 		isSearch: false
 	}),
+	errors: Map({
+		vendorError: false,
+		partError: false,
+		documentTitleError: false,
+		documentNumberError: false,
+		documentGbError: false,
+		officialNumberError: false,
+		memoError: false
+	}),
 	reason: '',
+	reasonError: false,
 	status: '',
 	date: new Date(),
 	target: '',
@@ -100,6 +114,19 @@ export default handleActions(
 				const { data: document } = action.payload.data;
 
 				return state.set('add', initialState.get('add')).set('document', fromJS(document));
+			},
+			onFailure: (state, action) => {
+				const document = state.get('add');
+
+				return state
+					.setIn([ 'errors', 'vendorError' ], document.get('vendor') === '')
+					.setIn([ 'errors', 'partError' ], document.get('part') === '')
+					.setIn([ 'errors', 'documentTitleError' ], document.get('documentTitle') === '')
+					.setIn([ 'errors', 'documentNumberError' ], document.get('documentNumber') === '')
+					.setIn([ 'errors', 'documentGbError' ], document.get('documentGb') === '')
+					.setIn([ 'errors', 'documentRevError' ], document.get('documentRev') === '')
+					.setIn([ 'errors', 'officialNumberError' ], document.get('officialNumber') === '')
+					.setIn([ 'errors', 'memoError' ], document.get('memo') === '');
 			}
 		}),
 		...pender({
@@ -125,6 +152,9 @@ export default handleActions(
 				const { data: document } = action.payload.data;
 
 				return state.set('document', fromJS(document)).set('reason', '');
+			},
+			onFailure: (state, action) => {
+				return state.set('reasonError', true);
 			}
 		}),
 		...pender({
@@ -133,6 +163,9 @@ export default handleActions(
 				const { data: document } = action.payload.data;
 
 				return state.set('document', fromJS(document)).set('reason', '');
+			},
+			onFailure: (state, action) => {
+				return state.set('reasonError', true);
 			}
 		}),
 		...pender({
@@ -159,6 +192,19 @@ export default handleActions(
 					.setIn([ 'edit', 'documentRev' ], document.documentRev)
 					.setIn([ 'edit', 'officialNumber' ], document.documentInOut[0].officialNumber)
 					.setIn([ 'edit', 'memo' ], document.memo);
+			},
+			onFailure: (state, action) => {
+				const document = state.get('edit');
+
+				return state
+					.setIn([ 'errors', 'vendorError' ], document.get('vendor') === '')
+					.setIn([ 'errors', 'partError' ], document.get('part') === '')
+					.setIn([ 'errors', 'documentTitleError' ], document.get('documentTitle') === '')
+					.setIn([ 'errors', 'documentNumberError' ], document.get('documentNumber') === '')
+					.setIn([ 'errors', 'documentGbError' ], document.get('documentGb') === '')
+					.setIn([ 'errors', 'documentRevError' ], document.get('documentRev') === '')
+					.setIn([ 'errors', 'officialNumberError' ], document.get('officialNumber') === '')
+					.setIn([ 'errors', 'memoError' ], document.get('memo') === '');
 			}
 		}),
 		...pender({
@@ -199,6 +245,16 @@ export default handleActions(
 
 				return state.set('checkedList', checkedList.remove(index));
 			}
+		},
+		[SET_TO_FULL_PERIOD]: (state, action) => {
+			return state
+				.setIn([ 'search', 'regDtSta' ], moment().subtract(10, 'years').format('YYYY-MM-DD'))
+				.setIn([ 'search', 'regDtEnd' ], moment().add(10, 'years').format('YYYY-MM-DD'));
+		},
+		[INITIALIZE]: (state, action) => {
+			const { payload } = action;
+
+			return state.set(payload, initialState.get(payload));
 		}
 	},
 	initialState

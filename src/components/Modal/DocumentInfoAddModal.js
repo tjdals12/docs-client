@@ -21,6 +21,8 @@ const DocumentInfoAddModal = ({
 	vendorList,
 	gbs,
 	infos,
+	error,
+	infosError,
 	isOpen,
 	onClose,
 	onTarget,
@@ -49,7 +51,7 @@ const DocumentInfoAddModal = ({
 					<FormGroup row>
 						<Col md={12}>
 							<Label for="vendor">업체</Label>
-							<Input type="select" id="vendor" name="vendor" onChange={onTarget}>
+							<Input type="select" id="vendor" name="vendor" onChange={onTarget} invalid={error}>
 								<option>--- 업체를 선택해주세요. ---</option>
 								{vendorList.map((vendor) => (
 									<option key={vendor.get('_id')} value={vendor.get('_id')}>
@@ -97,9 +99,10 @@ const DocumentInfoAddModal = ({
 						<tbody>
 							{infos.map((info) => {
 								const { index, documentNumber, documentTitle, documentGb, plan } = info.toJS();
+								const isError = infosError.indexOf(index) > -1;
 
 								return (
-									<tr key={index + 1}>
+									<tr key={index + 1} className={isError ? 'bg-secondary' : ''}>
 										<td className="text-right">
 											<Input
 												type="text"

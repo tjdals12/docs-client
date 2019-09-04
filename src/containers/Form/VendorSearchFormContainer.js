@@ -27,6 +27,12 @@ class VendorSearchFormContainer extends React.Component {
 		history.push('/vendors?page=1');
 	};
 
+	handleFullPeriod = () => {
+		const { VendorActions } = this.props;
+
+		VendorActions.setToFullPeriod();
+	};
+
 	componentDidMount() {
 		this.getCmcodes('0001');
 	}
@@ -37,7 +43,13 @@ class VendorSearchFormContainer extends React.Component {
 		if (!parts) return null;
 
 		return (
-			<VendorSearchForm parts={parts} search={search} onChange={this.handleChange} onSearch={this.handleSearch} />
+			<VendorSearchForm
+				parts={parts}
+				search={search}
+				onChange={this.handleChange}
+				onSearch={this.handleSearch}
+				onFullPeriod={this.handleFullPeriod}
+			/>
 		);
 	}
 }

@@ -40,13 +40,14 @@ class VendorAddModalContainer extends React.Component {
 	}
 
 	render() {
-		const { parts, isOpen } = this.props;
+		const { parts, errors, isOpen } = this.props;
 
 		if (!parts) return null;
 
 		return (
 			<VendorAddModal
 				parts={parts}
+				errors={errors}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onChange={this.handleChange}
@@ -59,8 +60,9 @@ class VendorAddModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		parts: state.cmcode.get('0001'),
-		isOpen: state.modal.get('vendorAddModal'),
-		add: state.vendor.get('add')
+		add: state.vendor.get('add'),
+		errors: state.vendor.get('errors'),
+		isOpen: state.modal.get('vendorAddModal')
 	}),
 	(dispatch) => ({
 		ModalActions: bindActionCreators(modalActions, dispatch),

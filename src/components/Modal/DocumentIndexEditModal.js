@@ -16,9 +16,11 @@ import { MdClose, MdKeyboardCapslock } from 'react-icons/md';
 import PropTypes from 'prop-types';
 
 const DocumentIndexAddModal = ({
-	data,
 	vendorList,
 	gbs,
+	data,
+	error,
+	infosError,
 	isOpen,
 	onClose,
 	onChange,
@@ -46,14 +48,8 @@ const DocumentIndexAddModal = ({
 					<FormGroup row>
 						<Col md={12}>
 							<Label for="vendor">업체</Label>
-							<Input
-								type="select"
-								id="vendor"
-								name="vendor"
-								onChange={onChange}
-								value={data.get('vendor')}
-							>
-								<option>--- 업체를 선택해주세요. ---</option>
+							<Input type="select" id="vendor" name="vendor" value={data.get('vendor')} disabled>
+								<option value="">--- 업체를 선택해주세요. ---</option>
 								{vendorList.map((vendor) => (
 									<option key={vendor.get('_id')} value={vendor.get('_id')}>
 										{vendor.get('vendorName')} ({vendor.getIn([ 'part', 'cdSName' ])},{' '}
@@ -104,7 +100,7 @@ const DocumentIndexAddModal = ({
 						<tbody>
 							{data.get('list').size === 0 ? (
 								<tr>
-									<td colSpan={5} className="text-center text-muted font-italic">
+									<td colSpan={6} className="text-center text-muted font-italic">
 										양식에 맞게 작성된 엑셀 파일을 선택해주세요.
 									</td>
 								</tr>
@@ -117,9 +113,10 @@ const DocumentIndexAddModal = ({
 										documentGb,
 										plan
 									} = document.toJS();
+									const isError = infosError.indexOf(_id) > -1;
 
 									return (
-										<tr key={index}>
+										<tr key={index} className={isError ? 'bg-secondary' : ''}>
 											<td className="text-right">{index + 1}</td>
 											<td>
 												<Input

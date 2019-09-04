@@ -15,7 +15,18 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, onInsert, className, ...rest }) => {
+const DocumentAddModal = ({
+	vendorList,
+	parts,
+	gbs,
+	errors,
+	isOpen,
+	onClose,
+	onChange,
+	onInsert,
+	className,
+	...rest
+}) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -33,7 +44,7 @@ const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, o
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="vendor">VENDOR</Label>
-							<Input type="select" name="vendor" onChange={onChange}>
+							<Input type="select" name="vendor" onChange={onChange} invalid={errors.get('vendorError')}>
 								<option value="">------ 업체를 선택해주세요. ------</option>
 								{vendorList.map((vendor) => (
 									<option key={vendor.get('_id')} value={vendor.get('_id')}>
@@ -46,7 +57,7 @@ const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, o
 
 						<Col md={6}>
 							<Label for="part">PART</Label>
-							<Input type="select" name="part" onChange={onChange}>
+							<Input type="select" name="part" onChange={onChange} invalid={errors.get('partError')}>
 								<option value="">------ 공종을 선택해주세요. ------</option>
 								{parts.get('cdMinors').map((part) => (
 									<option key={part.get('_id')} value={part.get('_id')}>
@@ -59,24 +70,44 @@ const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, o
 
 					<FormGroup>
 						<Label for="title">TITLE</Label>
-						<Input name="documentTitle" placeholder="Document Title.." onChange={onChange} />
+						<Input
+							name="documentTitle"
+							placeholder="Document Title.."
+							onChange={onChange}
+							invalid={errors.get('documentTitleError')}
+						/>
 					</FormGroup>
 					<FormGroup>
 						<Label for="number">NO.</Label>
-						<Input name="documentNumber" placeholder="Document Number.." onChange={onChange} />
+						<Input
+							name="documentNumber"
+							placeholder="Document Number.."
+							onChange={onChange}
+							invalid={errors.get('documentNumberError')}
+						/>
 					</FormGroup>
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="rev">REVISION</Label>
 							<InputGroup>
 								<InputGroupAddon addonType="prepend">Rev.</InputGroupAddon>
-								<Input name="documentRev" placeholder="A" onChange={onChange} />
+								<Input
+									name="documentRev"
+									placeholder="A"
+									onChange={onChange}
+									invalid={errors.get('documentRevError')}
+								/>
 							</InputGroup>
 						</Col>
 
 						<Col md={6}>
 							<Label for="gb">구분</Label>
-							<Input type="select" name="documentGb" onChange={onChange}>
+							<Input
+								type="select"
+								name="documentGb"
+								onChange={onChange}
+								invalid={errors.get('documentGbError')}
+							>
 								<option value="">------ 구분을 선택해주세요. ------</option>
 								{gbs.get('cdMinors').map((gb) => (
 									<option key={gb.get('_id')} value={gb.get('_id')}>
@@ -88,11 +119,22 @@ const DocumentAddModal = ({ vendorList, parts, gbs, isOpen, onClose, onChange, o
 					</FormGroup>
 					<FormGroup>
 						<Label for="transmittal">TRANSMITTAL NO.</Label>
-						<Input name="officialNumber" placeholder="Transmittal Number.." onChange={onChange} />
+						<Input
+							name="officialNumber"
+							placeholder="Transmittal Number.."
+							onChange={onChange}
+							invalid={errors.get('officialNumberError')}
+						/>
 					</FormGroup>
 					<FormGroup>
 						<Label for="memo">MEMO</Label>
-						<Input type="textarea" bsSize="lg" name="memo" onChange={onChange} />
+						<Input
+							type="textarea"
+							bsSize="lg"
+							name="memo"
+							onChange={onChange}
+							invalid={errors.get('memoError')}
+						/>
 					</FormGroup>
 				</Form>
 			</ModalBody>

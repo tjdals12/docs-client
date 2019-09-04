@@ -19,9 +19,10 @@ class VendorDetailModalContainer extends React.Component {
 	};
 
 	handleOpen = (name) => () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, VendorActions } = this.props;
 
 		if (name === 'vendorEdit') {
+			VendorActions.initialize('errors');
 			ModalActions.close('vendorDetail');
 		}
 

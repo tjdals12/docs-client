@@ -23,6 +23,7 @@ const SET_TARGET = 'indexes/SET_TARGET';
 const ADD_INFO_FORM = 'indexes/ADD_INFO_FORM';
 const DELETE_INFO_FORM = 'indexes/DELETE_INFO_FORM';
 const ADD_INFO_BY_EXCEL = 'indexes/ADD_INFO_BY_EXCEL';
+const INITIALIZE = 'indexes/INITIALIZE';
 
 export const getIndexes = createAction(GET_INDEXES, api.getIndexes);
 export const getIndexesForSelect = createAction(GET_INDEXES_FOR_SELECT, api.getIndexesForSelect);
@@ -44,6 +45,7 @@ export const setTarget = createAction(SET_TARGET);
 export const addInfoForm = createAction(ADD_INFO_FORM);
 export const deleteInfoForm = createAction(DELETE_INFO_FORM);
 export const addInfoByExcel = createAction(ADD_INFO_BY_EXCEL);
+export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	indexes: List(),
@@ -74,6 +76,8 @@ const initialState = Map({
 			plan: ''
 		})
 	]),
+	error: false,
+	infosError: List(),
 	target: '',
 	lastPage: null
 });
@@ -123,8 +127,11 @@ export default handleActions(
 
 				list = list.map((document) => {
 					return {
-						...document,
-						documentGb: document.documentGb._id
+						_id: document._id,
+						documentNumber: document.documentNumber,
+						documentTitle: document.documentTitle,
+						documentGb: document.documentGb._id,
+						plan: document.plan
 					};
 				});
 
@@ -149,6 +156,11 @@ export default handleActions(
 				const { data: index } = action.payload.data;
 
 				return state.set('add', initialState.get('add')).set('index', fromJS(index));
+			},
+			onFailure: (state, action) => {
+				const add = state.get('add');
+
+				return state.set('error', add.get('vendor') === '');
 			}
 		}),
 		...pender({
@@ -157,12 +169,41 @@ export default handleActions(
 				const { data: index } = action.payload.data;
 
 				return state.set('target', '').set('infos', initialState.get('infos')).set('index', fromJS(index));
+			},
+			onFailure: (state, action) => {
+				let infos = state.get('infos');
+
+				infos = infos
+					.filter((info) => {
+						const { documentNumber, documentTitle, plan } = info.toJS();
+
+						return documentNumber === '' || documentTitle === '' || plan === '' ? true : false;
+					})
+					.map((info) => info.get('index'));
+
+				return state.set('error', state.get('target') === '').set('infosError', infos);
 			}
 		}),
 		...pender({
 			type: EDIT_INDEX,
 			onSuccess: (state, action) => {
 				return state.set('edit', initialState.get('edit'));
+			},
+			onFailure: (state, action) => {
+				const edit = state.get('edit');
+				let infos = state.getIn([ 'edit', 'list' ]);
+
+				infos = infos
+					.filter((info) => {
+						const { documentNumber, documentTitle, documentGb, plan } = info.toJS();
+
+						return documentNumber === '' || documentTitle === '' || documentGb === '' || plan === ''
+							? true
+							: false;
+					})
+					.map((info) => info.get('_id'));
+
+				return state.set('error', edit.get('vendor') === '').set('infosError', infos);
 			}
 		}),
 		...pender({
@@ -224,8 +265,6 @@ export default handleActions(
 						.setIn([ 'edit', 'list' ], list.push(target));
 
 				case 'DELETE':
-					console.log('DELETE 진입');
-
 					return state.setIn([ 'edit', 'list' ], list.splice(id, 1));
 
 				default:
@@ -269,6 +308,11 @@ export default handleActions(
 			});
 
 			return state.update('infos', (infos) => infos.concat(newInfos));
+		},
+		[INITIALIZE]: (state, action) => {
+			const { payload } = action;
+
+			return state.set(payload, initialState.get(payload));
 		}
 	},
 	initialState
