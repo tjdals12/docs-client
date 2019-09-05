@@ -90,6 +90,7 @@ const initialState = Map({
 		receiverError: false,
 		officialNumberError: false,
 		receiveDocumentsError: false,
+		receiveDocumentsErrorList: List(),
 		receiveDateError: false,
 		targetDateError: false
 	}),
@@ -152,6 +153,8 @@ export default handleActions(
 				return state.set('transmittal', fromJS(transmittal));
 			},
 			onFailure: (state, action) => {
+				const { data } = action.payload.response.data;
+
 				const receive = state.get('receive');
 
 				return state
@@ -161,6 +164,7 @@ export default handleActions(
 					.setIn([ 'errors', 'receiverGbError' ], receive.get('receiverGb') === '')
 					.setIn([ 'errors', 'receiverError' ], receive.get('receiver') === '')
 					.setIn([ 'errors', 'officialNumberError' ], receive.get('officialNumber') === '')
+					.setIn([ 'errors', 'receiveDocumentsErrorList' ], Array.isArray(data) ? data : List())
 					.setIn([ 'errors', 'receiveDateError' ], receive.get('receiveDate') === '')
 					.setIn([ 'errors', 'targetDateError' ], receive.get('targetDate') === '');
 			}

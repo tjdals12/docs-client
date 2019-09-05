@@ -35,7 +35,7 @@ const IndexesDetailTemplate = ({ data }) => {
 			</Row>
 			<Row>
 				<Col md={12} lg={6} className="mb-4">
-					<TransmittalCard />
+					<TransmittalCard data={data.get('transmittals')} />
 				</Col>
 				{/* <Col md={12} lg={6} className="mb-4">
 					<BarChartCard dataKey="status" title="Transmittal Receive / Reply" />

@@ -35,7 +35,7 @@ class IndexListContainer extends React.Component {
 	handleOpenEdit = (id) => async () => {
 		const { ModalActions, IndexesActions } = this.props;
 
-		IndexesActions.initialize('infosError');
+		IndexesActions.setTarget(id);
 		await IndexesActions.getIndex({ id });
 		ModalActions.open('documentIndexEdit');
 	};

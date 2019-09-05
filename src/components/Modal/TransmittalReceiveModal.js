@@ -15,6 +15,7 @@ import {
 	Table
 } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
+import Typography from 'components/Typography';
 
 const TransmittalReceiveModal = ({
 	vendorList,
@@ -29,6 +30,8 @@ const TransmittalReceiveModal = ({
 	className,
 	...rest
 }) => {
+	const { receiveDocumentsErrorList } = errors.toJS();
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -173,23 +176,34 @@ const TransmittalReceiveModal = ({
 									</td>
 								</tr>
 							) : (
-								data.get('receiveDocuments').map((document, index) => (
-									<tr key={index}>
-										<td className="text-right">{index + 1}</td>
-										<td>{document.get('documentNumber')}</td>
-										<td>{document.get('documentTitle')}</td>
-										<td className="text-center">{document.get('documentRev')}</td>
-										<td className="text-center">
-											<MdClose
-												className="can-click text-danger"
-												onClick={onDeleteReceiveDocument(document.get('id'))}
-											/>
-										</td>
-									</tr>
-								))
+								data.get('receiveDocuments').map((document, index) => {
+									const { id, documentNumber, documentTitle, documentRev } = document.toJS();
+									const isError = receiveDocumentsErrorList.indexOf(documentNumber) > -1;
+
+									return (
+										<tr key={index} className={isError ? 'bg-secondary' : ''}>
+											<td className="text-right">{index + 1}</td>
+											<td>{documentNumber}</td>
+											<td>{documentTitle}</td>
+											<td className="text-center">{documentRev}</td>
+											<td className="text-center">
+												<MdClose
+													className="can-click text-danger"
+													onClick={onDeleteReceiveDocument(id)}
+												/>
+											</td>
+										</tr>
+									);
+								})
 							)}
 						</tbody>
 					</Table>
+
+					{receiveDocumentsErrorList.length > 0 && (
+						<Typography type="leaf" className="text-danger">
+							* 작성된 Index에 존재하지 않는 문서가 있습니다. 해당 문서는 접수할 수 없습니다.
+						</Typography>
+					)}
 
 					<FormGroup row className="mt-5">
 						<Col md={6}>

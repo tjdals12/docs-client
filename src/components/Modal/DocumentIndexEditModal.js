@@ -123,7 +123,7 @@ const DocumentIndexAddModal = ({
 													type="text"
 													name="documentNumber"
 													value={documentNumber}
-													onChange={onChangeInfo(_id)}
+													onChange={onChangeInfo(_id || index)}
 													bsSize="sm"
 												/>
 											</td>
@@ -132,7 +132,7 @@ const DocumentIndexAddModal = ({
 													type="text"
 													name="documentTitle"
 													value={documentTitle}
-													onChange={onChangeInfo(_id)}
+													onChange={onChangeInfo(_id || index)}
 													bsSize="sm"
 												/>
 											</td>
@@ -140,8 +140,8 @@ const DocumentIndexAddModal = ({
 												<Input
 													type="select"
 													name="documentGb"
-													value={documentGb}
-													onChange={onChangeInfo(_id)}
+													value={documentGb || index}
+													onChange={onChangeInfo(_id || index)}
 												>
 													<option value="">-- 구분 --</option>
 													{gbs.get('cdMinors').map((gb) => (
@@ -156,7 +156,7 @@ const DocumentIndexAddModal = ({
 													type="date"
 													name="plan"
 													value={plan.substr(0, 10)}
-													onChange={onChangeInfo(_id)}
+													onChange={onChangeInfo(_id || index)}
 													bsSize="sm"
 												/>
 											</td>

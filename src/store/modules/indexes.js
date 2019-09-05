@@ -236,7 +236,8 @@ export default handleActions(
 			const { id, name, value } = action.payload;
 			const list = state.getIn([ 'edit', 'list' ]);
 
-			const target = list.findIndex((document) => document.get('_id') === id);
+			let target = list.findIndex((document) => document.get('_id') === id);
+			target = target > -1 ? target : id;
 
 			return state.setIn([ 'edit', 'list', target, name ], value);
 		},

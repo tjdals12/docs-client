@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Card, CardHeader, CardBody, Table } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const tableStyle = {
 	display: 'block',
@@ -20,7 +21,7 @@ const heightMap = {
 	}
 };
 
-const TransmittalCard = ({ height, className, ...rest }) => {
+const TransmittalCard = ({ data, height, className, ...rest }) => {
 	const classes = classNames('w-100 h-100', className);
 
 	return (
@@ -45,66 +46,47 @@ const TransmittalCard = ({ height, className, ...rest }) => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
+						{data.size > 0 ? (
+							data.map((transmittal) => {
+								const {
+									officialNumber,
+									documents,
+									receiveDate,
+									targetDate,
+									letterStatus
+								} = transmittal.toJS();
 
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
-						<tr>
-							<td>ABC-DEF-T-R-001-001</td>
-							<td className="text-center">242</td>
-							<td className="text-center">2019-09-23</td>
-							<td className="text-center">2019-10-06</td>
-							<td className="text-right">
-								사업주 재검토중 <span className="text-danger">(2019-09-27)</span>
-							</td>
-						</tr>
+								return (
+									<tr>
+										<td>{officialNumber}</td>
+										<td className="text-center">{documents}</td>
+										<td className="text-center">{receiveDate.substr(0, 10)}</td>
+										<td className="text-center">{targetDate.substr(0, 10)}</td>
+										<td className="text-right">
+											{letterStatus.statusName}{' '}
+											<span className="text-danger">
+												({letterStatus.timestamp.regDt.substr(0, 10)})
+											</span>
+										</td>
+									</tr>
+								);
+							})
+						) : (
+							<tr>
+								<td colSpan="6">접수된 이력이 없습니다.</td>
+							</tr>
+						)}
 					</tbody>
 				</Table>
 			</CardBody>
 		</Card>
 	);
+};
+
+TransmittalCard.propTypes = {
+	data: PropTypes.object,
+	height: PropTypes.string,
+	className: PropTypes.string
 };
 
 TransmittalCard.defaultProps = {
