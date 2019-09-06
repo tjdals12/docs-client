@@ -27,7 +27,7 @@ const BarChartCard = ({ title, data, color1, color2, className, ...rest }) => {
 					<Legend />
 					<Tooltip />
 					{keys[1] && <Bar dataKey={keys[1]} barSize={30} fill={color1} />}
-					{keys[2] && <Bar dataKey={keys[2]} fill={color2} />}
+					{keys[2] && <Bar dataKey={keys[2]} barSize={30} fill={color2} />}
 				</BarChart>
 			</ResponsiveContainer>
 		);

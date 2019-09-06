@@ -24,7 +24,7 @@ const DocumentInfoCard = ({ data, height, className, ...rest }) => {
 	const classes = classNames('w-100 h-100', className);
 
 	return (
-		<Card className={classes} {...rest}>
+		<Card className={classes} {...rest} style={{ overflow: 'scroll' }}>
 			<CardHeader className="title-font">Document Info</CardHeader>
 			<CardBody className="p-2" style={{ ...heightMap[height] }}>
 				{data.size === 0 ? (

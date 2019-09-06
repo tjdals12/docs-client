@@ -5,10 +5,11 @@ import OverallCard from 'components/Card/OverallCard';
 import TransmittalCard from 'components/Card/TransmittalCard';
 import BarChartCard from 'components/Card/BarChartCard';
 import DocumentInfoCard from 'components/Card/DocumentInfoCard';
+import TransmittalDetailModalContainer from 'containers/Modal/TransmittalDetailModalContainer';
 
 import userImg from 'assets/img/users/105.png';
 
-const IndexesDetailTemplate = ({ data }) => {
+const IndexesDetailTemplate = ({ data, onOpenTransmittalDetail }) => {
 	return (
 		<React.Fragment>
 			<Row>
@@ -35,17 +36,19 @@ const IndexesDetailTemplate = ({ data }) => {
 			</Row>
 			<Row>
 				<Col md={12} lg={6} className="mb-4">
-					<TransmittalCard data={data.get('transmittals')} />
+					<TransmittalCard data={data.get('transmittals')} onOpenDetail={onOpenTransmittalDetail} />
 				</Col>
-				{/* <Col md={12} lg={6} className="mb-4">
-					<BarChartCard dataKey="status" title="Transmittal Receive / Reply" />
-				</Col> */}
+				<Col md={12} lg={6} className="mb-4">
+					<BarChartCard data={data.get('statisticsByTransmittal')} title="Transmittal Receive / Reply" />
+				</Col>
 			</Row>
 			<Row>
 				<Col md={12} className="mb-4">
 					<DocumentInfoCard data={data.get('list')} />
 				</Col>
 			</Row>
+
+			<TransmittalDetailModalContainer />
 		</React.Fragment>
 	);
 };

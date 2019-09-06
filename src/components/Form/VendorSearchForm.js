@@ -115,7 +115,7 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch, onFullPeriod, cla
 
 			<FormGroup row className="mb-0">
 				<Col md={{ size: 3, offset: 9 }}>
-					<Button color="primary" className="w-100" onClick={onSearch}>
+					<Button type="submit" color="primary" className="w-100" onClick={onSearch}>
 						SEARCH
 					</Button>
 				</Col>

@@ -4,7 +4,7 @@ import { Table } from 'reactstrap';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import Typography from 'components/Typography';
 
-const DocumentInfoDetailTable = ({ data, onOpen, className, ...rest }) => {
+const DocumentInfoDetailTable = ({ data, onOpen, onOpenTransmittalDetail, className, ...rest }) => {
 	const documentInfos = data.toJS();
 
 	return (

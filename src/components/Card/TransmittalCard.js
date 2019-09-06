@@ -21,7 +21,7 @@ const heightMap = {
 	}
 };
 
-const TransmittalCard = ({ data, height, className, ...rest }) => {
+const TransmittalCard = ({ data, onOpenDetail, height, className, ...rest }) => {
 	const classes = classNames('w-100 h-100', className);
 
 	return (
@@ -49,6 +49,7 @@ const TransmittalCard = ({ data, height, className, ...rest }) => {
 						{data.size > 0 ? (
 							data.map((transmittal) => {
 								const {
+									_id,
 									officialNumber,
 									documents,
 									receiveDate,
@@ -57,8 +58,10 @@ const TransmittalCard = ({ data, height, className, ...rest }) => {
 								} = transmittal.toJS();
 
 								return (
-									<tr>
-										<td>{officialNumber}</td>
+									<tr key={_id}>
+										<td className="have-link" onClick={() => onOpenDetail(_id)}>
+											{officialNumber}
+										</td>
 										<td className="text-center">{documents}</td>
 										<td className="text-center">{receiveDate.substr(0, 10)}</td>
 										<td className="text-center">{targetDate.substr(0, 10)}</td>
@@ -73,7 +76,9 @@ const TransmittalCard = ({ data, height, className, ...rest }) => {
 							})
 						) : (
 							<tr>
-								<td colSpan="6">접수된 이력이 없습니다.</td>
+								<td colSpan="6" className="text-center text-muted font-italic">
+									접수된 이력이 없습니다.
+								</td>
 							</tr>
 						)}
 					</tbody>
