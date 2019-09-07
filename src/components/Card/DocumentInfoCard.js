@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Card, CardHeader, CardBody } from 'reactstrap';
 import DocumentInfoDetailTableContainer from 'containers/Table/DocumentInfoDetailTableContainer';
+import Pagination from 'components/Pagination';
 import Typography from 'components/Typography';
 import PropTypes from 'prop-types';
 
@@ -20,13 +21,13 @@ const heightMap = {
 	}
 };
 
-const DocumentInfoCard = ({ data, height, className, ...rest }) => {
+const DocumentInfoCard = ({ data, currentPage, lastPage, height, onPage, className, ...rest }) => {
 	const classes = classNames('w-100 h-100', className);
 
 	return (
-		<Card className={classes} {...rest} style={{ overflow: 'scroll' }}>
+		<Card className={classes} {...rest}>
 			<CardHeader className="title-font">Document Info</CardHeader>
-			<CardBody className="p-2" style={{ ...heightMap[height] }}>
+			<CardBody className="p-2" style={{ ...heightMap[height], overflow: 'scroll' }}>
 				{data.size === 0 ? (
 					<Typography type="h5" className="text-center font-italic mt-2">
 						데이터가 없습니다.
@@ -34,6 +35,14 @@ const DocumentInfoCard = ({ data, height, className, ...rest }) => {
 				) : (
 					<DocumentInfoDetailTableContainer data={data} />
 				)}
+				<Pagination
+					currentPage={currentPage}
+					lastPage={lastPage}
+					onPage={onPage}
+					size="md"
+					aria-label="Page navigation"
+					listClassName="flex-row justify-content-end ml-auto"
+				/>
 			</CardBody>
 		</Card>
 	);

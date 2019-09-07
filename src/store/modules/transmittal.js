@@ -6,6 +6,7 @@ import moment from 'moment';
 
 const GET_TRANSMITTALS = 'transmittal/GET_TRANSMITTALS';
 const GET_TRANSMITTALS_BY_VENDOR = 'transmittals/GET_TRANSMITTALS_BY_VENDOR';
+const STATISTICS_BY_TRANSMITTAL = 'transmittals/STATISTICS_BY_TRANSMITTAL';
 const SEARCH_TRANSMITTALS = 'transmittal/SEARCH_TRANSMITTALS';
 const GET_TRANSMITTAL = 'transmittal/GET_TRANSMITTAL';
 const RECEIVE_TRANSMITTAL = 'transmittal/RECEIVE_TRANSMITTAL';
@@ -22,6 +23,7 @@ const INITIALIZE = 'transmittal/INITIALIZE';
 
 export const getTransmittals = createAction(GET_TRANSMITTALS, api.getTransmittals);
 export const getTransmittalsByVendor = createAction(GET_TRANSMITTALS_BY_VENDOR, api.getTransmittalsByVendor);
+export const statisticsByTransmittal = createAction(STATISTICS_BY_TRANSMITTAL, api.statisticsByTransmittal);
 export const searchTransmittals = createAction(SEARCH_TRANSMITTALS, api.searchTransmittals);
 export const getTransmittal = createAction(GET_TRANSMITTAL, api.getTransmittal);
 export const receiveTransmittal = createAction(RECEIVE_TRANSMITTAL, api.receiveTransmittal);
@@ -119,6 +121,14 @@ export default handleActions(
 				const { data: transmittals } = action.payload.data;
 
 				return state.set('transmittalsByVendor', fromJS(transmittals));
+			}
+		}),
+		...pender({
+			type: STATISTICS_BY_TRANSMITTAL,
+			onSuccess: (state, action) => {
+				const { data: statisticsByTransmittal } = action.payload.data;
+
+				return state.set('statisticsByTransmittal', fromJS(statisticsByTransmittal));
 			}
 		}),
 		...pender({

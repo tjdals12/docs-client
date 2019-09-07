@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import IndexesDetailTemplate from 'templates/IndexesDetailTemplate';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,42 +9,29 @@ import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
 
 class IndexesDetailTemplateContainer extends React.Component {
-	getIndexDetail = async () => {
+	getIndex = async () => {
 		const { IndexesActions, id } = this.props;
 
-		await IndexesActions.getIndexDetail({ id });
-	};
-
-	getTransmittal = (id) => {
-		const { TransmittalActions } = this.props;
-
-		TransmittalActions.getTransmittal({ id });
-	};
-
-	handleOpenTransmittalDetail = async (id) => {
-		const { ModalActions } = this.props;
-
-		await this.getTransmittal(id);
-		ModalActions.open('transmittalDetail');
+		await IndexesActions.getIndex({ id });
 	};
 
 	componentDidMount() {
-		this.getIndexDetail();
+		this.getIndex();
 	}
 
 	render() {
-		const { indexDetail, loading } = this.props;
+		const { id, vendor, page, loading } = this.props;
 
 		if (loading || loading === undefined) return null;
 
-		return <IndexesDetailTemplate data={indexDetail} onOpenTransmittalDetail={this.handleOpenTransmittalDetail} />;
+		return <IndexesDetailTemplate id={id} vendor={vendor} currentPage={page} />;
 	}
 }
 
 export default connect(
 	(state) => ({
-		indexDetail: state.indexes.get('indexDetail'),
-		loading: state.pender.pending['indexes/GET_INDEX_DETAIL']
+		vendor: state.indexes.getIn([ 'index', 'vendor', '_id' ]),
+		loading: state.pender.pending['indexes/GET_INDEX']
 	}),
 	(dispatch) => ({
 		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
@@ -51,4 +39,4 @@ export default connect(
 		DocumentActions: bindActionCreators(documentActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(IndexesDetailTemplateContainer);
+)(withRouter(IndexesDetailTemplateContainer));

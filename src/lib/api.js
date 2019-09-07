@@ -34,7 +34,10 @@ export const getIndexesForSelect = () => axios.get(`${real}/api/documentindexes/
 export const searchIndexes = (page, param) =>
 	axios.post(`${real}/api/documentindexes/search?page=${page}`, { ...param });
 export const getIndex = ({ id }) => axios.get(`${real}/api/documentindexes/${id}`);
-export const getIndexDetail = ({ id }) => axios.get(`${real}/api/documentindexes/${id}/detail`);
+export const getIndexOverall = ({ id }) => axios.get(`${real}/api/documentindexes/${id}/overall`);
+export const getStatisticsByStatus = ({ id }) => axios.get(`${real}/api/documentindexes/${id}/statisticsbystatus`);
+export const getTrackingDocument = ({ id, page }) =>
+	axios.get(`${real}/api/documentindexes/${id}/trackingdocument?page=${page}`);
 export const addIndex = (param) => axios.post(`${real}/api/documentindexes`, { ...param });
 export const addPartial = ({ id, list }) => axios.patch(`${real}/api/documentindexes/${id}/add`, { list });
 export const editIndex = (id, param) => axios.patch(`${real}/api/documentindexes/${id}/edit`, { ...param });
@@ -48,6 +51,8 @@ export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
 /** Transmittal */
 export const getTransmittals = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
 export const getTransmittalsByVendor = ({ vendor }) => axios.get(`${real}/api/vendorletters/${vendor}/letters`);
+export const statisticsByTransmittal = ({ vendor }) =>
+	axios.get(`${real}/api/vendorletters/${vendor}/statisticsbytransmittal`);
 export const searchTransmittals = (page, param) =>
 	axios.post(`${real}/api/vendorletters/search?page=${page}`, { ...param });
 export const getTransmittal = ({ id }) => axios.get(`${real}/api/vendorletters/${id}`);

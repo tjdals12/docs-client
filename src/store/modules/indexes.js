@@ -7,7 +7,9 @@ const GET_INDEXES = 'indexes/GET_INDEXES';
 const GET_INDEXES_FOR_SELECT = 'indexes/GET_INDEXES_FOR_SELECT';
 const SEARCH_INDEXES = 'indexes/SEARCH_INDEXES';
 const GET_INDEX = 'indexes/GET_INDEX';
-const GET_INDEX_DETAIL = 'indexes/GET_INDEX_DETAIL';
+const GET_INDEX_OVERALL = 'indexes/GET_INDEX_OVERALL';
+const GET_STATISTICS_BY_STATUS = 'indexes/GET_STATISTICS_BY_STATUS';
+const GET_TRACKING_DOCUMENT = 'indexes/GET_TRACKING_DOCUMENT';
 const ADD_INDEX = 'indexes/ADD_INDEX';
 const ADD_PARTIAL = 'indexes/ADD_PARTIAL';
 const EDIT_INDEX = 'indexes/EDIT_INDEX';
@@ -29,7 +31,9 @@ export const getIndexes = createAction(GET_INDEXES, api.getIndexes);
 export const getIndexesForSelect = createAction(GET_INDEXES_FOR_SELECT, api.getIndexesForSelect);
 export const searchIndexes = createAction(SEARCH_INDEXES, api.searchIndexes);
 export const getIndex = createAction(GET_INDEX, api.getIndex);
-export const getIndexDetail = createAction(GET_INDEX_DETAIL, api.getIndexDetail);
+export const getIndexOverall = createAction(GET_INDEX_OVERALL, api.getIndexOverall);
+export const getStatisticsByStatus = createAction(GET_STATISTICS_BY_STATUS, api.getStatisticsByStatus);
+export const getTrackingDocument = createAction(GET_TRACKING_DOCUMENT, api.getTrackingDocument);
 export const addIndex = createAction(ADD_INDEX, api.addIndex);
 export const addPartial = createAction(ADD_PARTIAL, api.addPartial);
 export const editIndex = createAction(EDIT_INDEX, api.editIndex);
@@ -143,11 +147,30 @@ export default handleActions(
 			}
 		}),
 		...pender({
-			type: GET_INDEX_DETAIL,
+			type: GET_INDEX_OVERALL,
 			onSuccess: (state, action) => {
-				const { data: indexDetail } = action.payload.data;
+				const { data: overall } = action.payload.data;
 
-				return state.set('indexDetail', fromJS(indexDetail));
+				return state.setIn([ 'indexDetail', 'overall' ], Map(overall));
+			}
+		}),
+		...pender({
+			type: GET_STATISTICS_BY_STATUS,
+			onSuccess: (state, action) => {
+				const { data: statisticsByStatus } = action.payload.data;
+
+				return state.setIn([ 'indexDetail', 'statisticsByStatus' ], fromJS(statisticsByStatus));
+			}
+		}),
+		...pender({
+			type: GET_TRACKING_DOCUMENT,
+			onSuccess: (state, action) => {
+				const { data: list } = action.payload.data;
+				const lastPage = action.payload.headers['last-page'];
+
+				return state
+					.setIn([ 'indexDetail', 'list' ], fromJS(list))
+					.setIn([ 'indexDetail', 'lastPage' ], parseInt(lastPage));
 			}
 		}),
 		...pender({

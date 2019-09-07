@@ -62,7 +62,7 @@ class IndexListContainer extends React.Component {
 
 	handleDetailPage = (id) => () => {
 		const { history } = this.props;
-		history.push(`/indexes/detail?id=${id}`);
+		history.push(`/indexes/detail?id=${id}&page=1`);
 	};
 
 	handleDeleteIndex = async () => {

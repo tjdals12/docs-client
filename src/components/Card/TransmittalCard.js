@@ -62,7 +62,7 @@ const TransmittalCard = ({ data, onOpenDetail, height, className, ...rest }) => 
 										<td className="have-link" onClick={() => onOpenDetail(_id)}>
 											{officialNumber}
 										</td>
-										<td className="text-center">{documents}</td>
+										<td className="text-center">{documents.length}</td>
 										<td className="text-center">{receiveDate.substr(0, 10)}</td>
 										<td className="text-center">{targetDate.substr(0, 10)}</td>
 										<td className="text-right">

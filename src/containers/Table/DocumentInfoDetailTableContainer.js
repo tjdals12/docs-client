@@ -26,23 +26,10 @@ class DocumentInfoDetailTableContainer extends React.Component {
 		ModalActions.open('documentDetail');
 	};
 
-	handleOpenTransmittalDetail = (id) => async () => {
-		const { ModalActions } = this.props;
-
-		await this.getTransmittal({ id });
-		ModalActions.open('transmittalDetail');
-	};
-
 	render() {
 		const { data } = this.props;
 
-		return (
-			<DocumentInfoDetailTable
-				data={data}
-				onOpen={this.handleOpen}
-				onOpenTransmittalDetail={this.handleOpenTransmittalDetail}
-			/>
-		);
+		return <DocumentInfoDetailTable data={data} onOpen={this.handleOpen} />;
 	}
 }
 
