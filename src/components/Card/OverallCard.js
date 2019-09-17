@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody } from 'reactstrap';
 import LabelText from 'components/LabelText';
 import Typography from 'components/Typography';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const OverallCard = ({ data, description, className, ...rest }) => {
 	const classes = classNames('w-100 h-100', className);
@@ -33,6 +34,15 @@ const OverallCard = ({ data, description, className, ...rest }) => {
 			</CardBody>
 		</Card>
 	);
+};
+
+OverallCard.propTypes = {
+	description: PropTypes.string,
+	className: PropTypes.string
+};
+
+OverallCard.defaultProps = {
+	description: 'Overall'
 };
 
 export default OverallCard;

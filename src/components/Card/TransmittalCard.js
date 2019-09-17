@@ -90,11 +90,13 @@ const TransmittalCard = ({ data, onOpenDetail, height, className, ...rest }) => 
 
 TransmittalCard.propTypes = {
 	data: PropTypes.object,
+	onOpenDetail: PropTypes.func,
 	height: PropTypes.string,
 	className: PropTypes.string
 };
 
 TransmittalCard.defaultProps = {
+	onOpenDetail: () => console.warn('Warning: onOpenDetail is not defined'),
 	height: 'md'
 };
 

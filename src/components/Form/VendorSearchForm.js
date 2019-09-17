@@ -125,8 +125,6 @@ const VendorSearchForm = ({ parts, search, onChange, onSearch, onFullPeriod, cla
 };
 
 VendorSearchForm.propTypes = {
-	parts: PropTypes.object,
-	search: PropTypes.object,
 	onChange: PropTypes.func,
 	onSearch: PropTypes.func
 };

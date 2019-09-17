@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, FormGroup, Col, Label, Input, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const DocumentInfoSearchForm = ({ vendors, gbs, search, onChange, onSearch, className, ...rest }) => {
 	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
@@ -90,6 +91,17 @@ const DocumentInfoSearchForm = ({ vendors, gbs, search, onChange, onSearch, clas
 			</FormGroup>
 		</Form>
 	);
+};
+
+DocumentInfoSearchForm.propTypes = {
+	onChange: PropTypes.func,
+	onSearch: PropTypes.func,
+	className: PropTypes.string
+};
+
+DocumentInfoSearchForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onSearch: () => console.warn('Warning: onSearch is not defined')
 };
 
 export default DocumentInfoSearchForm;

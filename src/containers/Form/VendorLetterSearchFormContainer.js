@@ -1,13 +1,13 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import TransmittalSearchForm from 'components/Form/TransmittalSearchForm';
+import VendorLetterSearchForm from 'components/Form/VendorLetterSearchForm';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as cmcodeActions from 'store/modules/cmcode';
 import * as vendorActions from 'store/modules/vendor';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 
-class TransmittalSearchFormContainer extends React.Component {
+class VendorLetterSearchFormContainer extends React.Component {
 	getCmcodes = (major) => {
 		const { CmcodeActions } = this.props;
 
@@ -21,17 +21,17 @@ class TransmittalSearchFormContainer extends React.Component {
 	};
 
 	handleChange = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { name, value } = e.target;
 
-		TransmittalActions.onChange({ target: 'search', name, value });
+		VendorLetterActions.onChange({ target: 'search', name, value });
 	};
 
 	handleSearch = async () => {
-		const { TransmittalActions, search, history } = this.props;
+		const { VendorLetterActions, search, history } = this.props;
 
-		await TransmittalActions.searchTransmittals(1, search.toJS());
-		history.push('/transmittals/overall?page=1');
+		await VendorLetterActions.searchVendorLetters(1, search.toJS());
+		history.push('/letters/vendor?page=1');
 	};
 
 	componentDidMount() {
@@ -45,7 +45,7 @@ class TransmittalSearchFormContainer extends React.Component {
 		if (!status || !vendors || loading || loading === undefined) return null;
 
 		return (
-			<TransmittalSearchForm
+			<VendorLetterSearchForm
 				status={status}
 				vendors={vendors}
 				search={search}
@@ -60,12 +60,12 @@ export default connect(
 	(state) => ({
 		vendors: state.vendor.get('vendorList'),
 		status: state.cmcode.get('0003'),
-		search: state.transmittal.get('search'),
+		search: state.vendorLetter.get('search'),
 		loading: state.pender.pending['vendor/GET_VENDORS_FOR_SELECT']
 	}),
 	(dispatch) => ({
 		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch),
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch)
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch)
 	})
-)(withRouter(TransmittalSearchFormContainer));
+)(withRouter(VendorLetterSearchFormContainer));

@@ -81,7 +81,6 @@ const IndexList = ({
 };
 
 IndexList.propTypes = {
-	data: PropTypes.object,
 	isOpenQuestion: PropTypes.bool,
 	onOpenQuestion: PropTypes.func,
 	onClose: PropTypes.func,

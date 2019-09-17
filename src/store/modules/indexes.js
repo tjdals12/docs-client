@@ -170,7 +170,7 @@ export default handleActions(
 
 				return state
 					.setIn([ 'indexDetail', 'list' ], fromJS(list))
-					.setIn([ 'indexDetail', 'lastPage' ], parseInt(lastPage));
+					.setIn([ 'indexDetail', 'lastPage' ], parseInt(lastPage, 10));
 			}
 		}),
 		...pender({

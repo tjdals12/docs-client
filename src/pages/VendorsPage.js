@@ -9,23 +9,21 @@ import VendorEditModalContainer from 'containers/Modal/VendorEditModalContainer'
 import VendorPersonAddModalContainer from 'containers/Modal/VendorPersonAddModalContainer';
 import queryString from 'query-string';
 
-class VendorsPage extends React.Component {
-	render() {
-		let { page } = queryString.parse(this.props.location.search);
+const VendorsPage = (props) => {
+	const { page } = queryString.parse(props.location.search);
 
-		return (
-			<ScrollToTop>
-				<Page title="Vendors" breadcrumbs={[ { name: 'Vendors', active: true } ]}>
-					<VendorSearchFormContainer />
-					<VendorListContainer page={parseInt(page || 1, 10)} />
-					<VendorAddModalContainer />
-					<VendorDetailModalContainer />
-					<VendorEditModalContainer />
-					<VendorPersonAddModalContainer />
-				</Page>
-			</ScrollToTop>
-		);
-	}
-}
+	return (
+		<ScrollToTop>
+			<Page title="Vendors" breadcrumbs={[ { name: 'Vendors', active: true } ]}>
+				<VendorSearchFormContainer />
+				<VendorListContainer page={parseInt(page || 1, 10)} />
+				<VendorAddModalContainer />
+				<VendorDetailModalContainer />
+				<VendorEditModalContainer />
+				<VendorPersonAddModalContainer />
+			</Page>
+		</ScrollToTop>
+	);
+};
 
 export default VendorsPage;

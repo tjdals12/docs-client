@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-const TransmittalSearchForm = ({ status, vendors, search, onChange, onSearch, className, ...rest }) => {
+const VendorLetterSearchForm = ({ status, vendors, search, onChange, onSearch, className, ...rest }) => {
 	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
 
 	return (
@@ -175,4 +176,15 @@ const TransmittalSearchForm = ({ status, vendors, search, onChange, onSearch, cl
 	);
 };
 
-export default TransmittalSearchForm;
+VendorLetterSearchForm.propTypes = {
+	onChange: PropTypes.func,
+	onSearch: PropTypes.func,
+	className: PropTypes.string
+};
+
+VendorLetterSearchForm.defaultProps = {
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onSearch: () => console.warn('Warning: onSearch is not defined')
+};
+
+export default VendorLetterSearchForm;

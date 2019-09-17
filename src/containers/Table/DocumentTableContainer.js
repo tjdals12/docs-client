@@ -28,7 +28,7 @@ class DocumentTableContainer extends React.Component {
 		this.getDocuments(1);
 	}
 
-	handleOpenAdd = () => {
+	handleOpenAdd = async () => {
 		const { ModalActions, DocumentActions } = this.props;
 
 		DocumentActions.initialize('errors');

@@ -329,11 +329,8 @@ const DocumentDetailModal = ({
 };
 
 DocumentDetailModal.propTypes = {
-	codes: PropTypes.object,
-	date: PropTypes.object,
 	isOpen: PropTypes.bool,
 	isOpenQuestion: PropTypes.bool,
-	data: PropTypes.object,
 	reason: PropTypes.string,
 	onClose: PropTypes.func,
 	onHold: PropTypes.func,

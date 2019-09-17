@@ -1,14 +1,14 @@
 import React from 'react';
-import TransmittalDetailModal from 'components/Modal/TransmittalDetailModal';
+import VendorLetterDetailModal from 'components/Modal/VendorLetterDetailModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as cmcodeActions from 'store/modules/cmcode';
 import * as vendorActions from 'store/modules/vendor';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
 
-class TransmittalDetailModalContainer extends React.Component {
+class VendorLetterDetailModalContainer extends React.Component {
 	getCmcodes = (major) => {
 		const { CmcodeActions } = this.props;
 
@@ -28,16 +28,16 @@ class TransmittalDetailModalContainer extends React.Component {
 	};
 
 	handleChange = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { name, value } = e.target;
 
-		TransmittalActions.onChange({ name, value });
+		VendorLetterActions.onChange({ name, value });
 	};
 
 	handleTarget = ({ id }) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.setTarget(id);
+		VendorLetterActions.setTarget(id);
 	};
 
 	handleTargetVendor = (id) => {
@@ -49,8 +49,8 @@ class TransmittalDetailModalContainer extends React.Component {
 	handleOpen = (name) => () => {
 		const { ModalActions } = this.props;
 
-		if (name === 'transmittalEdit') {
-			ModalActions.close('transmittalDetail');
+		if (name === 'vendorLetterEdit') {
+			ModalActions.close('vendorLetterDetail');
 		}
 
 		ModalActions.open(name);
@@ -64,27 +64,27 @@ class TransmittalDetailModalContainer extends React.Component {
 	};
 
 	handleDelete = ({ id, yn }) => () => {
-		const { TransmittalActions, reason } = this.props;
+		const { VendorLetterActions, reason } = this.props;
 
-		TransmittalActions.deleteTransmittal({ id, yn, reason });
+		VendorLetterActions.deleteVendorLetter({ id, yn, reason });
 	};
 
 	handleDate = (date) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.onChange({ name: 'date', value: date });
+		VendorLetterActions.onChange({ name: 'date', value: date });
 	};
 
 	handleStatus = ({ id }) => () => {
-		const { TransmittalActions, selectedStatus, date } = this.props;
+		const { VendorLetterActions, selectedStatus, date } = this.props;
 
-		TransmittalActions.inOutTransmittal(id, Object.assign(JSON.parse(selectedStatus), { date: date }));
+		VendorLetterActions.inOutVendorLetter(id, Object.assign(JSON.parse(selectedStatus), { date: date }));
 	};
 
 	handleDeleteStatus = async () => {
-		const { ModalActions, TransmittalActions, transmittal, target } = this.props;
+		const { ModalActions, VendorLetterActions, transmittal, target } = this.props;
 
-		await TransmittalActions.deleteInOutTransmittal({ id: transmittal.get('_id'), target });
+		await VendorLetterActions.deleteInOutVendorLetter({ id: transmittal.get('_id'), target });
 		ModalActions.close('question');
 	};
 
@@ -100,7 +100,7 @@ class TransmittalDetailModalContainer extends React.Component {
 		if (!codes || loading || loading === undefined) return null;
 
 		return (
-			<TransmittalDetailModal
+			<VendorLetterDetailModal
 				codes={codes}
 				date={date}
 				reasonError={reasonError}
@@ -125,21 +125,21 @@ class TransmittalDetailModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		codes: state.cmcode.get('0003'),
-		selectedStatus: state.transmittal.get('status'),
-		date: state.transmittal.get('date'),
-		isOpen: state.modal.get('transmittalDetailModal'),
+		selectedStatus: state.vendorLetter.get('status'),
+		date: state.vendorLetter.get('date'),
+		isOpen: state.modal.get('vendorLetterDetailModal'),
 		isOpenQuestion: state.modal.get('questionModal'),
-		transmittal: state.transmittal.get('transmittal'),
-		reason: state.transmittal.get('reason'),
-		reasonError: state.transmittal.get('reasonError'),
-		target: state.transmittal.get('target'),
-		loading: state.pender.pending['transmittal/GET_TRANSMITTAL']
+		transmittal: state.vendorLetter.get('vendorLetter'),
+		reason: state.vendorLetter.get('reason'),
+		reasonError: state.vendorLetter.get('reasonError'),
+		target: state.vendorLetter.get('target'),
+		loading: state.pender.pending['vendorletter/GET_VENDORLETTER']
 	}),
 	(dispatch) => ({
 		CmcodeActions: bindActionCreators(cmcodeActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch),
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		DocumentActions: bindActionCreators(documentActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(TransmittalDetailModalContainer);
+)(VendorLetterDetailModalContainer);

@@ -49,12 +49,17 @@ const DocumentInfoCard = ({ data, currentPage, lastPage, height, onPage, classNa
 };
 
 DocumentInfoCard.propTypes = {
+	currentPage: PropTypes.number,
+	lastPage: PropTypes.number,
 	height: PropTypes.string,
 	className: PropTypes.string
 };
 
 DocumentInfoCard.defaultProps = {
-	height: 'lg'
+	currentPage: 1,
+	lastPage: 1,
+	height: 'lg',
+	onPage: () => console.warn('Warning: onPage is not defined')
 };
 
 export default DocumentInfoCard;

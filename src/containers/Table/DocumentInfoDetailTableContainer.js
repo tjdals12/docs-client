@@ -2,7 +2,7 @@ import React from 'react';
 import DocumentInfoDetailTable from 'components/Table/DocumentInfoDetailTable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as modalActions from 'store/modules/modal';
 import * as documentActions from 'store/modules/document';
 
@@ -13,10 +13,10 @@ class DocumentInfoDetailTableContainer extends React.Component {
 		DocumentActions.getDocument({ id });
 	};
 
-	getTransmittal = (id) => {
-		const { TransmittalActions } = this.props;
+	getVendorLetter = (id) => {
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.getTransmittal({ id });
+		VendorLetterActions.getVendorLetter({ id });
 	};
 
 	handleOpen = ({ id }) => async () => {
@@ -36,7 +36,7 @@ class DocumentInfoDetailTableContainer extends React.Component {
 export default connect(
 	(state) => ({}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		DocumentActions: bindActionCreators(documentActions, dispatch)
 	})

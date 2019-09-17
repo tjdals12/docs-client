@@ -138,8 +138,6 @@ const DocumentIndexAddModal = ({
 };
 
 DocumentIndexAddModal.propTyps = {
-	data: PropTypes.object,
-	vendorList: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

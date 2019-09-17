@@ -196,11 +196,9 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, onFullPeri
 };
 
 DocumentSearchForm.propTypes = {
-	gb: PropTypes.object,
-	status: PropTypes.object,
-	search: PropTypes.object,
 	onChange: PropTypes.func,
-	onSearch: PropTypes.func
+	onSearch: PropTypes.func,
+	onFullPeriod: PropTypes.func
 };
 
 DocumentSearchForm.defaultProps = {

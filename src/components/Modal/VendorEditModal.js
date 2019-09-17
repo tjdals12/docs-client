@@ -172,8 +172,6 @@ const VendorEditModal = ({ parts, data, errors, isOpen, onClose, onChange, onEdi
 };
 
 VendorEditModal.propTypes = {
-	parts: PropTypes.object,
-	data: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

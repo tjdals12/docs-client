@@ -7,7 +7,7 @@ import StatisticsByStatusBarCharCardContainer from 'containers/Card/StatisticsBy
 import TransmittalCardContainer from 'containers/Card/TransmittalCardContainer';
 import StatisticsByTransmittalBarCharCardContainer from 'containers/Card/StatisticsByTransmittalBarCharCardContainer';
 import DocumentInfoCardContainer from 'containers/Card/DocumentInfoCardContainer';
-import TransmittalDetailModalContainer from 'containers/Modal/TransmittalDetailModalContainer';
+import VendorLetterDetailModalContainer from 'containers/Modal/VendorLetterDetailModalContainer';
 
 const IndexesDetailTemplate = ({ id, vendor, currentPage, onPage }) => {
 	return (
@@ -46,7 +46,7 @@ const IndexesDetailTemplate = ({ id, vendor, currentPage, onPage }) => {
 					<DocumentInfoCardContainer id={id} currentPage={currentPage} />
 				</Col>
 			</Row>
-			<TransmittalDetailModalContainer />
+			<VendorLetterDetailModalContainer />
 		</React.Fragment>
 	);
 };

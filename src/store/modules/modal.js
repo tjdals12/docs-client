@@ -19,10 +19,10 @@ const initialState = Map({
 	documentIndexEditModal: false,
 	documentInfoAddModal: false,
 	documentInfoDetailModal: false,
-	transmittalReceiveModal: false,
-	transmittalDetailModal: false,
-	transmittalEditModal: false,
-	transmittalAdditionalReceiveModal: false,
+	vendorLetterReceiveModal: false,
+	vendorLetterDetailModal: false,
+	vendorLetterEditModal: false,
+	vendorLetterAdditionalReceiveModal: false,
 	questionModal: false
 });
 

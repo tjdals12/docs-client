@@ -1,12 +1,12 @@
 import React from 'react';
-import TransmittalReceiveModal from 'components/Modal/TransmittalReceiveModal';
+import VendorLetterReceiveModal from 'components/Modal/VendorLetterReceiveModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as vendorActions from 'store/modules/vendor';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as modalActions from 'store/modules/modal';
 
-class TransmittalReceiveModalContainer extends React.Component {
+class VendorLetterReceiveModalContainer extends React.Component {
 	getVendorList = () => {
 		const { VendorActions } = this.props;
 
@@ -16,18 +16,18 @@ class TransmittalReceiveModalContainer extends React.Component {
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
-		ModalActions.close('transmittalReceive');
+		ModalActions.close('vendorLetterReceive');
 	};
 
 	handleChange = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { name, value } = e.target;
 
-		TransmittalActions.onChange({ target: 'receive', name, value });
+		VendorLetterActions.onChange({ target: 'receive', name, value });
 	};
 
 	handleReadDirectory = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { files } = e.target;
 		const receiveDocuments = [];
 
@@ -44,21 +44,21 @@ class TransmittalReceiveModalContainer extends React.Component {
 			});
 		}
 
-		TransmittalActions.onChange({ target: 'errors', name: 'receiveDocumentsError', value: false });
-		TransmittalActions.onChange({ target: 'receive', name: 'receiveDocuments', value: receiveDocuments });
+		VendorLetterActions.onChange({ target: 'errors', name: 'receiveDocumentsError', value: false });
+		VendorLetterActions.onChange({ target: 'receive', name: 'receiveDocuments', value: receiveDocuments });
 	};
 
 	handleDeleteReceiveDocument = (id) => () => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.deleteReceiveDocument({ id, target: 'receive' });
+		VendorLetterActions.deleteReceiveDocument({ id, target: 'receive' });
 	};
 
 	handleReceive = async () => {
-		const { ModalActions, TransmittalActions, receive } = this.props;
+		const { ModalActions, VendorLetterActions, receive } = this.props;
 
-		await TransmittalActions.receiveTransmittal(receive.toJS());
-		ModalActions.close('transmittalReceive');
+		await VendorLetterActions.receiveVendorLetter(receive.toJS());
+		ModalActions.close('vendorLetterReceive');
 	};
 
 	componentDidMount() {
@@ -71,7 +71,7 @@ class TransmittalReceiveModalContainer extends React.Component {
 		if (!vendorList) return null;
 
 		return (
-			<TransmittalReceiveModal
+			<VendorLetterReceiveModal
 				vendorList={vendorList}
 				isOpen={isOpen}
 				data={receive}
@@ -89,13 +89,13 @@ class TransmittalReceiveModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		vendorList: state.vendor.get('vendorList'),
-		receive: state.transmittal.get('receive'),
-		errors: state.transmittal.get('errors'),
-		isOpen: state.modal.get('transmittalReceiveModal')
+		receive: state.vendorLetter.get('receive'),
+		errors: state.vendorLetter.get('errors'),
+		isOpen: state.modal.get('vendorLetterReceiveModal')
 	}),
 	(dispatch) => ({
 		VendorActions: bindActionCreators(vendorActions, dispatch),
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(TransmittalReceiveModalContainer);
+)(VendorLetterReceiveModalContainer);

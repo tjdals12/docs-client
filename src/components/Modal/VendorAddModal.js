@@ -159,7 +159,6 @@ const VendorAddModal = ({ parts, errors, isOpen, onClose, onChange, onInsert, cl
 };
 
 VendorAddModal.propTypes = {
-	parts: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

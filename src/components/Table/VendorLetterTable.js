@@ -3,17 +3,17 @@ import classNames from 'classnames';
 import { Row, Col, Button, Table } from 'reactstrap';
 import Pagination from 'components/Pagination';
 
-const TransmittalTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOpenDetail, className, ...rest }) => {
+const VendorLetterTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOpenDetail, className, ...rest }) => {
 	const classes = classNames('mt-2 mb-4 bg-white', className);
 
 	return (
 		<React.Fragment>
 			<Row className="hidden-md hidden-sm -hidden-xs">
 				<Col md={4}>
-					<Button color="primary" className="mr-2" onClick={onOpen('transmittalReceive')}>
+					<Button color="primary" className="mr-2" onClick={onOpen('vendorLetterReceive')}>
 						RECEIVE
 					</Button>
-					<Button color="secondary" className="mr-2" onClick={onOpen('transmittalAdditionalReceive')}>
+					<Button color="secondary" className="mr-2" onClick={onOpen('vendorLetterAdditionalReceive')}>
 						ADD DOCUMENT
 					</Button>
 				</Col>
@@ -125,4 +125,4 @@ const TransmittalTable = ({ page, lastPage, data, onPage, onTarget, onOpen, onOp
 	);
 };
 
-export default TransmittalTable;
+export default VendorLetterTable;

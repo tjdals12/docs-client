@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import IndexesDetailTemplate from 'templates/IndexesDetailTemplate';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as indexesActions from 'store/modules/indexes';
 import * as documentActions from 'store/modules/document';
 import * as modalActions from 'store/modules/modal';
@@ -34,7 +34,7 @@ export default connect(
 		loading: state.pender.pending['indexes/GET_INDEX']
 	}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		IndexesActions: bindActionCreators(indexesActions, dispatch),
 		DocumentActions: bindActionCreators(documentActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)

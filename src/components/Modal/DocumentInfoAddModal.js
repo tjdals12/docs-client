@@ -172,8 +172,6 @@ const DocumentInfoAddModal = ({
 };
 
 DocumentInfoAddModal.propTypes = {
-	vendorList: PropTypes.object,
-	infos: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onTarget: PropTypes.func,

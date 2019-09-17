@@ -170,7 +170,6 @@ const VendorDetailModal = ({
 };
 
 VendorDetailModal.propTypes = {
-	data: PropTypes.object,
 	isOpen: PropTypes.bool,
 	isOpenQuestion: PropTypes.bool,
 	onOpen: PropTypes.func,

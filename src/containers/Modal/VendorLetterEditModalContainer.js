@@ -1,12 +1,12 @@
 import React from 'react';
-import TransmittalEditModal from 'components/Modal/TransmittalEditModal';
+import VendorLetterEditModal from 'components/Modal/VendorLetterEditModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as vendorActions from 'store/modules/vendor';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as modalActions from 'store/modules/modal';
 
-class TransmittalEditModalContainer extends React.Component {
+class VendorLetterEditModalContainer extends React.Component {
 	getVendorList = () => {
 		const { VendorActions } = this.props;
 
@@ -16,24 +16,24 @@ class TransmittalEditModalContainer extends React.Component {
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
-		ModalActions.close('transmittalEdit');
+		ModalActions.close('vendorLetterEdit');
 	};
 
 	handleChange = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { name, value } = e.target;
 
-		TransmittalActions.onChange({ target: 'edit', name, value });
+		VendorLetterActions.onChange({ target: 'edit', name, value });
 	};
 
 	handleSetDeleteDocument = (id) => () => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.setDeleteDocument(id);
+		VendorLetterActions.setDeleteDocument(id);
 	};
 
 	handleEdit = async () => {
-		const { ModalActions, TransmittalActions, edit } = this.props;
+		const { ModalActions, VendorLetterActions, edit } = this.props;
 		const {
 			_id,
 			vendor,
@@ -47,7 +47,7 @@ class TransmittalEditModalContainer extends React.Component {
 			targetDate
 		} = edit.toJS();
 
-		await TransmittalActions.editTransmittal({
+		await VendorLetterActions.editVendorLetter({
 			id: _id,
 			param: {
 				vendor,
@@ -62,7 +62,7 @@ class TransmittalEditModalContainer extends React.Component {
 			}
 		});
 
-		ModalActions.close('transmittalEdit');
+		ModalActions.close('vendorLetterEdit');
 	};
 
 	componentDidMount() {
@@ -75,7 +75,7 @@ class TransmittalEditModalContainer extends React.Component {
 		if (loading || loading === undefined) return null;
 
 		return (
-			<TransmittalEditModal
+			<VendorLetterEditModal
 				vendorList={vendorList}
 				isOpen={isOpen}
 				data={edit}
@@ -92,14 +92,14 @@ class TransmittalEditModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		vendorList: state.vendor.get('vendorList'),
-		isOpen: state.modal.get('transmittalEditModal'),
-		edit: state.transmittal.get('edit'),
-		errors: state.transmittal.get('errors'),
-		loading: state.pender.pending['transmittal/GET_TRANSMITTAL']
+		isOpen: state.modal.get('vendorLetterEditModal'),
+		edit: state.vendorLetter.get('edit'),
+		errors: state.vendorLetter.get('errors'),
+		loading: state.pender.pending['vendorletter/GET_VENDORLETTER']
 	}),
 	(dispatch) => ({
 		VendorActions: bindActionCreators(vendorActions, dispatch),
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(TransmittalEditModalContainer);
+)(VendorLetterEditModalContainer);

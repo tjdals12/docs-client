@@ -79,8 +79,6 @@ const IndexesSearchForm = ({ parts, search, onChange, onSearch, className, ...re
 };
 
 IndexesSearchForm.propTypes = {
-	parts: PropTypes.object,
-	search: PropTypes.object,
 	onChange: PropTypes.func,
 	onSearch: PropTypes.func,
 	className: PropTypes.string

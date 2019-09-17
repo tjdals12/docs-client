@@ -70,7 +70,8 @@ const VendorCard = ({ vendor, onOpen, className, ...restProps }) => {
 
 VendorCard.propTypes = {
 	vendor: PropTypes.object,
-	onOpen: PropTypes.func
+	onOpen: PropTypes.func,
+	className: PropTypes.string
 };
 
 VendorCard.defaultProps = {

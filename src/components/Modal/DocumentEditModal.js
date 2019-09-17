@@ -176,10 +176,6 @@ const DocumentEditModal = ({
 };
 
 DocumentEditModal.propTypes = {
-	vendorList: PropTypes.object,
-	data: PropTypes.object,
-	parts: PropTypes.object,
-	gbs: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import DocumentInfoTable from 'components/Table/DocumentInfoTable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as modalActions from 'store/modules/modal';
 import * as vendorActions from 'store/modules/vendor';
 import * as infoActions from 'store/modules/info';
@@ -81,7 +81,7 @@ export default connect(
 		loading: state.pender.pending['info/GET_INFOS']
 	}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch),
 		InfoActions: bindActionCreators(infoActions, dispatch)

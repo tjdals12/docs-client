@@ -1,12 +1,12 @@
 import React from 'react';
-import TransmittalAdditionalReceiveModal from 'components/Modal/TransmittalAdditionalReceiveModal';
+import VendorLetterAdditionalReceiveModal from 'components/Modal/VendorLetterAdditionalReceiveModal';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as vendorActions from 'store/modules/vendor';
 import * as modalActions from 'store/modules/modal';
 
-class TransmittalAdditionalReceiveModalContainer extends React.Component {
+class VendorLetterAdditionalReceiveModalContainer extends React.Component {
 	getVendorList = () => {
 		const { VendorActions } = this.props;
 
@@ -14,30 +14,30 @@ class TransmittalAdditionalReceiveModalContainer extends React.Component {
 	};
 
 	getTransmittalsByVendor = (id) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.getTransmittalsByVendor({ vendor: id });
+		VendorLetterActions.getVendorLettersByVendor({ vendor: id });
 	};
 
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
-		ModalActions.close('transmittalAdditionalReceive');
+		ModalActions.close('vendorLetterAdditionalReceive');
 	};
 
 	handleChange = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { name, value } = e.target;
 
 		if (name === 'vendor') {
 			this.getTransmittalsByVendor(value);
 		} else {
-			TransmittalActions.onChange({ target: 'additionalReceive', name, value });
+			VendorLetterActions.onChange({ target: 'additionalReceive', name, value });
 		}
 	};
 
 	handleReadDirectory = (e) => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 		const { files } = e.target;
 		const receiveDocuments = [];
 
@@ -54,22 +54,26 @@ class TransmittalAdditionalReceiveModalContainer extends React.Component {
 			});
 		}
 
-		TransmittalActions.onChange({ target: 'errors', name: 'receiveDocumentsError', value: false });
-		TransmittalActions.onChange({ target: 'additionalReceive', name: 'receiveDocuments', value: receiveDocuments });
+		VendorLetterActions.onChange({ target: 'errors', name: 'receiveDocumentsError', value: false });
+		VendorLetterActions.onChange({
+			target: 'additionalReceive',
+			name: 'receiveDocuments',
+			value: receiveDocuments
+		});
 	};
 
 	handleDeleteReceiveDocument = (id) => () => {
-		const { TransmittalActions } = this.props;
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.deleteReceiveDocument({ id, target: 'additionalReceive' });
+		VendorLetterActions.deleteReceiveDocument({ id, target: 'additionalReceive' });
 	};
 
 	handleAdditionalReceive = async () => {
-		const { ModalActions, TransmittalActions, data } = this.props;
+		const { ModalActions, VendorLetterActions, data } = this.props;
 		const { id, receiveDocuments } = data.toJS();
 
-		await TransmittalActions.additionalReceiveTransmittal({ id, param: receiveDocuments });
-		ModalActions.close('transmittalAdditionalReceive');
+		await VendorLetterActions.additionalReceiveVendorLetter({ id, param: receiveDocuments });
+		ModalActions.close('vendorLetterAdditionalReceive');
 	};
 
 	render() {
@@ -78,7 +82,7 @@ class TransmittalAdditionalReceiveModalContainer extends React.Component {
 		if (!vendorList) return null;
 
 		return (
-			<TransmittalAdditionalReceiveModal
+			<VendorLetterAdditionalReceiveModal
 				vendorList={vendorList}
 				transmittalsByVendor={transmittalsByVendor}
 				data={data}
@@ -97,14 +101,14 @@ class TransmittalAdditionalReceiveModalContainer extends React.Component {
 export default connect(
 	(state) => ({
 		vendorList: state.vendor.get('vendorList'),
-		transmittalsByVendor: state.transmittal.get('transmittalsByVendor'),
-		data: state.transmittal.get('additionalReceive'),
-		errors: state.transmittal.get('errors'),
-		isOpen: state.modal.get('transmittalAdditionalReceiveModal')
+		transmittalsByVendor: state.vendorLetter.get('vendorLettersByVendor'),
+		data: state.vendorLetter.get('additionalReceive'),
+		errors: state.vendorLetter.get('errors'),
+		isOpen: state.modal.get('vendorLetterAdditionalReceiveModal')
 	}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		VendorActions: bindActionCreators(vendorActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
-)(TransmittalAdditionalReceiveModalContainer);
+)(VendorLetterAdditionalReceiveModalContainer);

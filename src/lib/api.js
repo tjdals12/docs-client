@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const real = 'http://192.168.7.9';
+// const real = 'http://192.168.7.9';
+const real = '';
 
 /** Document */
 export const getDocuments = ({ page }) => axios.get(`${real}/api/documents?page=${page}`);
@@ -48,20 +49,23 @@ export const getInfos = ({ page }) => axios.get(`${real}/api/documentinfos?page=
 export const searchInfos = (page, param) => axios.post(`${real}/api/documentinfos/search?page=${page}`, { ...param });
 export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
 
-/** Transmittal */
-export const getTransmittals = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
-export const getTransmittalsByVendor = ({ vendor }) => axios.get(`${real}/api/vendorletters/${vendor}/letters`);
+/** Vendor Letter */
+export const getVendorLetters = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
+export const getVendorLettersByVendor = ({ vendor }) => axios.get(`${real}/api/vendorletters/${vendor}/letters`);
 export const statisticsByTransmittal = ({ vendor }) =>
 	axios.get(`${real}/api/vendorletters/${vendor}/statisticsbytransmittal`);
-export const searchTransmittals = (page, param) =>
+export const searchVendorLetters = (page, param) =>
 	axios.post(`${real}/api/vendorletters/search?page=${page}`, { ...param });
-export const getTransmittal = ({ id }) => axios.get(`${real}/api/vendorletters/${id}`);
-export const receiveTransmittal = (param) => axios.post(`${real}/api/vendorletters`, { ...param });
-export const editTransmittal = ({ id, param }) => axios.patch(`${real}/api/vendorletters/${id}/edit`, { ...param });
-export const additionalReceiveTransmittal = ({ id, param }) =>
+export const getVendorLetter = ({ id }) => axios.get(`${real}/api/vendorletters/${id}`);
+export const receiveVendorLetter = (param) => axios.post(`${real}/api/vendorletters`, { ...param });
+export const editVendorLetter = ({ id, param }) => axios.patch(`${real}/api/vendorletters/${id}/edit`, { ...param });
+export const additionalReceiveVendorLetter = ({ id, param }) =>
 	axios.patch(`${real}/api/vendorletters/${id}/add`, { receiveDocuments: param });
-export const deleteTransmittal = ({ id, yn, reason }) =>
+export const deleteVendorLetter = ({ id, yn, reason }) =>
 	axios.patch(`${real}/api/vendorletters/${id}/delete`, { yn, reason });
-export const inOutTransmittal = (id, param) => axios.patch(`${real}/api/vendorletters/${id}/inout`, { ...param });
-export const deleteInOutTransmittal = ({ id, target }) =>
+export const inOutVendorLetter = (id, param) => axios.patch(`${real}/api/vendorletters/${id}/inout`, { ...param });
+export const deleteInOutVendorLetter = ({ id, target }) =>
 	axios.patch(`${real}/api/vendorletters/${id}/inout/delete`, { targetId: target });
+
+/** Letter */
+export const getLetters = ({ page }) => axios.get(`/api/letters?page=${page}`);

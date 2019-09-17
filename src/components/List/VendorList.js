@@ -39,7 +39,6 @@ const VendorList = ({ page, lastPage, data, onPage, onOpenAdd, onOpenPersonAdd, 
 VendorList.propTypes = {
 	page: PropTypes.number,
 	lastPage: PropTypes.number,
-	data: PropTypes.object,
 	onPage: PropTypes.func,
 	onOpenAdd: PropTypes.func,
 	onOpenPersonAdd: PropTypes.func,

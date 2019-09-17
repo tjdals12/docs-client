@@ -15,8 +15,9 @@ import { MdClose } from 'react-icons/md';
 import QuestionModal from 'components/Modal/QuestionModal';
 import Typography from 'components/Typography';
 import DatePicker from 'react-datepicker';
+import PropTypes from 'prop-types';
 
-const TransmittalDetailModal = ({
+const VendorLetterDetailModal = ({
 	codes,
 	date,
 	reasonError,
@@ -39,7 +40,7 @@ const TransmittalDetailModal = ({
 	return (
 		<Modal
 			isOpen={isOpen}
-			toggle={onClose('transmittalDetail')}
+			toggle={onClose('vendorLetterDetail')}
 			className={className}
 			contentClassName="border-light rouned"
 			{...rest}
@@ -62,7 +63,7 @@ const TransmittalDetailModal = ({
 					</Button>
 				}
 			/>
-			<ModalHeader className="bg-light" toggle={onClose('transmittalDetail')}>
+			<ModalHeader className="bg-light" toggle={onClose('vendorLetterDetail')}>
 				Transmittal 상세 <span className="text-primary">({data.get('officialNumber')})</span>
 			</ModalHeader>
 			<ModalBody className="p-0">
@@ -269,7 +270,14 @@ const TransmittalDetailModal = ({
 						</InputGroupAddon>
 					</InputGroup>
 				</Col>
-				<Input type="text" name="reason" placeholder="DELETE 사유 (필수)" className="w-25" onChange={onChange} invalid={reasonError}/>
+				<Input
+					type="text"
+					name="reason"
+					placeholder="DELETE 사유 (필수)"
+					className="w-25"
+					onChange={onChange}
+					invalid={reasonError}
+				/>
 				{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' ? (
 					<Button color="danger" onClick={onDelete({ id: data.get('_id'), yn: 'NO' })}>
 						DELETE 취소
@@ -279,10 +287,10 @@ const TransmittalDetailModal = ({
 						DELETE
 					</Button>
 				)}
-				<Button color="primary" onClick={onOpen('transmittalEdit')}>
+				<Button color="primary" onClick={onOpen('vendorLetterEdit')}>
 					EDIT
 				</Button>
-				<Button color="secondary" onClick={onClose('transmittalDetail')}>
+				<Button color="secondary" onClick={onClose('vendorLetterDetail')}>
 					CANCEL
 				</Button>
 			</ModalFooter>
@@ -290,4 +298,37 @@ const TransmittalDetailModal = ({
 	);
 };
 
-export default TransmittalDetailModal;
+VendorLetterDetailModal.propTypes = {
+	reasonError: PropTypes.bool,
+	isOpen: PropTypes.bool,
+	isOpenQuestion: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onTarget: PropTypes.func,
+	onTargetVendor: PropTypes.func,
+	onOpen: PropTypes.func,
+	onOpenDetail: PropTypes.func,
+	onDelete: PropTypes.func,
+	onDate: PropTypes.func,
+	onStatus: PropTypes.func,
+	onDeleteStatus: PropTypes.func,
+	className: PropTypes.string
+};
+
+VendorLetterDetailModal.defaultProps = {
+	reasonError: false,
+	isOpen: false,
+	isOpenQuestion: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onTarget: () => console.warn('Warning: onTarget is not defined'),
+	onTargetVendor: () => console.warn('Warning: onTargetVendor is not defined'),
+	onOpen: () => console.warn('Warning: onOpen is not defined'),
+	onOpenDetail: () => console.warn('Warning: onOpenDetail is not defined'),
+	onDelete: () => console.warn('Warning: onDelete is not defined'),
+	onDate: () => console.warn('Warning: onDate is not defined'),
+	onStatus: () => console.warn('Warning: onStatus is not defined'),
+	onDeleteStatus: () => console.warn('Warning: onDeleteStatus is not defined')
+};
+
+export default VendorLetterDetailModal;

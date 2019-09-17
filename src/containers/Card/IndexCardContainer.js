@@ -27,7 +27,6 @@ class IndexCardContainer extends React.Component {
 
 export default connect(
 	(state) => ({
-		target: state.indexes.get('target'),
 		index: state.indexes.get('index'),
 		loading: state.pender.pending['indexes/GET_INDEX']
 	}),

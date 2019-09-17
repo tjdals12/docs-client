@@ -2,13 +2,13 @@ import React from 'react';
 import BarChartCard from 'components/Card/BarChartCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 
 class StatisticsByTransmittalBarChartCardContainer extends React.Component {
 	getStatisticsByTransmittal = () => {
-		const { TransmittalActions, vendor } = this.props;
+		const { VendorLetterActions, vendor } = this.props;
 
-		TransmittalActions.statisticsByTransmittal({ vendor });
+		VendorLetterActions.statisticsByTransmittal({ vendor });
 	};
 
 	componentDidMount() {
@@ -26,9 +26,9 @@ class StatisticsByTransmittalBarChartCardContainer extends React.Component {
 
 export default connect(
 	(state) => ({
-		statisticsByTransmittal: state.transmittal.get('statisticsByTransmittal')
+		statisticsByTransmittal: state.vendorLetter.get('statisticsByTransmittal')
 	}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch)
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch)
 	})
 )(StatisticsByTransmittalBarChartCardContainer);

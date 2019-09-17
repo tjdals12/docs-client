@@ -7,27 +7,32 @@ import {
 	Button,
 	Form,
 	FormGroup,
-	Col,
 	Label,
+	Col,
 	Input,
 	InputGroup,
 	InputGroupAddon,
 	Table
 } from 'reactstrap';
 import { MdClose } from 'react-icons/md';
+import Typography from 'components/Typography';
+import PropTypes from 'prop-types';
 
-const TransmittalEditModal = ({
+const VendorLetterReceiveModal = ({
 	vendorList,
 	isOpen,
 	data,
 	errors,
 	onClose,
 	onChange,
-	onSetDeleteDocument,
-	onEdit,
+	onReadDirectory,
+	onDeleteReceiveDocument,
+	onReceive,
 	className,
 	...rest
 }) => {
+	const { receiveDocumentsErrorList } = errors.toJS();
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -37,7 +42,9 @@ const TransmittalEditModal = ({
 			{...rest}
 			size="lg"
 		>
-			<ModalHeader toggle={onClose}>Transmittal 수정</ModalHeader>
+			<ModalHeader toggle={onClose} className="bg-light">
+				Transmittal 접수
+			</ModalHeader>
 			<ModalBody>
 				<Form>
 					<FormGroup row>
@@ -47,7 +54,6 @@ const TransmittalEditModal = ({
 								type="select"
 								id="vendor"
 								name="vendor"
-								value={data.get('vendor')}
 								onChange={onChange}
 								invalid={errors.get('vendorError')}
 							>
@@ -67,7 +73,6 @@ const TransmittalEditModal = ({
 								id="officialNumber"
 								name="officialNumber"
 								placeholder="ex) ABC-DEF-T-R-001-001"
-								value={data.get('officialNumber')}
 								onChange={onChange}
 								invalid={errors.get('officialNumberError')}
 							/>
@@ -82,17 +87,6 @@ const TransmittalEditModal = ({
 									<Input
 										type="select"
 										name="senderGb"
-										value={
-											data.get('senderGb') === 'CLIENT' ? (
-												'01'
-											) : data.get('senderGb') === 'CONTRACTOR' ? (
-												'02'
-											) : data.get('senderGb') === 'VENDOR' ? (
-												'03'
-											) : (
-												data.get('senderGb')
-											)
-										}
 										onChange={onChange}
 										invalid={errors.get('senderGbError')}
 									>
@@ -107,7 +101,6 @@ const TransmittalEditModal = ({
 									name="sender"
 									className="ml-1"
 									placeholder="ex) 홍길동 대리"
-									value={data.get('sender')}
 									onChange={onChange}
 									invalid={errors.get('senderError')}
 								/>
@@ -120,17 +113,6 @@ const TransmittalEditModal = ({
 									<Input
 										type="select"
 										name="receiverGb"
-										value={
-											data.get('receiverGb') === 'CLIENT' ? (
-												'01'
-											) : data.get('receiverGb') === 'CONTRACTOR' ? (
-												'02'
-											) : data.get('receiverGb') === 'VENDOR' ? (
-												'03'
-											) : (
-												data.get('receiverGb')
-											)
-										}
 										onChange={onChange}
 										invalid={errors.get('receiverGbError')}
 									>
@@ -145,7 +127,6 @@ const TransmittalEditModal = ({
 									name="receiver"
 									className="ml-1"
 									placeholder="ex) 이성민 사원"
-									value={data.get('receiver')}
 									onChange={onChange}
 									invalid={errors.get('receiverError')}
 								/>
@@ -154,69 +135,78 @@ const TransmittalEditModal = ({
 					</FormGroup>
 
 					<FormGroup row className="mt-4">
-						<Col md={12}>
-							<Label for="receiveDocuments">접수목록</Label>
-							<Table bordered striped>
-								<colgroup>
-									<col width="5%" />
-									<col width="35%" />
-									<col width="50%" />
-									<col width="5%" />
-									<col width="5%" />
-								</colgroup>
-								<thead>
-									<tr style={{ background: '#e7f5ff' }}>
-										<th className="text-right">#</th>
-										<th>No.</th>
-										<th>Title</th>
-										<th className="text-center">Rev.</th>
-										<th />
-									</tr>
-								</thead>
-								<tbody>
-									{data.get('documents').size === 0 ? (
-										<tr>
-											<td colSpan="5" className="text-center text-muted font-italic">
-												접수목록이 없습니다.
-											</td>
-										</tr>
-									) : (
-										data.get('documents').map((document, index) => {
-											const deleted = document.get('deleted');
-
-											return (
-												<tr key={index} className={deleted && 'bg-danger'}>
-													<td className="text-right">{index + 1}</td>
-													<td className={deleted && 'text-line-through'}>
-														{document.get('documentNumber')}
-													</td>
-													<td className={deleted && 'text-line-through'}>
-														{document.get('documentTitle')}
-													</td>
-													<td
-														className={[
-															'text-center',
-															deleted && 'text-line-through'
-														].join(' ')}
-													>
-														{document.get('documentRev')}
-													</td>
-													<td className="text-center">
-														{!deleted && (
-															<MdClose
-																className="can-click text-danger"
-																onClick={onSetDeleteDocument(document.get('_id'))}
-															/>
-														)}
-													</td>
-												</tr>
-											);
-										})
-									)}
-								</tbody>
-							</Table>
+						<Label for="receiveDocuments" md={2}>
+							접수목록
+						</Label>
+						<Col md={4}>
+							<Button className="custom-file-uploader can-click">
+								<Input
+									type="file"
+									name="receiveDocuments"
+									webkitdirectory=""
+									directory=""
+									onChange={onReadDirectory}
+									value=""
+								/>
+								Select
+							</Button>
 						</Col>
 					</FormGroup>
+					<Table bordered striped className={errors.get('receiveDocumentsError') ? 'bg-secondary' : ''}>
+						<colgroup>
+							<col width="5%" />
+							<col width="35%" />
+							<col width="50%" />
+							<col width="5%" />
+							<col width="5%" />
+						</colgroup>
+						<thead>
+							<tr style={{ background: '#e7f5ff' }}>
+								<th className="text-right">#</th>
+								<th>No.</th>
+								<th>Title</th>
+								<th className="text-center">Rev.</th>
+								<th />
+							</tr>
+						</thead>
+						<tbody>
+							{data.get('receiveDocuments').size === 0 ? (
+								<tr>
+									<td colSpan="5" className="text-center text-muted font-italic">
+										폴더를 선택해주세요. 선택한 폴더 내의 파일을 기준으로 접수목록을 작성합니다.
+									</td>
+								</tr>
+							) : (
+								data.get('receiveDocuments').map((document, index) => {
+									const { id, documentNumber, documentTitle, documentRev } = document.toJS();
+									const isError = receiveDocumentsErrorList.indexOf(documentNumber) > -1;
+
+									return (
+										<tr key={index} className={isError ? 'bg-secondary' : ''}>
+											<td className="text-right">{index + 1}</td>
+											<td>{documentNumber}</td>
+											<td>{documentTitle}</td>
+											<td className="text-center">{documentRev}</td>
+											<td className="text-center">
+												<MdClose
+													className={
+														isError ? 'can-click text-warning' : 'can-click text-danger'
+													}
+													onClick={onDeleteReceiveDocument(id)}
+												/>
+											</td>
+										</tr>
+									);
+								})
+							)}
+						</tbody>
+					</Table>
+
+					{receiveDocumentsErrorList.length > 0 && (
+						<Typography type="leaf" className="text-danger">
+							* 작성된 Index에 존재하지 않는 문서가 있습니다. 해당 문서는 접수할 수 없습니다.
+						</Typography>
+					)}
 
 					<FormGroup row className="mt-5">
 						<Col md={6}>
@@ -225,7 +215,7 @@ const TransmittalEditModal = ({
 								type="date"
 								id="receiveDate"
 								name="receiveDate"
-								value={data.get('receiveDate').substr(0, 10)}
+								value={data.get('receiveDate')}
 								onChange={onChange}
 								invalid={errors.get('receiveDateError')}
 							/>
@@ -236,7 +226,7 @@ const TransmittalEditModal = ({
 								type="date"
 								id="targetDate"
 								name="targetDate"
-								value={data.get('targetDate').substr(0, 10)}
+								value={data.get('targetDate')}
 								onChange={onChange}
 								invalid={errors.get('targetDateError')}
 							/>
@@ -244,9 +234,9 @@ const TransmittalEditModal = ({
 					</FormGroup>
 				</Form>
 			</ModalBody>
-			<ModalFooter>
-				<Button color="primary" onClick={onEdit}>
-					EDIT
+			<ModalFooter className="bg-light">
+				<Button color="primary" onClick={onReceive}>
+					RECEIVE
 				</Button>
 				<Button color="secondary" onClick={onClose}>
 					CANCEL
@@ -256,4 +246,23 @@ const TransmittalEditModal = ({
 	);
 };
 
-export default TransmittalEditModal;
+VendorLetterReceiveModal.propTypes = {
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onReadDirectory: PropTypes.func,
+	onDeleteReceiveDocument: PropTypes.func,
+	onReceive: PropTypes.func,
+	className: PropTypes.string
+};
+
+VendorLetterReceiveModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onReadDirectory: () => console.warn('Warning: onReadDirectory is not defined'),
+	onDeleteReceiveDocument: () => console.warn('Warning: onDeleteReceiveDocument is not defined'),
+	onReceive: () => console.warn('Warning: onReceive is not defined')
+};
+
+export default VendorLetterReceiveModal;

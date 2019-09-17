@@ -4,37 +4,37 @@ import * as api from 'lib/api';
 import { pender } from 'redux-pender';
 import moment from 'moment';
 
-const GET_TRANSMITTALS = 'transmittal/GET_TRANSMITTALS';
-const GET_TRANSMITTALS_BY_VENDOR = 'transmittals/GET_TRANSMITTALS_BY_VENDOR';
-const STATISTICS_BY_TRANSMITTAL = 'transmittals/STATISTICS_BY_TRANSMITTAL';
-const SEARCH_TRANSMITTALS = 'transmittal/SEARCH_TRANSMITTALS';
-const GET_TRANSMITTAL = 'transmittal/GET_TRANSMITTAL';
-const RECEIVE_TRANSMITTAL = 'transmittal/RECEIVE_TRANSMITTAL';
-const EDIT_TRANSMITTAL = 'transmittal/EDIT_TRANSMITTAL';
-const ADDITIONAL_RECEIVE_TRANSMITTAL = 'transmittal/ADDITIONAL_RECEIVE_TRANSMITTAL';
-const DELETE_TRANSMITTAL = 'transmittal/DELETE_TRANSMITTAL';
-const INOUT_TRANSMITTAL = 'transmittal/INOUT_TRANSMITTAL';
-const DELETE_INOUT_TRANSMITTAL = 'transmittal/DELETE_INOUT_TRANSMITTAL';
-const ON_CHANGE = 'transmittal/ON_CHANGE';
-const SET_TARGET = 'transmittal/SET_TARGET';
-const SET_DELETE_DOCUMENT = 'transmittal/SET_DELETE_DOCUMENT';
-const DELETE_RECEIVE_DOCUMENT = 'transmittal/DELETE_RECEIVE_DOCUMENT';
-const INITIALIZE = 'transmittal/INITIALIZE';
+const GET_VENDORLETTERS = 'vendorletter/GET_VENDORLETTERS';
+const GET_VENDORLETTERS_BY_VENDOR = 'vendorletter/GET_VENDORLETTERS_BY_VENDOR';
+const STATISTICS_BY_TRANSMITTAL = 'vendorletter/STATISTICS_BY_TRANSMITTAL';
+const SEARCH_VENDORLETTERS = 'vendorletter/SEARCH_VENDORLETTERS';
+const GET_VENDORLETTER = 'vendorletter/GET_VENDORLETTER';
+const RECEIVE_VENDORLETTER = 'vendorletter/RECEIVE_VENDORLETTER';
+const EDIT_VENDORLETTER = 'vendorletter/EDIT_VENDORLETTER';
+const ADDITIONAL_RECEIVE_VENDORLETTER = 'vendorletter/ADDITIONAL_RECEIVE_VENDORLETTER';
+const DELETE_VENDORLETTER = 'vendorletter/DELETE_VENDORLETTER';
+const INOUT_VENDORLETTER = 'vendorletter/INOUT_VENDORLETTER';
+const DELETE_INOUT_VENDORLETTER = 'vendorletter/DELETE_INOUT_VENDORLETTER';
+const ON_CHANGE = 'vendorletter/ON_CHANGE';
+const SET_TARGET = 'vendorletter/SET_TARGET';
+const SET_DELETE_DOCUMENT = 'vendorletter/SET_DELETE_DOCUMENT';
+const DELETE_RECEIVE_DOCUMENT = 'vendorletter/DELETE_RECEIVE_DOCUMENT';
+const INITIALIZE = 'vendorletter/INITIALIZE';
 
-export const getTransmittals = createAction(GET_TRANSMITTALS, api.getTransmittals);
-export const getTransmittalsByVendor = createAction(GET_TRANSMITTALS_BY_VENDOR, api.getTransmittalsByVendor);
+export const getVendorLetters = createAction(GET_VENDORLETTERS, api.getVendorLetters);
+export const getVendorLettersByVendor = createAction(GET_VENDORLETTERS_BY_VENDOR, api.getVendorLettersByVendor);
 export const statisticsByTransmittal = createAction(STATISTICS_BY_TRANSMITTAL, api.statisticsByTransmittal);
-export const searchTransmittals = createAction(SEARCH_TRANSMITTALS, api.searchTransmittals);
-export const getTransmittal = createAction(GET_TRANSMITTAL, api.getTransmittal);
-export const receiveTransmittal = createAction(RECEIVE_TRANSMITTAL, api.receiveTransmittal);
-export const editTransmittal = createAction(EDIT_TRANSMITTAL, api.editTransmittal);
-export const additionalReceiveTransmittal = createAction(
-	ADDITIONAL_RECEIVE_TRANSMITTAL,
-	api.additionalReceiveTransmittal
+export const searchVendorLetters = createAction(SEARCH_VENDORLETTERS, api.searchVendorLetters);
+export const getVendorLetter = createAction(GET_VENDORLETTER, api.getVendorLetter);
+export const receiveVendorLetter = createAction(RECEIVE_VENDORLETTER, api.receiveVendorLetter);
+export const editVendorLetter = createAction(EDIT_VENDORLETTER, api.editVendorLetter);
+export const additionalReceiveVendorLetter = createAction(
+	ADDITIONAL_RECEIVE_VENDORLETTER,
+	api.additionalReceiveVendorLetter
 );
-export const deleteTransmittal = createAction(DELETE_TRANSMITTAL, api.deleteTransmittal);
-export const inOutTransmittal = createAction(INOUT_TRANSMITTAL, api.inOutTransmittal);
-export const deleteInOutTransmittal = createAction(DELETE_INOUT_TRANSMITTAL, api.deleteInOutTransmittal);
+export const deleteVendorLetter = createAction(DELETE_VENDORLETTER, api.deleteVendorLetter);
+export const inOutVendorLetter = createAction(INOUT_VENDORLETTER, api.inOutVendorLetter);
+export const deleteInOutVendorLetter = createAction(DELETE_INOUT_VENDORLETTER, api.deleteInOutVendorLetter);
 export const onChange = createAction(ON_CHANGE);
 export const setTarget = createAction(SET_TARGET);
 export const setDeleteDocument = createAction(SET_DELETE_DOCUMENT);
@@ -42,9 +42,9 @@ export const deleteReceiveDocument = createAction(DELETE_RECEIVE_DOCUMENT);
 export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
-	transmittals: List(),
-	transmittalsByVendor: List(),
-	transmittal: Map(),
+	vendorLetters: List(),
+	vendorLettersByVendor: List(),
+	vendorLetter: Map(),
 	receive: Map({
 		vendor: '',
 		senderGb: '',
@@ -107,20 +107,20 @@ const initialState = Map({
 export default handleActions(
 	{
 		...pender({
-			type: GET_TRANSMITTALS,
+			type: GET_VENDORLETTERS,
 			onSuccess: (state, action) => {
-				const { data: transmittals } = action.payload.data;
+				const { data: vendorLetters } = action.payload.data;
 				const lastPage = action.payload.headers['last-page'];
 
-				return state.set('transmittals', fromJS(transmittals)).set('lastPage', parseInt(lastPage || 10));
+				return state.set('vendorLetters', fromJS(vendorLetters)).set('lastPage', parseInt(lastPage, 10));
 			}
 		}),
 		...pender({
-			type: GET_TRANSMITTALS_BY_VENDOR,
+			type: GET_VENDORLETTERS_BY_VENDOR,
 			onSuccess: (state, action) => {
-				const { data: transmittals } = action.payload.data;
+				const { data: vendorLetters } = action.payload.data;
 
-				return state.set('transmittalsByVendor', fromJS(transmittals));
+				return state.set('vendorLettersByVendor', fromJS(vendorLetters));
 			}
 		}),
 		...pender({
@@ -132,35 +132,35 @@ export default handleActions(
 			}
 		}),
 		...pender({
-			type: SEARCH_TRANSMITTALS,
+			type: SEARCH_VENDORLETTERS,
 			onSuccess: (state, action) => {
-				const { data: transmittals } = action.payload.data;
+				const { data: vendorLetters } = action.payload.data;
 				const lastPage = action.payload.headers['last-page'];
 
 				return state
-					.set('transmittals', fromJS(transmittals))
-					.set('lastPage', parseInt(lastPage || 10))
+					.set('vendorLetters', fromJS(vendorLetters))
+					.set('lastPage', parseInt(lastPage, 10))
 					.setIn([ 'search', 'isSearch' ], true);
 			}
 		}),
 		...pender({
-			type: GET_TRANSMITTAL,
+			type: GET_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
 				return state
-					.set('transmittal', fromJS(transmittal))
-					.set('edit', fromJS(transmittal))
-					.setIn([ 'edit', 'vendor' ], transmittal.vendor._id)
+					.set('vendorLetter', fromJS(vendorLetter))
+					.set('edit', fromJS(vendorLetter))
+					.setIn([ 'edit', 'vendor' ], vendorLetter.vendor._id)
 					.setIn([ 'edit', 'deleteDocuments' ], List());
 			}
 		}),
 		...pender({
-			type: RECEIVE_TRANSMITTAL,
+			type: RECEIVE_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
-				return state.set('transmittal', fromJS(transmittal));
+				return state.set('vendorLetter', fromJS(vendorLetter));
 			},
 			onFailure: (state, action) => {
 				const { data } = action.payload.response.data;
@@ -180,14 +180,14 @@ export default handleActions(
 			}
 		}),
 		...pender({
-			type: EDIT_TRANSMITTAL,
+			type: EDIT_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
 				return state
-					.set('transmittal', fromJS(transmittal))
-					.set('edit', fromJS(transmittal))
-					.setIn([ 'edit', 'vendor' ], transmittal.vendor._id)
+					.set('vendorLetter', fromJS(vendorLetter))
+					.set('edit', fromJS(vendorLetter))
+					.setIn([ 'edit', 'vendor' ], vendorLetter.vendor._id)
 					.setIn([ 'edit', 'deleteDocuments' ], List());
 			},
 			onFailure: (state, action) => {
@@ -206,45 +206,47 @@ export default handleActions(
 			}
 		}),
 		...pender({
-			type: ADDITIONAL_RECEIVE_TRANSMITTAL,
+			type: ADDITIONAL_RECEIVE_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
-				return state.set('transmittal', fromJS(transmittal));
+				return state.set('vendorLetter', fromJS(vendorLetter));
 			},
 			onFailure: (state, action) => {
+				const { data } = action.payload.response.data;
+
 				const additionalReceive = state.get('additionalReceive');
 
 				return state
 					.setIn([ 'errors', 'officialNumberError' ], additionalReceive.get('id') === '')
-					.setIn([ 'errors', 'receiveDocumentsError' ], additionalReceive.get('receiveDocuments').size === 0);
+					.setIn([ 'errors', 'receiveDocumentsErrorList' ], Array.isArray(data) ? data : List());
 			}
 		}),
 		...pender({
-			type: DELETE_TRANSMITTAL,
+			type: DELETE_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
-				return state.set('transmittal', fromJS(transmittal));
+				return state.set('vendorLetter', fromJS(vendorLetter));
 			},
 			onFailure: (state, action) => {
 				return state.set('reasonError', state.get('reason') === '');
 			}
 		}),
 		...pender({
-			type: INOUT_TRANSMITTAL,
+			type: INOUT_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
-				return state.set('transmittal', fromJS(transmittal));
+				return state.set('vendorLetter', fromJS(vendorLetter));
 			}
 		}),
 		...pender({
-			type: DELETE_INOUT_TRANSMITTAL,
+			type: DELETE_INOUT_VENDORLETTER,
 			onSuccess: (state, action) => {
-				const { data: transmittal } = action.payload.data;
+				const { data: vendorLetter } = action.payload.data;
 
-				return state.set('transmittal', fromJS(transmittal));
+				return state.set('vendorLetter', fromJS(vendorLetter));
 			}
 		}),
 		[ON_CHANGE]: (state, action) => {

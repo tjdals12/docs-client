@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 const DocumentInfoDetailModal = ({
 	isOpen,
@@ -154,6 +155,23 @@ const DocumentInfoDetailModal = ({
 			</ModalFooter>
 		</Modal>
 	);
+};
+
+DocumentInfoDetailModal.propTypes = {
+	isOpen: PropTypes.bool,
+	onClose: PropTypes.func,
+	onTarget: PropTypes.func,
+	onOpenVendor: PropTypes.func,
+	onOpenDetail: PropTypes.func,
+	className: PropTypes.string
+};
+
+DocumentInfoDetailModal.defaultProps = {
+	isOpen: false,
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onTarget: () => console.warn('Warning: onTarget is not defined'),
+	onOpenVendor: () => console.warn('Warning: onOpenVendor is not defined'),
+	onOpenDetail: () => console.warn('Warning: onOpenDetail is not defined')
 };
 
 export default DocumentInfoDetailModal;

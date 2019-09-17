@@ -9,7 +9,8 @@ import {
 	MdShowChart,
 	MdFormatListBulleted,
 	MdFindInPage,
-	MdAssignment
+	MdAssignment,
+	MdChevronRight
 } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
@@ -34,7 +35,10 @@ const indexMenus = [
 	{ to: '/indexes/infos', name: 'Documents', exact: true, Icon: MdFindInPage }
 ];
 
-const transmittalMenus = [ { to: '/transmittals/overall', name: 'overall', exact: true, Icon: MdShowChart } ];
+const transmittalMenus = [
+	{ to: '/letters/vendor', name: 'Vendor', exact: true, Icon: MdChevronRight },
+	{ to: '/letters/internal', name: 'Internal', exact: true, Icon: MdChevronRight }
+];
 
 class Sidebar extends React.Component {
 	state = {

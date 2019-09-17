@@ -2,49 +2,49 @@ import React from 'react';
 import TransmittalCard from 'components/Card/TransmittalCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as transmittalActions from 'store/modules/transmittal';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 import * as modalActions from 'store/modules/modal';
 import * as indexesActions from 'store/modules/indexes';
 
 class TransmittalCardContainer extends React.Component {
-	getTransmittal = (id) => {
-		const { TransmittalActions } = this.props;
+	getVendorLetter = (id) => {
+		const { VendorLetterActions } = this.props;
 
-		TransmittalActions.getTransmittal({ id });
+		VendorLetterActions.getVendorLetter({ id });
 	};
 
-	getTransmittals = () => {
-		const { TransmittalActions, vendor } = this.props;
+	getVendorLetters = () => {
+		const { VendorLetterActions, vendor } = this.props;
 
-		TransmittalActions.getTransmittalsByVendor({ vendor });
+		VendorLetterActions.getVendorLettersByVendor({ vendor });
 	};
 
 	handleOpenTransmittalDetail = async (id) => {
 		const { ModalActions } = this.props;
 
-		await this.getTransmittal(id);
-		ModalActions.open('transmittalDetail');
+		await this.getVendorLetter(id);
+		ModalActions.open('vendorLetterDetail');
 	};
 
 	componentDidMount() {
-		this.getTransmittals();
+		this.getVendorLetters();
 	}
 
 	render() {
-		const { transmittals } = this.props;
+		const { vendorLetters } = this.props;
 
-		if (!transmittals) return null;
+		if (!vendorLetters) return null;
 
-		return <TransmittalCard data={transmittals} onOpenDetail={this.handleOpenTransmittalDetail} height="md" />;
+		return <TransmittalCard data={vendorLetters} onOpenDetail={this.handleOpenTransmittalDetail} height="md" />;
 	}
 }
 
 export default connect(
 	(state) => ({
-		transmittals: state.transmittal.get('transmittalsByVendor')
+		vendorLetters: state.vendorLetter.get('vendorLettersByVendor')
 	}),
 	(dispatch) => ({
-		TransmittalActions: bindActionCreators(transmittalActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		IndexesActions: bindActionCreators(indexesActions, dispatch)
 	})

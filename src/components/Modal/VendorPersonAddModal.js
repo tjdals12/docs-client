@@ -78,10 +78,7 @@ const VendorPersonAddModal = ({
 };
 
 VendorPersonAddModal.propTypes = {
-	vendorList: PropTypes.object,
 	targetError: PropTypes.bool,
-	persons: PropTypes.object,
-	personsError: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,

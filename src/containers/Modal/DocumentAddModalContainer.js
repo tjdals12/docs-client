@@ -6,7 +6,6 @@ import * as cmcodeActions from 'store/modules/cmcode';
 import * as modalActions from 'store/modules/modal';
 import * as documentActions from 'store/modules/document';
 import * as vendorActions from 'store/modules/vendor';
-
 class DocumentAddModalContainer extends React.Component {
 	getCmcodes = (major) => {
 		const { CmcodeActions } = this.props;

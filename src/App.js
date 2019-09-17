@@ -8,7 +8,8 @@ import {
 	IndexesOverallPage,
 	IndexesDetailPage,
 	IndexesInfosPage,
-	TransmittalsPage
+	VendorLettersPage,
+	LettersPage
 } from 'pages';
 
 class App extends React.Component {
@@ -22,7 +23,8 @@ class App extends React.Component {
 					<LayoutRoute exact path="/indexes/overall" layout={MainLayout} component={IndexesOverallPage} />
 					<LayoutRoute exact path="/indexes/detail" layout={MainLayout} component={IndexesDetailPage} />
 					<LayoutRoute exact path="/indexes/infos" layout={MainLayout} component={IndexesInfosPage} />
-					<LayoutRoute exact path="/transmittals/overall" layout={MainLayout} component={TransmittalsPage} />
+					<LayoutRoute exact path="/letters/vendor" layout={MainLayout} component={VendorLettersPage} />
+					<LayoutRoute exact path="/letters/internal" layout={MainLayout} component={LettersPage} />
 				</Switch>
 			</BrowserRouter>
 		);

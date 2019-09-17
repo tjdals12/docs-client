@@ -151,18 +151,14 @@ const DocumentAddModal = ({
 };
 
 DocumentAddModal.propTypes = {
-	vendorList: PropTypes.object,
-	parts: PropTypes.object,
-	gbs: PropTypes.object,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
+	onChange: PropTypes.func,
+	onInsert: PropTypes.func,
 	className: PropTypes.string
 };
 
 DocumentAddModal.defaultProps = {
-	vendorList: [],
-	parts: {},
-	gbs: {},
 	isOpen: false,
 	onClose: () => console.warn('Warning: onClose is not defined'),
 	onChange: () => console.warn('Warning: onChange is not defined'),
