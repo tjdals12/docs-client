@@ -11,12 +11,22 @@ class LetterDetailModalContainer extends React.Component {
 		ModalActions.close('letterDetail');
 	};
 
+	handleOpen = (name) => () => {
+		const { ModalActions } = this.props;
+
+		if (name === 'letterEdit') {
+			this.handleClose();
+		}
+
+		ModalActions.open(name);
+	};
+
 	render() {
 		const { letter, isOpen, loading } = this.props;
 
 		if (loading || loading === undefined) return null;
 
-		return <LetterDetailModal data={letter} isOpen={isOpen} onClose={this.handleClose} />;
+		return <LetterDetailModal data={letter} isOpen={isOpen} onClose={this.handleClose} onOpen={this.handleOpen} />;
 	}
 }
 

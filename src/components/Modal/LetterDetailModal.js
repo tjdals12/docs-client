@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LetterDetailModal = ({ data, isOpen, onClose, className, ...rest }) => {
+const LetterDetailModal = ({ data, isOpen, onClose, onOpen, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -89,6 +89,12 @@ const LetterDetailModal = ({ data, isOpen, onClose, className, ...rest }) => {
 								)}
 							</td>
 						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
+								메모
+							</th>
+							<td colSpan={3}>{data.get('memo') || '-'}</td>
+						</tr>
 						<tr>
 							<th scope="row" className="text-right bg-light">
 								등록정보
@@ -107,6 +113,9 @@ const LetterDetailModal = ({ data, isOpen, onClose, className, ...rest }) => {
 				</Table>
 			</ModalBody>
 			<ModalFooter className="bg-light">
+				<Button color="primary" onClick={onOpen('letterEdit')}>
+					EDIT
+				</Button>
 				<Button color="secondary" onClick={onClose}>
 					CANCEL
 				</Button>
@@ -118,12 +127,14 @@ const LetterDetailModal = ({ data, isOpen, onClose, className, ...rest }) => {
 LetterDetailModal.propTypes = {
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
+	onOpen: PropTypes.func,
 	className: PropTypes.string
 };
 
 LetterDetailModal.defaultProps = {
 	isOpen: false,
-	onClose: () => console.warn('Warning: onClose is not defined')
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onOpen: () => console.warn('Warning: onOpen is not defined')
 };
 
 export default LetterDetailModal;

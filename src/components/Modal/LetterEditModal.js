@@ -15,18 +15,18 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, className, ...rest }) => {
+const LetterEditModal = ({ data, errors, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
-			toggle={onClose('letterAdd')}
+			toggle={onClose}
 			className={className}
 			contentClassName="border rounded"
 			{...rest}
 			size="lg"
 		>
-			<ModalHeader toggle={onClose('letterAdd')} className="bg-light">
-				Letter 추가
+			<ModalHeader toggle={onClose} className="bg-light">
+				Letter 수정
 			</ModalHeader>
 			<ModalBody>
 				<Form>
@@ -37,6 +37,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 								type="select"
 								id="letterGb"
 								name="letterGb"
+								value={data.get('letterGb')}
 								onChange={onChange}
 								invalid={errors.get('letterGbError')}
 							>
@@ -57,6 +58,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 								type="text"
 								id="letterTitle"
 								name="letterTitle"
+								value={data.get('letterTitle')}
 								onChange={onChange}
 								invalid={errors.get('letterTitleError')}
 							/>
@@ -70,6 +72,17 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 									<Input
 										type="select"
 										name="senderGb"
+										value={
+											data.get('senderGb') === 'CLIENT' ? (
+												'01'
+											) : data.get('senderGb') === 'CONTRACTOR' ? (
+												'02'
+											) : data.get('senderGb') === 'VENDOR' ? (
+												'03'
+											) : (
+												data.get('senderGb')
+											)
+										}
 										onChange={onChange}
 										invalid={errors.get('senderGbError')}
 									>
@@ -83,6 +96,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 									name="sender"
 									className="ml-1"
 									placeholder="ex) 홍길동 대리"
+									value={data.get('sender')}
 									onChange={onChange}
 									invalid={errors.get('senderError')}
 								/>
@@ -95,6 +109,17 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 									<Input
 										type="select"
 										name="receiverGb"
+										value={
+											data.get('receiverGb') === 'CLIENT' ? (
+												'01'
+											) : data.get('receiverGb') === 'CONTRACTOR' ? (
+												'02'
+											) : data.get('receiverGb') === 'VENDOR' ? (
+												'03'
+											) : (
+												data.get('receiverGb')
+											)
+										}
 										onChange={onChange}
 										invalid={errors.get('receiverGbError')}
 									>
@@ -108,6 +133,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 									name="receiver"
 									className="ml-1"
 									placeholder="ex) 이성민 사원"
+									value={data.get('receiver')}
 									onChange={onChange}
 									invalid={errors.get('receiverError')}
 								/>
@@ -121,7 +147,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 								type="date"
 								id="sendDate"
 								name="sendDate"
-								value={data.get('sendDate')}
+								value={data.get('sendDate').substr(0, 10)}
 								onChange={onChange}
 								invalid={errors.get('sendDateError')}
 							/>
@@ -133,6 +159,7 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 									<Input
 										type="select"
 										name="replyRequired"
+										value={data.get('replyRequired')}
 										onChange={onChange}
 										invalid={errors.get('replyRequiredError')}
 									>
@@ -141,7 +168,14 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 										<option value="NO">NO</option>
 									</Input>
 								</InputGroupAddon>
-								<Input type="date" name="targetDate" onChange={onChange} />
+								<Input
+									type="date"
+									name="targetDate"
+									value={
+										data.get('replyRequired') === 'YES' ? data.get('targetDate').substr(0, 10) : ''
+									}
+									onChange={onChange}
+								/>
 							</InputGroup>
 						</Col>
 					</FormGroup>
@@ -150,16 +184,23 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 							메모
 						</Label>
 						<Col md={12}>
-							<Input type="textarea" bsSize="md" id="memo" name="memo" onChange={onChange} />
+							<Input
+								type="textarea"
+								bsSize="md"
+								id="memo"
+								name="memo"
+								value={data.get('memo')}
+								onChange={onChange}
+							/>
 						</Col>
 					</FormGroup>
 				</Form>
 			</ModalBody>
 			<ModalFooter className="bg-light">
-				<Button color="primary" onClick={onAdd}>
-					ADD
+				<Button color="primary" onClick={onEdit}>
+					EDIT
 				</Button>
-				<Button color="secondary" onClick={onClose('letterAdd')}>
+				<Button color="secondary" onClick={onClose}>
 					CANCEL
 				</Button>
 			</ModalFooter>
@@ -167,17 +208,19 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, classN
 	);
 };
 
-LetterAddModal.propTypes = {
+LetterEditModal.propTypes = {
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
 	onChange: PropTypes.func,
+	onEdit: PropTypes.func,
 	className: PropTypes.string
 };
 
-LetterAddModal.defaultProps = {
+LetterEditModal.defaultProps = {
 	isOpen: false,
 	onClose: () => console.warn('Warning: onClose is not defined'),
-	onChange: () => console.warn('Warning: onChange is not defined')
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onEdit: () => console.warn('Warning: onEdit is not defined')
 };
 
-export default LetterAddModal;
+export default LetterEditModal;

@@ -69,5 +69,6 @@ export const deleteInOutVendorLetter = ({ id, target }) =>
 
 /** Letter */
 export const getLetters = ({ page }) => axios.get(`/api/letters?page=${page}`);
-export const addLetter = (param) => axios.post(`${real}/api/letters`, { ...param });
 export const getLetter = ({ id }) => axios.get(`${real}/api/letters/${id}`);
+export const addLetter = (param) => axios.post(`${real}/api/letters`, { ...param });
+export const editLetter = ({ id, param }) => axios.patch(`${real}/api/letters/${id}/edit`, { ...param });

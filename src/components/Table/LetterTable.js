@@ -81,14 +81,18 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 								<td className="text-center">
 									{transmittal.get('replyRequired') === 'YES' ? (
 										<span className="text-success font-weight-bold">
-											{transmittal.get('targetDate')}
+											{transmittal.get('targetDate').substr(0, 10)}
 										</span>
 									) : (
 										<span className="text-danger">회신 필요없음</span>
 									)}
 								</td>
 								<td className="text-center">
-									{transmittal.get('replyYn') === 'YES' ? transmittal.get('targetDate') : '-'}
+									{transmittal.get('replyYn') === 'YES' ? (
+										transmittal.get('replyDate').substr(0, 10)
+									) : (
+										'-'
+									)}
 								</td>
 								<td className="text-center">
 									<TiArrowForward size={20} className="text-primary can-click" />
