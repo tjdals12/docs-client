@@ -4,14 +4,14 @@ import { Row, Col, Button, Table } from 'reactstrap';
 import { TiArrowForward } from 'react-icons/ti';
 import Pagination from 'components/Pagination';
 
-const LetterTable = ({ page, lastPage, data, onPage, className, ...rest }) => {
+const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, className, ...rest }) => {
 	const classes = classNames('mt-2 mb-4 bg-white', classNames);
 
 	return (
 		<React.Fragment>
 			<Row className="hidden-md hidden-sm hidden-xs">
 				<Col md={4}>
-					<Button color="primary" className="mr-2">
+					<Button color="primary" className="mr-2" onClick={onOpen('letterAdd')}>
 						ADD
 					</Button>
 				</Col>
@@ -67,7 +67,9 @@ const LetterTable = ({ page, lastPage, data, onPage, className, ...rest }) => {
 								</td>
 								<td className="text-center">{transmittal.get('officialNumber')}</td>
 								<td className="text-left">
-									<span className="have-link">{transmittal.get('letterTitle')}</span>
+									<span className="have-link" onClick={onOpenDetail(id)}>
+										{transmittal.get('letterTitle')}
+									</span>
 								</td>
 								<td className="text-center">{transmittal.get('sender')}</td>
 								<td className="text-center">{transmittal.get('receiver')}</td>

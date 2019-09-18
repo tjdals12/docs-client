@@ -23,6 +23,8 @@ const initialState = Map({
 	vendorLetterDetailModal: false,
 	vendorLetterEditModal: false,
 	vendorLetterAdditionalReceiveModal: false,
+	letterAddModal: false,
+	letterDetailModal: false,
 	questionModal: false
 });
 

@@ -4,17 +4,37 @@ import LetterTable from 'components/Table/LetterTable';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as letterActions from 'store/modules/letter';
+import * as modalActions from 'store/modules/modal';
 
 class LetterTableContainer extends React.Component {
-	getTransmittals = async (page) => {
+	getLetters = async (page) => {
 		const { LetterActions, history } = this.props;
 
 		await LetterActions.getLetters(page);
 		history.push(`/letters/internal?page=${page}`);
 	};
 
+	getLetter = (id) => {
+		const { LetterActions } = this.props;
+
+		LetterActions.getLetter({ id });
+	};
+
+	handleOpen = (name) => () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.open(name);
+	};
+
+	handleOpenDetail = (id) => async () => {
+		const { ModalActions } = this.props;
+
+		await this.getLetter(id);
+		ModalActions.open('letterDetail');
+	};
+
 	componentDidMount() {
-		this.getTransmittals(1);
+		this.getLetters(1);
 	}
 
 	render() {
@@ -22,7 +42,16 @@ class LetterTableContainer extends React.Component {
 
 		if (loading || loading === 'undefined') return null;
 
-		return <LetterTable page={page} lastPage={lastPage} data={transmittals} onPage={this.getTransmittals} />;
+		return (
+			<LetterTable
+				page={page}
+				lastPage={lastPage}
+				data={transmittals}
+				onOpen={this.handleOpen}
+				onOpenDetail={this.handleOpenDetail}
+				onPage={this.getTransmittals}
+			/>
+		);
 	}
 }
 
@@ -33,6 +62,7 @@ export default connect(
 		loading: state.pender.pending['letter/GET_LETTERS']
 	}),
 	(dispatch) => ({
-		LetterActions: bindActionCreators(letterActions, dispatch)
+		LetterActions: bindActionCreators(letterActions, dispatch),
+		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
 )(withRouter(LetterTableContainer));
