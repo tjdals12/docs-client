@@ -88,11 +88,7 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 									)}
 								</td>
 								<td className="text-center">
-									{transmittal.get('replyYn') === 'YES' ? (
-										transmittal.get('replyDate').substr(0, 10)
-									) : (
-										'-'
-									)}
+									{transmittal.get('replyRequired') === 'YES' ? transmittal.get('replyYn') : '-'}
 								</td>
 								<td className="text-center">
 									<TiArrowForward size={20} className="text-primary can-click" />

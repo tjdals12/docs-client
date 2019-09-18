@@ -8,13 +8,17 @@ const GET_LETTERS = 'letter/GET_LETTERS';
 const GET_LETTER = 'letter/GET_LETTER';
 const ADD_LETTER = 'letter/ADD_LETTER';
 const EDIT_LETTER = 'letter/EDIT_LETTER';
+const CANCEL_LETTER = 'letter/CANCEL_LETTER';
 const ON_CHANGE = 'letter/ON_CHANGE';
+const INITIALIZE = 'letter/INITIALIZE';
 
 export const getLetters = createAction(GET_LETTERS, api.getLetters);
 export const getLetter = createAction(GET_LETTER, api.getLetter);
 export const addLetter = createAction(ADD_LETTER, api.addLetter);
 export const editLetter = createAction(EDIT_LETTER, api.editLetter);
+export const cancelLetter = createAction(CANCEL_LETTER, api.cancelLetter);
 export const onChange = createAction(ON_CHANGE);
+export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	letters: List(),
@@ -49,6 +53,8 @@ const initialState = Map({
 		sendDateError: false,
 		replyRequiredError: false
 	}),
+	reason: '',
+	reasonError: false,
 	lastPage: null
 });
 
@@ -111,7 +117,6 @@ export default handleActions(
 				return state.set('letter', fromJS(letter));
 			},
 			onFailure: (state, action) => {
-				console.log(action.payload.response.data.data);
 				const data = state.get('edit');
 
 				return state
@@ -125,10 +130,26 @@ export default handleActions(
 					.setIn([ 'errors', 'replyRequiredError' ], data.get('replyRequired') === '');
 			}
 		}),
+		...pender({
+			type: CANCEL_LETTER,
+			onSuccess: (state, action) => {
+				const { data: letter } = action.payload.data;
+
+				return state.set('letter', fromJS(letter));
+			},
+			onFailure: (state, action) => {
+				return state.set('reasonError', state.get('reason') === '');
+			}
+		}),
 		[ON_CHANGE]: (state, action) => {
 			const { target, name, value } = action.payload;
 
 			return !target ? state.set(name, value) : state.setIn([ target, name ], value);
+		},
+		[INITIALIZE]: (state, action) => {
+			const { payload } = action;
+
+			return state.set(payload, initialState.get(payload));
 		}
 	},
 	initialState

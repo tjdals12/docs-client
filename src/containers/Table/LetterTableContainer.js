@@ -27,8 +27,9 @@ class LetterTableContainer extends React.Component {
 	};
 
 	handleOpenDetail = (id) => async () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, LetterActions } = this.props;
 
+		LetterActions.initialize('reasonError');
 		await this.getLetter(id);
 		ModalActions.open('letterDetail');
 	};
