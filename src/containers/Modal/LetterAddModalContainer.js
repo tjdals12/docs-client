@@ -19,10 +19,17 @@ class LetterAddModalContainer extends React.Component {
 		LetterActions.onChange({ target: 'add', name, value });
 	};
 
-	handleAdd = () => {
+	handleAdd = async () => {
 		const { LetterActions, add } = this.props;
 
-		LetterActions.addLetter(add.toJS());
+		await LetterActions.addLetter(add.toJS());
+		this.handleClose('letterAdd')();
+	};
+
+	handleOpen = (name) => () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.open(name);
 	};
 
 	render() {
@@ -36,6 +43,7 @@ class LetterAddModalContainer extends React.Component {
 				onClose={this.handleClose}
 				onChange={this.handleChange}
 				onAdd={this.handleAdd}
+				onOpen={this.handleOpen}
 			/>
 		);
 	}

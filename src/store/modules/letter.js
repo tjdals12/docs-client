@@ -7,6 +7,7 @@ import moment from 'moment';
 const GET_LETTERS = 'letter/GET_LETTERS';
 const GET_LETTER = 'letter/GET_LETTER';
 const ADD_LETTER = 'letter/ADD_LETTER';
+const REFERENCE_SEARCH = 'letter/REFERENCE_SEARCH';
 const EDIT_LETTER = 'letter/EDIT_LETTER';
 const CANCEL_LETTER = 'letter/CANCEL_LETTER';
 const ON_CHANGE = 'letter/ON_CHANGE';
@@ -15,6 +16,7 @@ const INITIALIZE = 'letter/INITIALIZE';
 export const getLetters = createAction(GET_LETTERS, api.getLetters);
 export const getLetter = createAction(GET_LETTER, api.getLetter);
 export const addLetter = createAction(ADD_LETTER, api.addLetter);
+export const referenceSearch = createAction(REFERENCE_SEARCH, api.referenceSearch);
 export const editLetter = createAction(EDIT_LETTER, api.editLetter);
 export const cancelLetter = createAction(CANCEL_LETTER, api.cancelLetter);
 export const onChange = createAction(ON_CHANGE);
@@ -43,6 +45,7 @@ const initialState = Map({
 		sendDate: '',
 		replyRequired: ''
 	}),
+	references: List(),
 	errors: Map({
 		letterGbError: false,
 		letterTitleError: false,
@@ -55,6 +58,8 @@ const initialState = Map({
 	}),
 	reason: '',
 	reasonError: false,
+	keyword: '',
+	keywordError: false,
 	lastPage: null
 });
 
@@ -76,7 +81,7 @@ export default handleActions(
 
 				return state
 					.set('letter', fromJS(letter))
-					.setIn([ 'edit', 'letterGb' ], letter.letterGb === 'E-mail' ? '01' : '02')
+					.setIn([ 'edit', 'letterGb' ], letter.letterGb)
 					.setIn([ 'edit', 'letterTitle' ], letter.letterTitle)
 					.setIn([ 'edit', 'senderGb' ], letter.senderGb)
 					.setIn([ 'edit', 'sender' ], letter.sender)
@@ -107,6 +112,18 @@ export default handleActions(
 					.setIn([ 'errors', 'receiverError' ], add.get('receiver') === '')
 					.setIn([ 'errors', 'sendDateError' ], add.get('sendDate') === '')
 					.setIn([ 'errors', 'replyRequiredError' ], add.get('replyRequired') === '');
+			}
+		}),
+		...pender({
+			type: REFERENCE_SEARCH,
+			onSuccess: (state, action) => {
+				const { data: references } = action.payload.data;
+
+				return state.set('references', fromJS(references)).set('keywordError', false);
+			},
+
+			onFailure: (state, action) => {
+				return state.set('keywordError', state.get('keyword') === '');
 			}
 		}),
 		...pender({

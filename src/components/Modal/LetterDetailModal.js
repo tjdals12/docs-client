@@ -29,8 +29,8 @@ const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChang
 							<th scope="row" className="text-right bg-light">
 								구분
 							</th>
-							<td className={data.get('letterGb') === 'E-mail' ? 'text-info' : 'text-danger'}>
-								{data.get('letterGb')}
+							<td className={data.get('letterGb') === '01' ? 'text-info' : 'text-danger'}>
+								{data.get('letterGb') === '01' ? 'E-mail' : 'TR'}
 							</td>
 							<th scope="row" className="text-right bg-light">
 								공식번호
@@ -48,13 +48,13 @@ const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChang
 								발신
 							</th>
 							<td>
-								{data.get('senderGb')}: {data.get('sender')}
+								{data.get('senderGb') === '01' ? 'CLIENT' : 'CONTRACTOR'}: {data.get('sender')}
 							</td>
 							<th scope="row" className="text-right bg-light">
 								수신
 							</th>
 							<td>
-								{data.get('receiverGb')}: {data.get('receiver')}
+								{data.get('receiverGb') === '01' ? 'CLIENT' : 'CONTRACTOR'}: {data.get('receiver')}
 							</td>
 						</tr>
 						<tr className="border-bottom">
@@ -134,7 +134,14 @@ const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChang
 					</Button>
 				</Col>
 
-				<Input type="text" name="reason" className="w-40" placeholder="Cancel 사유 (필수)" onChange={onChange} invalid={reasonError}/>
+				<Input
+					type="text"
+					name="reason"
+					className="w-40"
+					placeholder="Cancel 사유 (필수)"
+					onChange={onChange}
+					invalid={reasonError}
+				/>
 				{data.getIn([ 'cancelYn', 'yn' ]) === 'NO' ? (
 					<Button color="danger" onClick={onCancel('YES')}>
 						CANCEL

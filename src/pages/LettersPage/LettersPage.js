@@ -6,6 +6,7 @@ import LetterTableContainer from 'containers/Table/LetterTableContainer';
 import LetterAddModalContainer from 'containers/Modal/LetterAddModalContainer';
 import LetterDetailModalContainer from 'containers/Modal/LetterDetailModalContainer';
 import LetterEditModalContainer from 'containers/Modal/LetterEditModalContainer';
+import ReferenceSearchModalContainer from 'containers/Modal/ReferenceSearchModalContainer';
 import queryString from 'query-string';
 
 const InternalTransmittalPage = (props) => {
@@ -22,6 +23,7 @@ const InternalTransmittalPage = (props) => {
 				<LetterAddModalContainer />
 				<LetterDetailModalContainer />
 				<LetterEditModalContainer />
+				<ReferenceSearchModalContainer />
 			</Page>
 		</ScrollToTop>
 	);
