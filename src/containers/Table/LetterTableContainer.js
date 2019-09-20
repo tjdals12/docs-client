@@ -8,9 +8,14 @@ import * as modalActions from 'store/modules/modal';
 
 class LetterTableContainer extends React.Component {
 	getLetters = async (page) => {
-		const { LetterActions, history } = this.props;
+		const { LetterActions, search, isSearch, history } = this.props;
 
-		await LetterActions.getLetters(page);
+		if (isSearch) {
+			await LetterActions.searchLetters(page, search.toJS());
+		} else {
+			await LetterActions.getLetters({ page });
+		}
+
 		history.push(`/letters/internal?page=${page}`);
 	};
 
@@ -50,7 +55,7 @@ class LetterTableContainer extends React.Component {
 				data={transmittals}
 				onOpen={this.handleOpen}
 				onOpenDetail={this.handleOpenDetail}
-				onPage={this.getTransmittals}
+				onPage={this.getLetters}
 			/>
 		);
 	}
@@ -60,6 +65,8 @@ export default connect(
 	(state) => ({
 		transmittals: state.letter.get('letters'),
 		lastPage: state.letter.get('lastPage'),
+		isSearch: state.letter.getIn([ 'search', 'isSearch' ]),
+		search: state.letter.get('search'),
 		loading: state.pender.pending['letter/GET_LETTERS']
 	}),
 	(dispatch) => ({

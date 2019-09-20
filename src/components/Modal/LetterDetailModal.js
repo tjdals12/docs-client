@@ -3,7 +3,18 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table, Input, Col }
 import PropTypes from 'prop-types';
 import Typography from 'components/Typography';
 
-const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChange, onCancel, className, ...rest }) => {
+const LetterDetailModal = ({
+	data,
+	reasonError,
+	isOpen,
+	onClose,
+	onOpen,
+	onChange,
+	onCancel,
+	onOpenReference,
+	className,
+	...rest
+}) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -106,6 +117,49 @@ const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChang
 						</tr>
 						<tr className="border-bottom">
 							<th scope="row" className="text-right bg-light">
+								참조
+							</th>
+							<td colSpan={3}>
+								{data.get('vendorLetters') &&
+									data.get('vendorLetters').size !== 0 &&
+									data.get('vendorLetters').map((vendorLetter) => {
+										return (
+											<Typography
+												key={vendorLetter.get('_id')}
+												type="p"
+												className="mb-0 have-link"
+												onClick={onOpenReference({
+													name: 'vendorLetterDetail',
+													id: vendorLetter.get('_id')
+												})}
+											>
+												{vendorLetter.get('officialNumber')}_{`${vendorLetter.get('documents').size} 건`}
+											</Typography>
+										);
+									})}
+
+								{data.get('documents') &&
+									data.get('documents').size !== 0 &&
+									data.get('documents').map((document) => {
+										return (
+											<Typography
+												key={document.get('_id')}
+												type="p"
+												className="mb-0 have-link"
+												onClick={onOpenReference({
+													name: 'documentDetail',
+													id: document.get('_id')
+												})}
+											>
+												{document.get('documentNumber')}_{document.get('documentTitle')}_{`Rev.${document.get('documentRev')}`}
+											</Typography>
+										);
+									})}
+							</td>
+						</tr>
+
+						<tr className="border-bottom">
+							<th scope="row" className="text-right bg-light">
 								메모
 							</th>
 							<td colSpan={3}>{data.get('memo') || '-'}</td>
@@ -116,7 +170,7 @@ const LetterDetailModal = ({ data, reasonError, isOpen, onClose, onOpen, onChang
 							</th>
 							<td colSpan={3}>
 								<span className="text-danger">
-									등록: {data.getIn([ 'timestamp', 'regId' ])} ({data.getIn([ 'timestamp', 'regDt' ])})
+									등록: {data.getIn([ 'timestamp', 'regId' ])} ({data.getIn([ 'timestamp', 'regDt' ]).subst})
 								</span>
 								<br />
 								<span className="text-danger">
@@ -168,6 +222,8 @@ LetterDetailModal.propTypes = {
 	onClose: PropTypes.func,
 	onOpen: PropTypes.func,
 	onChange: PropTypes.func,
+	onCancel: PropTypes.func,
+	onOpenReference: PropTypes.func,
 	className: PropTypes.string
 };
 
@@ -175,7 +231,9 @@ LetterDetailModal.defaultProps = {
 	isOpen: false,
 	onClose: () => console.warn('Warning: onClose is not defined'),
 	onOpen: () => console.warn('Warning: onOpen is not defined'),
-	onChange: () => console.warn('Warning: onChange is not defined')
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onCancel: () => console.warn('Warning: onCancel is not defined'),
+	onOpenReference: () => console.warn('WarningL onOpenReference is not defined')
 };
 
 export default LetterDetailModal;

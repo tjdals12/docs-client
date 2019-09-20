@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Form, FormGroup, Label, Col, Input, Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LetterSearchForm = ({ onChange, onSearch, className, ...rest }) => {
+const LetterSearchForm = ({ data, onChange, onSearch, className, ...rest }) => {
 	const classes = classNames('bg-white mb-3 px-2 py-2 border rounded hidden-md hidden-sm hidden-xs', className);
 
 	return (
@@ -11,7 +11,7 @@ const LetterSearchForm = ({ onChange, onSearch, className, ...rest }) => {
 			className={classes}
 			{...rest}
 			onSubmit={(e) => {
-				e.preventDetault();
+				e.preventDefault();
 				onSearch();
 			}}
 		>
@@ -105,7 +105,13 @@ const LetterSearchForm = ({ onChange, onSearch, className, ...rest }) => {
 					발신일
 				</Label>
 				<Col md={2}>
-					<Input type="date" id="sendDate" name="sendDate" defaultValue="2019-09-16" onChange={onChange} />
+					<Input
+						type="date"
+						id="sendDate"
+						name="sendDate"
+						defaultValue={data.get('sendDate')}
+						onChange={onChange}
+					/>
 				</Col>
 				<Label md={1} for="targetDate" className="text-right">
 					회신요청일
@@ -115,7 +121,7 @@ const LetterSearchForm = ({ onChange, onSearch, className, ...rest }) => {
 						type="date"
 						id="targetDate"
 						name="targetDate"
-						defaultValue="2019-09-16"
+						defaultValue={data.get('targetDate')}
 						onChange={onChange}
 					/>
 				</Col>

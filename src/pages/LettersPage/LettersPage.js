@@ -1,12 +1,14 @@
 import React from 'react';
 import ScrollToTop from 'components/ScrollToTop';
 import Page from 'components/Page';
-import LetterSearchForm from 'components/Form/LetterSearchForm';
+import LetterSearchFormContainer from 'containers/Form/LetterSearchFormContainer';
 import LetterTableContainer from 'containers/Table/LetterTableContainer';
 import LetterAddModalContainer from 'containers/Modal/LetterAddModalContainer';
 import LetterDetailModalContainer from 'containers/Modal/LetterDetailModalContainer';
 import LetterEditModalContainer from 'containers/Modal/LetterEditModalContainer';
 import ReferenceSearchModalContainer from 'containers/Modal/ReferenceSearchModalContainer';
+import DocumentDetailModalContainer from 'containers/Modal/DocumentDetailModalContainer';
+import VendorLetterDetailModalContainer from 'containers/Modal/VendorLetterDetailModalContainer';
 import queryString from 'query-string';
 
 const InternalTransmittalPage = (props) => {
@@ -18,12 +20,14 @@ const InternalTransmittalPage = (props) => {
 				title="Internal Letters"
 				breadcrumbs={[ { name: 'Letters', active: false }, { name: 'Internal', active: true } ]}
 			>
-				<LetterSearchForm />
+				<LetterSearchFormContainer />
 				<LetterTableContainer page={parseInt(page || 1, 10)} />
 				<LetterAddModalContainer />
 				<LetterDetailModalContainer />
 				<LetterEditModalContainer />
 				<ReferenceSearchModalContainer />
+				<DocumentDetailModalContainer />
+				<VendorLetterDetailModalContainer />
 			</Page>
 		</ScrollToTop>
 	);

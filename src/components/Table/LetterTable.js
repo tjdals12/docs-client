@@ -100,7 +100,7 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 			</Table>
 
 			<Pagination
-				page={page}
+				currentPage={page}
 				lastPage={lastPage}
 				onPage={onPage}
 				size="md"

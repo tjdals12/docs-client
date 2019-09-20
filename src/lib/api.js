@@ -69,6 +69,7 @@ export const deleteInOutVendorLetter = ({ id, target }) =>
 
 /** Letter */
 export const getLetters = ({ page }) => axios.get(`/api/letters?page=${page}`);
+export const searchLetters = (page, param) => axios.post(`/api/letters/search?page=${page}`, { ...param });
 export const getLetter = ({ id }) => axios.get(`${real}/api/letters/${id}`);
 export const addLetter = (param) => axios.post(`${real}/api/letters`, { ...param });
 export const referenceSearch = ({ keyword }) => axios.get(`${real}/api/letters/ref/search?keyword=${keyword}`);

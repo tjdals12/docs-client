@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as modalActions from 'store/modules/modal';
 import * as letterActions from 'store/modules/letter';
+import * as documentActions from 'store/modules/document';
+import * as vendorLetterActions from 'store/modules/vendorLetter';
 
 class LetterDetailModalContainer extends React.Component {
 	handleClose = () => {
@@ -18,6 +20,18 @@ class LetterDetailModalContainer extends React.Component {
 		if (name === 'letterEdit') {
 			this.handleClose();
 			LetterActions.initialize('errors');
+		}
+
+		ModalActions.open(name);
+	};
+
+	handleOpenReference = ({ name, id }) => async () => {
+		const { ModalActions, DocumentActions, VendorLetterActions } = this.props;
+
+		if (name === 'documentDetail') {
+			await DocumentActions.getDocument({ id });
+		} else if (name === 'vendorLetterDetail') {
+			await VendorLetterActions.getVendorLetter({ id });
 		}
 
 		ModalActions.open(name);
@@ -50,6 +64,7 @@ class LetterDetailModalContainer extends React.Component {
 				onOpen={this.handleOpen}
 				onChange={this.handleChange}
 				onCancel={this.handleCancel}
+				onOpenReference={this.handleOpenReference}
 			/>
 		);
 	}
@@ -66,6 +81,8 @@ export default connect(
 	}),
 	(dispatch) => ({
 		ModalActions: bindActionCreators(modalActions, dispatch),
-		LetterActions: bindActionCreators(letterActions, dispatch)
+		LetterActions: bindActionCreators(letterActions, dispatch),
+		DocumentActions: bindActionCreators(documentActions, dispatch),
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch)
 	})
 )(LetterDetailModalContainer);

@@ -5,6 +5,7 @@ import * as api from 'lib/api';
 import moment from 'moment';
 
 const GET_LETTERS = 'letter/GET_LETTERS';
+const SEARCH_LETTERS = 'letter/SEARCH_LETTERS';
 const GET_LETTER = 'letter/GET_LETTER';
 const ADD_LETTER = 'letter/ADD_LETTER';
 const REFERENCE_SEARCH = 'letter/REFERENCE_SEARCH';
@@ -14,6 +15,7 @@ const ON_CHANGE = 'letter/ON_CHANGE';
 const INITIALIZE = 'letter/INITIALIZE';
 
 export const getLetters = createAction(GET_LETTERS, api.getLetters);
+export const searchLetters = createAction(SEARCH_LETTERS, api.searchLetters);
 export const getLetter = createAction(GET_LETTER, api.getLetter);
 export const addLetter = createAction(ADD_LETTER, api.addLetter);
 export const referenceSearch = createAction(REFERENCE_SEARCH, api.referenceSearch);
@@ -45,6 +47,20 @@ const initialState = Map({
 		sendDate: '',
 		replyRequired: ''
 	}),
+	search: Map({
+		senderGb: '',
+		sender: '',
+		receiverGb: '',
+		receiver: '',
+		letterGb: '',
+		officialNumber: '',
+		letterTitle: '',
+		replyRequired: '',
+		replyYn: '',
+		sendDate: '9999-12-31',
+		targetDate: '9999-12-31',
+		isSearch: false
+	}),
 	references: List(),
 	errors: Map({
 		letterGbError: false,
@@ -72,6 +88,18 @@ export default handleActions(
 				const lastPage = action.payload.headers['last-page'];
 
 				return state.set('letters', fromJS(letters)).set('lastPage', parseInt(lastPage, 10));
+			}
+		}),
+		...pender({
+			type: SEARCH_LETTERS,
+			onSuccess: (state, action) => {
+				const { data: letters } = action.payload.data;
+				const lastPage = action.payload.headers['last-page'];
+
+				return state
+					.set('letters', fromJS(letters))
+					.set('lastPage', parseInt(lastPage, 10))
+					.setIn([ 'search', 'isSearch' ], true);
 			}
 		}),
 		...pender({
