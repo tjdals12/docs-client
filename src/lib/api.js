@@ -75,3 +75,7 @@ export const addLetter = (param) => axios.post(`${real}/api/letters`, { ...param
 export const referenceSearch = ({ keyword }) => axios.get(`${real}/api/letters/ref/search?keyword=${keyword}`);
 export const editLetter = ({ id, param }) => axios.patch(`${real}/api/letters/${id}/edit`, { ...param });
 export const cancelLetter = ({ id, yn, reason }) => axios.patch(`${real}/api/letters/${id}/cancel`, { yn, reason });
+
+/** Project */
+export const getProjects = ({ page }) => axios.get(`/api/projects?page=${page}`);
+export const getProject = ({ id }) => axios.get(`/api/projects/${id}`);
