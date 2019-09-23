@@ -9,7 +9,8 @@ import {
 	IndexesDetailPage,
 	IndexesInfosPage,
 	VendorLettersPage,
-	LettersPage
+	LettersPage,
+	SettingsPage
 } from 'pages';
 
 class App extends React.Component {
@@ -25,6 +26,7 @@ class App extends React.Component {
 					<LayoutRoute exact path="/indexes/infos" layout={MainLayout} component={IndexesInfosPage} />
 					<LayoutRoute exact path="/letters/vendor" layout={MainLayout} component={VendorLettersPage} />
 					<LayoutRoute exact path="/letters/internal" layout={MainLayout} component={LettersPage} />
+					<LayoutRoute exact path="/settings" layout={MainLayout} component={SettingsPage} />
 				</Switch>
 			</BrowserRouter>
 		);

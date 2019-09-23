@@ -133,7 +133,7 @@ const LetterDetailModal = ({
 													id: vendorLetter.get('_id')
 												})}
 											>
-												{vendorLetter.get('officialNumber')}_{`${vendorLetter.get('documents').size} 건`}
+												{vendorLetter.get('officialNumber')} ({`${vendorLetter.get('documents').size} 개`})
 											</Typography>
 										);
 									})}

@@ -51,6 +51,10 @@
 	overflow: hidden;
 }
 
+.overflow-scroll {
+	overflow: scroll;
+}
+
 .hidden-xs {
 	@include media-breakpoint-only(xs) {
 		display: none;
@@ -134,4 +138,20 @@
 
 .w-95 {
 	width: 95% !important;
+}
+
+.h-95 {
+	height: 95%;
+}
+
+.h-90 {
+	height: 90%;
+}
+
+.h-85 {
+	height: 85%;
+}
+
+.h-80 {
+	height: 80%;
 }

@@ -8,3 +8,4 @@ export const IndexesDetailPage = withSplitting(() => import('./IndexesPage/Index
 export const IndexesInfosPage = withSplitting(() => import('./IndexesPage/IndexesInfosPage'));
 export const VendorLettersPage = withSplitting(() => import('./LettersPage/VendorLettersPage'));
 export const LettersPage = withSplitting(() => import('./LettersPage/LettersPage'));
+export const SettingsPage = withSplitting(() => import('./SettingsPage'));

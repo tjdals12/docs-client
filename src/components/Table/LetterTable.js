@@ -91,7 +91,15 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 									{transmittal.get('replyRequired') === 'YES' ? transmittal.get('replyYn') : '-'}
 								</td>
 								<td className="text-center">
-									<TiArrowForward size={20} className="text-primary can-click" />
+									<TiArrowForward
+										size={20}
+										className="text-primary can-click"
+										onClick={() => {
+											var sender = [ 'lll2slll@naver.com', 'ldh1245@hanmail.net' ];
+
+											window.location.href = `mailto:${sender.join(',')}`;
+										}}
+									/>
 								</td>
 							</tr>
 						);

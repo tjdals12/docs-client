@@ -6,11 +6,10 @@ import {
 	MdDescription,
 	MdBusiness,
 	MdKeyboardArrowDown,
-	MdShowChart,
 	MdFormatListBulleted,
-	MdFindInPage,
 	MdAssignment,
-	MdChevronRight
+	MdChevronRight,
+	MdSettings
 } from 'react-icons/md';
 import { FaGithub } from 'react-icons/fa';
 import bn from 'utils/bemnames';
@@ -31,8 +30,8 @@ const navMenus = [
 ];
 
 const indexMenus = [
-	{ to: '/indexes/overall', name: 'Overall', exact: true, Icon: MdShowChart },
-	{ to: '/indexes/infos', name: 'Documents', exact: true, Icon: MdFindInPage }
+	{ to: '/indexes/overall', name: 'Overall', exact: true, Icon: MdChevronRight },
+	{ to: '/indexes/infos', name: 'Documents', exact: true, Icon: MdChevronRight }
 ];
 
 const transmittalMenus = [
@@ -42,9 +41,8 @@ const transmittalMenus = [
 
 class Sidebar extends React.Component {
 	state = {
-		isOpenIndexes: true,
-		isOpenVendors: true,
-		isOpenTransmittals: true
+		isOpenIndexes: false,
+		isOpenTransmittals: false
 	};
 
 	handleClick = (name) => () => {
@@ -155,6 +153,21 @@ class Sidebar extends React.Component {
 								</NavItem>
 							))}
 						</Collapse>
+					</Nav>
+
+					<Nav vertical className="nav-bottom">
+						<NavItem className={bem.e('nav-item')}>
+							<BSNavLink
+								className="text-uppercase"
+								activeClassName="active"
+								to="/settings"
+								exact={true}
+								tag={NavLink}
+							>
+								<MdSettings className={bem.e('nav-item-icon')} />
+								<span className="text-white">Settings</span>
+							</BSNavLink>
+						</NavItem>
 					</Nav>
 				</div>
 			</aside>

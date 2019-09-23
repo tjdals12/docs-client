@@ -49,8 +49,8 @@ class DocumentIndexAddModalContainer extends React.Component {
 
 		await axios({
 			method: 'POST',
-			url: 'http://192.168.7.9/api/documentindexes/readexcel',
-			// url: '/api/documentindexes/readexcel',
+			// url: 'http://192.168.7.9/api/documentindexes/readexcel',
+			url: '/api/documentindexes/readexcel',
 			data: formData,
 			config: { headers: { 'Content-Type': 'multipart/form-data' } }
 		}).then((response) => {
