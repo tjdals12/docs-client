@@ -53,5 +53,9 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://localhost:4000"
+	"proxy": "http://localhost:4000",
+	"devDependencies": {
+		"@types/immutable": "^3.8.7",
+		"@types/reactstrap": "^8.0.4"
+	}
 }

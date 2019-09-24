@@ -4,6 +4,7 @@ import DocumentInfoCard from 'components/Card/DocumentInfoCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as indexesActions from 'store/modules/indexes';
+import * as modalActions from 'store/modules/modal';
 
 class DocumentInfoCardContainer extends React.Component {
 	getTrackingDocument = async (page) => {
@@ -11,6 +12,12 @@ class DocumentInfoCardContainer extends React.Component {
 
 		await IndexesActions.getTrackingDocument({ id, page: page });
 		history.push(`/indexes/detail?id=${id}&page=${page}`);
+	};
+
+	handleOpenLatest = () => {
+		const { ModalActions } = this.props;
+
+		ModalActions.open('latestDocuments');
 	};
 
 	componentDidMount() {
@@ -28,6 +35,7 @@ class DocumentInfoCardContainer extends React.Component {
 				currentPage={currentPage}
 				lastPage={lastPage}
 				onPage={this.getTrackingDocument}
+				onOpenLatest={this.handleOpenLatest}
 			/>
 		);
 	}
@@ -39,6 +47,7 @@ export default connect(
 		lastPage: state.indexes.getIn([ 'indexDetail', 'lastPage' ])
 	}),
 	(dispatch) => ({
-		IndexesActions: bindActionCreators(indexesActions, dispatch)
+		IndexesActions: bindActionCreators(indexesActions, dispatch),
+		ModalActions: bindActionCreators(modalActions, dispatch)
 	})
 )(withRouter(DocumentInfoCardContainer));

@@ -6,11 +6,13 @@ import * as api from 'lib/api';
 const GET_INFOS = 'info/GET_INFOS';
 const SEARCH_INFOS = 'info/SEARCH_INFOS';
 const GET_INFO = 'info/GET_INFO';
+const GET_LATEST_DOCUMENTS = 'info/GET_LATEST_DOCUMENTS';
 const ON_CHANGE_SEARCH = 'info/ON_CHANGE_SEARCH';
 
 export const getInfos = createAction(GET_INFOS, api.getInfos);
 export const searchInfos = createAction(SEARCH_INFOS, api.searchInfos);
 export const getInfo = createAction(GET_INFO, api.getInfo);
+export const getLatestDocuments = createAction(GET_LATEST_DOCUMENTS, api.getLatestDocuments);
 export const onChangeSearch = createAction(ON_CHANGE_SEARCH);
 
 const initialState = Map({
@@ -23,6 +25,7 @@ const initialState = Map({
 		documentGb: '',
 		isSearch: false
 	}),
+	latest: List(),
 	lastPage: null
 });
 
@@ -55,6 +58,14 @@ export default handleActions(
 				const { data: info } = action.payload.data;
 
 				return state.set('info', fromJS(info));
+			}
+		}),
+		...pender({
+			type: GET_LATEST_DOCUMENTS,
+			onSuccess: (state, action) => {
+				const { data: latest } = action.payload.data;
+
+				return state.set('latest', fromJS(latest));
 			}
 		}),
 		[ON_CHANGE_SEARCH]: (state, action) => {

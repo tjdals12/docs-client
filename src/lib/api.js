@@ -48,6 +48,7 @@ export const deleteIndex = ({ id }) => axios.patch(`${real}/api/documentindexes/
 export const getInfos = ({ page }) => axios.get(`${real}/api/documentinfos?page=${page}`);
 export const searchInfos = (page, param) => axios.post(`${real}/api/documentinfos/search?page=${page}`, { ...param });
 export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
+export const getLatestDocuments = ({ vendor }) => axios.get(`${real}/api/documentinfos/${vendor}/latest`);
 
 /** Vendor Letter */
 export const getVendorLetters = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);
@@ -77,5 +78,7 @@ export const editLetter = ({ id, param }) => axios.patch(`${real}/api/letters/${
 export const cancelLetter = ({ id, yn, reason }) => axios.patch(`${real}/api/letters/${id}/cancel`, { yn, reason });
 
 /** Project */
-export const getProjects = ({ page }) => axios.get(`/api/projects?page=${page}`);
-export const getProject = ({ id }) => axios.get(`/api/projects/${id}`);
+export const getProjects = ({ page }) => axios.get(`${real}/api/projects?page=${page}`);
+export const getProject = ({ id }) => axios.get(`${real}/api/projects/${id}`);
+export const addProject = (param) => axios.post(`${real}/api/projects', { ...param }`);
+export const editProject = ({ id, param }) => axios.patch(`${real}/api/projects/${id}/edit`, { ...param });

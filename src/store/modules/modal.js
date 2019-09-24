@@ -27,6 +27,7 @@ const initialState = Map({
 	letterDetailModal: false,
 	letterEditModal: false,
 	referenceSearchModal: false,
+	latestDocumentsModal: false,
 	questionModal: false
 });
 

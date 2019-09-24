@@ -5,6 +5,7 @@ import IndexCardContainer from 'containers/Card/IndexCardContainer';
 import IndexesDetailTemplateContainer from 'containers/Template/IndexesDetailTemplateContainer';
 import DocumentDetailModalContainer from 'containers/Modal/DocumentDetailModalContainer';
 import VendorDetailModalContainer from 'containers/Modal/VendorDetailModalContainer';
+import LatestDocumentsModalContainer from 'containers/Modal/LatestDocumentsModalContainer';
 import queryString from 'query-string';
 
 const IndexesDetailPage = (props) => {
@@ -20,6 +21,7 @@ const IndexesDetailPage = (props) => {
 				<IndexesDetailTemplateContainer id={id} page={parseInt(page || 1, 10)} />
 				<DocumentDetailModalContainer />
 				<VendorDetailModalContainer />
+				<LatestDocumentsModalContainer />
 			</Page>
 		</ScrollToTop>
 	);
