@@ -111,6 +111,8 @@ class ProjectCollapseCardContainer extends React.Component {
 
 		return (
 			<CollapseCard
+				title="프로젝트 관리"
+				description="관리하는 프로젝트 목록"
 				onOpen={this.handleOpen}
 				onAddForm={this.handleAddForm}
 				collapse={

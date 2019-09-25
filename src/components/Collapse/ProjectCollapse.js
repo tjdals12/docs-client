@@ -51,14 +51,12 @@ const ProjectCollapse = ({
 					>
 						<Column
 							field="index"
-							title="#"
 							width={40}
 							className="text-right"
 							headerCell={() => makeHeaderCell({ title: '#', className: 'text-right' })}
 						/>
 						<Column
 							field="projectGb.cdSName"
-							title="구분"
 							width={60}
 							className="text-center"
 							headerCell={() => makeHeaderCell({ title: '구분', className: 'text-center' })}
