@@ -28,6 +28,11 @@ class LetterEditModalContainer extends React.Component {
 		ModalActions.open('letterDetail');
 	};
 
+	handleOpen = (name) => () => {
+		const { ModalActions } = this.props;
+		ModalActions.open(name);
+	};
+
 	render() {
 		const { letter, errors, isOpen, loading } = this.props;
 
@@ -41,6 +46,7 @@ class LetterEditModalContainer extends React.Component {
 				onClose={this.handleClose}
 				onChange={this.handleChange}
 				onEdit={this.handleEdit}
+				onOpen={this.handleOpen}
 			/>
 		);
 	}

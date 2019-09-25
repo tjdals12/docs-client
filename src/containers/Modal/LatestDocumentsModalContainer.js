@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as infoActions from 'store/modules/info';
 import * as modalActions from 'store/modules/modal';
+import * as vendorActions from 'store/modules/vendor';
 
 class LatestDocumentsModalContainer extends React.Component {
 	getLatestDocuments = () => {
@@ -12,10 +13,30 @@ class LatestDocumentsModalContainer extends React.Component {
 		InfoActions.getLatestDocuments({ vendor: vendor.get('_id') });
 	};
 
+	getInfo = (id) => {
+		const { InfoActions } = this.props;
+
+		InfoActions.getInfo({ id });
+	};
+
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
 		ModalActions.close('latestDocuments');
+	};
+
+	handleOpenVendorDetail = () => {
+		const { ModalActions, VendorActions, vendor } = this.props;
+
+		VendorActions.setTarget(vendor.get('_id'));
+		ModalActions.open('vendorDetail');
+	};
+
+	handleOpenInfoDetail = (id) => async () => {
+		const { ModalActions } = this.props;
+
+		await this.getInfo(id);
+		ModalActions.open('documentInfoDetail');
 	};
 
 	componentDidUpdate(prevProps, prevState) {
@@ -29,7 +50,16 @@ class LatestDocumentsModalContainer extends React.Component {
 
 		if (loading || loading === undefined) return null;
 
-		return <LatestDocumentsModal vendor={vendor} data={latest} isOpen={isOpen} onClose={this.handleClose} />;
+		return (
+			<LatestDocumentsModal
+				vendor={vendor}
+				data={latest}
+				isOpen={isOpen}
+				onClose={this.handleClose}
+				onOpenVendorDetail={this.handleOpenVendorDetail}
+				onOpenInfoDetail={this.handleOpenInfoDetail}
+			/>
+		);
 	}
 }
 
@@ -42,6 +72,7 @@ export default connect(
 	}),
 	(dispatch) => ({
 		InfoActions: bindActionCreators(infoActions, dispatch),
-		ModalActions: bindActionCreators(modalActions, dispatch)
+		ModalActions: bindActionCreators(modalActions, dispatch),
+		VendorActions: bindActionCreators(vendorActions, dispatch)
 	})
 )(LatestDocumentsModalContainer);

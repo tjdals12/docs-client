@@ -69,12 +69,6 @@ const DocumentInfoDetailTable = ({ data, onOpen, className, ...rest }) => {
 											</td>
 											<td className="pl-4 text-left">
 												{document.timestamp.regDt.substr(0, 10)} 접수<br />
-												<Typography
-													tag="span"
-													className="text-right text-primary can-click have-link"
-												>
-													(ABC-DEF-T-R-001-001)
-												</Typography>
 											</td>
 											<td colSpan={2} className="text-left">
 												{documentStatus.statusName}{' '}

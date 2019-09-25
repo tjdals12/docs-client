@@ -11,9 +11,10 @@ class ReferenceSearchModalContainer extends React.Component {
 	};
 
 	handleClose = () => {
-		const { ModalActions } = this.props;
+		const { ModalActions, LetterActions } = this.props;
 
 		ModalActions.close('referenceSearch');
+		LetterActions.initialize('references');
 	};
 
 	handleChange = (e) => {
@@ -53,12 +54,24 @@ class ReferenceSearchModalContainer extends React.Component {
 	};
 
 	handleSelect = () => {
-		const { LetterActions } = this.props;
+		const { LetterActions, isEdit } = this.props;
 		const { selectedReferences } = this.state;
 
-		LetterActions.onChange({ target: 'add', name: 'reference', value: selectedReferences });
+		LetterActions.onChange({ target: isEdit ? 'edit' : 'add', name: 'reference', value: selectedReferences });
 		this.handleClose();
 	};
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.isEdit === false && this.props.isEdit !== prevProps.isEdit) {
+			this.setState({
+				selectedReferences: this.props.selectedReferences
+			});
+		} else if (prevProps.isEdit === true && this.props.isEdit !== prevProps.isEdit) {
+			this.setState({
+				selectedReferences: []
+			});
+		}
+	}
 
 	render() {
 		const { isOpen, keywordError, references } = this.props;
@@ -82,9 +95,11 @@ class ReferenceSearchModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		isEdit: state.modal.get('letterEditModal'),
 		keyword: state.letter.get('keyword'),
 		keywordError: state.letter.get('keywordError'),
 		references: state.letter.get('references'),
+		selectedReferences: state.letter.getIn([ 'edit', 'reference' ]),
 		isOpen: state.modal.get('referenceSearchModal')
 	}),
 	(dispatch) => ({

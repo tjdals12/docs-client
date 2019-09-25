@@ -15,7 +15,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LetterEditModal = ({ data, errors, isOpen, onClose, onChange, onEdit, className, ...rest }) => {
+const LetterEditModal = ({ data, errors, isOpen, onClose, onChange, onEdit, onOpen, className, ...rest }) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -48,7 +48,15 @@ const LetterEditModal = ({ data, errors, isOpen, onClose, onChange, onEdit, clas
 						</Col>
 						<Col md={6}>
 							<Label for="reference">참조</Label>
-							<Input type="text" id="reference" name="reference" />
+							<Input
+								type="text"
+								id="reference"
+								name="reference"
+								className="can-click"
+								onClick={onOpen('referenceSearch')}
+								value={data.get('reference') && `참조: ${data.get('reference').size} 건`}
+								readOnly
+							/>
 						</Col>
 					</FormGroup>
 					<FormGroup row>

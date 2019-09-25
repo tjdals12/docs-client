@@ -15,7 +15,18 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, onOpen, className, ...rest }) => {
+const LetterAddModal = ({
+	projectList,
+	data,
+	errors,
+	isOpen,
+	onClose,
+	onChange,
+	onAdd,
+	onOpen,
+	className,
+	...rest
+}) => {
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -30,6 +41,25 @@ const LetterAddModal = ({ data, errors, isOpen, onClose, onChange, onAdd, onOpen
 			</ModalHeader>
 			<ModalBody>
 				<Form>
+					<FormGroup row>
+						<Col md={12}>
+							<Label for="project">프로젝트</Label>
+							<Input
+								type="select"
+								id="project"
+								name="project"
+								onChange={onChange}
+								invalid={errors.get('projectError')}
+							>
+								<option value="">-- 프로젝트 --</option>
+								{projectList.map((project) => (
+									<option key={project.get('_id')} value={project.get('_id')}>
+										{project.get('projectName')} ({project.get('projectCode')})
+									</option>
+								))}
+							</Input>
+						</Col>
+					</FormGroup>
 					<FormGroup row>
 						<Col md={6}>
 							<Label for="letterGb">구분</Label>

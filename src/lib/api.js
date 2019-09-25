@@ -79,6 +79,7 @@ export const cancelLetter = ({ id, yn, reason }) => axios.patch(`${real}/api/let
 
 /** Project */
 export const getProjects = ({ page }) => axios.get(`${real}/api/projects?page=${page}`);
+export const getProjectsForSelect = () => axios.get(`${real}/api/projects/forselect`);
 export const getProject = ({ id }) => axios.get(`${real}/api/projects/${id}`);
 export const addProject = (param) => axios.post(`${real}/api/projects', { ...param }`);
 export const editProject = ({ id, param }) => axios.patch(`${real}/api/projects/${id}/edit`, { ...param });

@@ -28,6 +28,7 @@ const initialState = Map({
 	letters: List(),
 	letter: Map({}),
 	add: Map({
+		project: '',
 		letterGb: '',
 		letterTitle: '',
 		senderGb: '',
@@ -63,6 +64,7 @@ const initialState = Map({
 	}),
 	references: List(),
 	errors: Map({
+		projectError: false,
 		letterGbError: false,
 		letterTitleError: false,
 		senderGbError: false,
@@ -110,6 +112,7 @@ export default handleActions(
 				return state
 					.set('letter', fromJS(letter))
 					.setIn([ 'edit', 'letterGb' ], letter.letterGb)
+					.setIn([ 'edit', 'reference' ], fromJS(letter.reference))
 					.setIn([ 'edit', 'letterTitle' ], letter.letterTitle)
 					.setIn([ 'edit', 'senderGb' ], letter.senderGb)
 					.setIn([ 'edit', 'sender' ], letter.sender)
@@ -132,6 +135,7 @@ export default handleActions(
 				const add = state.get('add');
 
 				return state
+					.setIn([ 'errors', 'projectError' ], add.get('project') === '')
 					.setIn([ 'errors', 'letterGbError' ], add.get('letterGb') === '')
 					.setIn([ 'errors', 'letterTitleError' ], add.get('letterTitle') === '')
 					.setIn([ 'errors', 'senderGbError' ], add.get('senderGb') === '')

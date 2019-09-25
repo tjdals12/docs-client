@@ -4,6 +4,7 @@ import { pender } from 'redux-pender';
 import * as api from 'lib/api';
 
 const GET_PROJECTS = 'project/GET_PROJECTS';
+const GET_PROJECTS_FOR_SELECT = 'project/GET_PROJECTS_FOR_SELECT';
 const GET_PROJECT = 'project/GET_PROJECT';
 const ADD_PROJECT = 'project/ADD_PROJECT';
 const EDIT_PROJECT = 'project/EDIT_PROJECT';
@@ -13,6 +14,7 @@ const ON_CHANGE_DEEP = 'project/ON_CHANGE_DEEP';
 const INITIALIZE = 'project/INITIALIZE';
 
 export const getProjects = createAction(GET_PROJECTS, api.getProjects);
+export const getProjectsForSelect = createAction(GET_PROJECTS_FOR_SELECT, api.getProjectsForSelect);
 export const getProject = createAction(GET_PROJECT, api.getProject);
 export const addProject = createAction(ADD_PROJECT, api.addProject);
 export const editProject = createAction(EDIT_PROJECT, api.editProject);
@@ -23,6 +25,7 @@ export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	projects: List(),
+	projectList: List(),
 	project: Map({}),
 	add: Map({
 		projectGb: '',
@@ -71,6 +74,14 @@ export default handleActions(
 					.set('projects', fromJS(projects))
 					.set('total', parseInt(count, 10))
 					.set('lastPage', parseInt(lastPage || 1, 10));
+			}
+		}),
+		...pender({
+			type: GET_PROJECTS_FOR_SELECT,
+			onSuccess: (state, action) => {
+				const { data: projectList } = action.payload.data;
+
+				return state.set('projectList', fromJS(projectList));
 			}
 		}),
 		...pender({

@@ -20,7 +20,14 @@ const ReferenceSearchModal = ({
 	...rest
 }) => {
 	return (
-		<Modal isOpen={isOpen} className={className} contentClassName="border rounded" {...rest} size="lg">
+		<Modal
+			isOpen={isOpen}
+			toggle={onClose}
+			className={className}
+			contentClassName="border rounded"
+			{...rest}
+			size="lg"
+		>
 			<ModalBody className="mh-100">
 				<SearchForm
 					name="keyword"
@@ -49,11 +56,7 @@ const ReferenceSearchModal = ({
 										<td>{description}</td>
 										<td className="text-center">
 											{isChecked ? (
-												<MdCheck
-													size={20}
-													className="text-success"
-													onClick={() => onDeselect(_id)}
-												/>
+												<MdCheck className="text-success" onClick={() => onDeselect(_id)} />
 											) : (
 												<input type="checkbox" value={_id} onChange={onChecked} />
 											)}

@@ -2,12 +2,21 @@ import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const LatestDocumentsModal = ({ data, vendor, isOpen, onClose, className, ...rest }) => {
+const LatestDocumentsModal = ({
+	data,
+	vendor,
+	isOpen,
+	onClose,
+	onOpenVendorDetail,
+	onOpenInfoDetail,
+	className,
+	...rest
+}) => {
 	return (
 		<Modal isOpen={isOpen} toggle={onClose} className={className} contentClassName="rounded" {...rest} size="xl">
 			<ModalHeader toggle={onClose} className="bg-light">
 				Latest Document 목록{' '}
-				<span className="have-link">
+				<span className="have-link" onClick={onOpenVendorDetail}>
 					({`${vendor.get('partNumber')} / ${vendor.get('itemName')} / ${vendor.get('vendorName')}`})
 				</span>
 			</ModalHeader>
@@ -40,7 +49,9 @@ const LatestDocumentsModal = ({ data, vendor, isOpen, onClose, className, ...res
 								<tr key={_id}>
 									<td className="text-right">{index + 1}</td>
 									<td>{documentNumber}</td>
-									<td className="have-link">{documentTitle}</td>
+									<td className="have-link" onClick={onOpenInfoDetail(_id)}>
+										{documentTitle}
+									</td>
 									<td className="text-center">{documentRev ? `Rev.${documentRev}` : '-'}</td>
 									<td>
 										{documentInOut ? (

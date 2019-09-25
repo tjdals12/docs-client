@@ -4,7 +4,9 @@ import Page from 'components/Page';
 import IndexCardContainer from 'containers/Card/IndexCardContainer';
 import IndexesDetailTemplateContainer from 'containers/Template/IndexesDetailTemplateContainer';
 import DocumentDetailModalContainer from 'containers/Modal/DocumentDetailModalContainer';
+import DocumentEditModalContainer from 'containers/Modal/DocumentEditModalContainer';
 import VendorDetailModalContainer from 'containers/Modal/VendorDetailModalContainer';
+import DocumentInfoDetailModalContainer from 'containers/Modal/DocumentInfoDetailModalContainer';
 import LatestDocumentsModalContainer from 'containers/Modal/LatestDocumentsModalContainer';
 import queryString from 'query-string';
 
@@ -20,7 +22,9 @@ const IndexesDetailPage = (props) => {
 				<IndexCardContainer id={id} />
 				<IndexesDetailTemplateContainer id={id} page={parseInt(page || 1, 10)} />
 				<DocumentDetailModalContainer />
+				<DocumentEditModalContainer />
 				<VendorDetailModalContainer />
+				<DocumentInfoDetailModalContainer />
 				<LatestDocumentsModalContainer />
 			</Page>
 		</ScrollToTop>
