@@ -59,6 +59,7 @@ class ProjectCollapseCardContainer extends React.Component {
 		const { ProjectActions, add } = this.props;
 
 		await ProjectActions.addProject(add.toJS());
+		ProjectActions.initialize('errors');
 		this.getProjects(1);
 	};
 

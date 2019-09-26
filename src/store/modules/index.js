@@ -7,4 +7,5 @@ export { default as info } from './info';
 export { default as vendorLetter } from './vendorLetter';
 export { default as letter } from './letter';
 export { default as project } from './project';
+export { default as template } from './template';
 export { penderReducer as pender } from 'redux-pender';

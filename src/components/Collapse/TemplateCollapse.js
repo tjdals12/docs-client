@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Collapse, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
-import FileViewer from 'react-file-viewer';
 import PropTypes from 'prop-types';
 
 const makeHeaderCell = ({ title, className }) => {
@@ -11,24 +10,44 @@ const makeHeaderCell = ({ title, className }) => {
 	return <span className={classes}>{title}</span>;
 };
 
-const demo = [
-	{ index: 1, templateGb: '공문', templateName: 'Transmittal 양식', templateType: '.docx' },
-	{ index: 2, templateGb: '보고서', templateName: '월간진도보고서 양식', templateType: '.xlsx' },
-	{ index: 3, templateGb: '관리', templateName: 'VP 관리 양식', templateType: '.xlsx' },
-	{
-		index: 4,
-		templateGb: '관리',
-		templateName: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		templateType: '.xlsx'
-	}
-];
+const TemplateCollapse = ({
+	gbs,
+	data,
+	detail,
+	add,
+	errors,
+	total,
+	lastPage,
+	isOpen,
+	onSelect,
+	onChange,
+	onUpload,
+	onSave
+}) => {
+	const isAdd = detail.size === 0;
 
-const TemplateCollapse = ({ isOpen }) => {
+	const rowRender = (Row, props) => {
+		const isActive = props.dataItem._id === detail.get('_id');
+
+		return React.cloneElement(Row, {
+			className: classNames(isActive && 'bg-gradient-theme-left text-white ', 'can-click', Row.props.className)
+		});
+	};
+
 	return (
 		<Collapse isOpen={isOpen} className="mt-3 pt-4 border-top">
 			<Row style={{ minHeight: '520px' }}>
-				<Col md={4} style={{ maxHeight: '520px', overflow: 'scroll' }}>
-					<Grid pageable data={demo} className="h-100 border rounded">
+				<Col md={6} style={{ maxHeight: '520px', overflow: 'scroll' }}>
+					<Grid
+						pageable
+						data={data.toJS()}
+						total={total}
+						take={10}
+						skip={(lastPage - 1) * 10}
+						className="h-100 border rounded"
+						onRowClick={(e) => onSelect(e)}
+						rowRender={rowRender}
+					>
 						<Column
 							field="index"
 							width={40}
@@ -36,7 +55,7 @@ const TemplateCollapse = ({ isOpen }) => {
 							headerCell={() => makeHeaderCell({ title: '#', className: 'text-right' })}
 						/>
 						<Column
-							field="templateGb"
+							field="templateGb.cdSName"
 							width={80}
 							className="text-center"
 							headerCell={() => makeHeaderCell({ title: '구분', className: 'text-center' })}
@@ -56,9 +75,9 @@ const TemplateCollapse = ({ isOpen }) => {
 				</Col>
 
 				<Col
-					md={4}
+					md={6}
 					style={{ maxHeight: '520px', overflow: 'scroll' }}
-					className={`pl-4 pr-4 pt-4 pb-1 border rounded bg-light`}
+					className={`pl-4 pr-4 pt-4 pb-1 border rounded bg-light ${isAdd && 'border-danger'}`}
 				>
 					<Form
 						onSubmit={(e) => {
@@ -68,19 +87,45 @@ const TemplateCollapse = ({ isOpen }) => {
 						<FormGroup row>
 							<Col md={6}>
 								<Label for="templateGb">구분</Label>
-								<Input type="select" id="templateGb" name="templateGb">
+								<Input
+									type="select"
+									id="templateGb"
+									name="templateGb"
+									value={detail.get('templateGb') || add.get('templateGb')}
+									onChange={(e) => onChange(e)(isAdd ? 'add' : 'template')}
+									invalid={errors.get('templateGbError')}
+								>
 									<option value="">구분</option>
+									{gbs.get('cdMinors').map((gb) => (
+										<option key={gb.get('_id')} value={gb.get('_id')}>
+											{gb.get('cdSName')}
+										</option>
+									))}
 								</Input>
 							</Col>
 							<Col md={6}>
 								<Label for="templateType">형식</Label>
-								<Input type="text" id="templateType" name="templateType" readOnly />
+								<Input
+									type="text"
+									id="templateType"
+									name="templateType"
+									value={detail.get('templateType') || add.get('templateType')}
+									invalid={errors.get('templateTypeError')}
+									readOnly
+								/>
 							</Col>
 						</FormGroup>
 						<FormGroup row>
 							<Col md={12}>
 								<Label for="templateName">양식명</Label>
-								<Input type="text" id="templateName" name="templateName" />
+								<Input
+									type="text"
+									id="templateName"
+									name="templateName"
+									value={detail.get('templateName') || add.get('templateName')}
+									onChange={(e) => onChange(e)(isAdd ? 'add' : 'template')}
+									invalid={errors.get('templateNameError')}
+								/>
 							</Col>
 						</FormGroup>
 						<FormGroup row>
@@ -88,9 +133,12 @@ const TemplateCollapse = ({ isOpen }) => {
 								<Label for="templateDescription">설명</Label>
 								<Input
 									type="textarea"
-									id="templateDescriptio"
+									id="templateDescription"
 									name="templateDescription"
 									style={{ resize: 'none' }}
+									value={detail.get('templateDescription') || add.get('templateDescription')}
+									onChange={(e) => onChange(e)(isAdd ? 'add' : 'template')}
+									invalid={errors.get('templateDescriptionError')}
 								/>
 							</Col>
 						</FormGroup>
@@ -104,7 +152,7 @@ const TemplateCollapse = ({ isOpen }) => {
 										type="file"
 										name="indexes"
 										onChange={(e) => {
-											console.log(e.target.files[0]);
+											onUpload(e.target.files[0], isAdd ? 'add' : 'template');
 										}}
 									/>
 									Select a file
@@ -114,22 +162,41 @@ const TemplateCollapse = ({ isOpen }) => {
 
 						<FormGroup row>
 							<Col md={12}>
-								<Input type="text" name="templatePath" readOnly />
+								<Input
+									type="text"
+									name="templatePath"
+									value={
+										detail.get('templatePath') ? (
+											detail.get('templatePath').split('/').pop()
+										) : (
+											add.get('templatePath').split('/').pop()
+										)
+									}
+									readOnly
+									invalid={errors.get('templatePathError')}
+								/>
 							</Col>
 						</FormGroup>
 
 						<FormGroup row className="mt-5 mb-0">
 							<Col md={{ offset: 8, size: 4 }} className="d-flex justify-content-end">
-								<Button color="primary" size="lg">
-									SAVE
-								</Button>
+								{isAdd ? (
+									<Button color="primary" size="lg" onClick={onSave}>
+										SAVE
+									</Button>
+								) : (
+									<React.Fragment>
+										<Button color="primary" size="lg" className="mr-2">
+											EDIT
+										</Button>
+										<Button color="danger" size="lg">
+											DELETE
+										</Button>
+									</React.Fragment>
+								)}
 							</Col>
 						</FormGroup>
 					</Form>
-				</Col>
-
-				<Col md={4} style={{ maxHeight: '520px', overflow: 'scroll' }}>
-					<FileViewer filePath="" fileType="png" />
 				</Col>
 			</Row>
 		</Collapse>
@@ -138,11 +205,19 @@ const TemplateCollapse = ({ isOpen }) => {
 
 TemplateCollapse.propTypes = {
 	isOpen: PropTypes.bool,
+	onSelect: PropTypes.func,
+	onChange: PropTypes.func,
+	onUpload: PropTypes.func,
+	onSave: PropTypes.func,
 	className: PropTypes.string
 };
 
 TemplateCollapse.defaultProps = {
-	isOpen: false
+	isOpen: false,
+	onSelect: () => console.warn('Warning: onSelect is not defined'),
+	onChange: () => console.warn('Warning: onChange is not defined'),
+	onUpload: () => console.warn('Warning: onUpload is not defined'),
+	onSave: () => console.warn('Warning onSave is not defined')
 };
 
 export default TemplateCollapse;
