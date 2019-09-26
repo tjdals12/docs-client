@@ -88,3 +88,4 @@ export const editProject = ({ id, param }) => axios.patch(`${real}/api/projects/
 export const getTemplates = ({ page }) => axios.get(`${real}/api/templates?page=${page}`);
 export const getTemplate = ({ id }) => axios.get(`${real}/api/templates/${id}`);
 export const addTemplate = (param) => axios.post(`${real}/api/templates`, { ...param });
+export const editTemplate = ({ id, param }) => axios.patch(`${real}/api/templates/${id}/edit`, { ...param });

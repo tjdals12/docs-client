@@ -22,7 +22,8 @@ const TemplateCollapse = ({
 	onSelect,
 	onChange,
 	onUpload,
-	onSave
+	onSave,
+	onEdit
 }) => {
 	const isAdd = detail.size === 0;
 
@@ -186,7 +187,7 @@ const TemplateCollapse = ({
 									</Button>
 								) : (
 									<React.Fragment>
-										<Button color="primary" size="lg" className="mr-2">
+										<Button color="primary" size="lg" className="mr-2" onClick={onEdit}>
 											EDIT
 										</Button>
 										<Button color="danger" size="lg">
@@ -209,6 +210,7 @@ TemplateCollapse.propTypes = {
 	onChange: PropTypes.func,
 	onUpload: PropTypes.func,
 	onSave: PropTypes.func,
+	onEdit: PropTypes.func,
 	className: PropTypes.string
 };
 
@@ -217,7 +219,8 @@ TemplateCollapse.defaultProps = {
 	onSelect: () => console.warn('Warning: onSelect is not defined'),
 	onChange: () => console.warn('Warning: onChange is not defined'),
 	onUpload: () => console.warn('Warning: onUpload is not defined'),
-	onSave: () => console.warn('Warning onSave is not defined')
+	onSave: () => console.warn('Warning onSave is not defined'),
+	onEdit: () => console.warn('Warning: onEdit is not defined')
 };
 
 export default TemplateCollapse;

@@ -91,6 +91,25 @@ class TemplateCollapseCardContainer extends React.Component {
 		this.getTemplates(1);
 	};
 
+	handleEdit = async () => {
+		const { TemplateActions, template } = this.props;
+
+		const { _id, templateGb, templateName, templateType, templatePath, templateDescription } = template.toJS();
+
+		await TemplateActions.editTemplate({
+			id: _id,
+			param: {
+				templateGb,
+				templateName,
+				templateType,
+				templatePath,
+				templateDescription
+			}
+		});
+
+		this.getTemplates(1);
+	};
+
 	componentDidMount() {
 		this.getCmcodes('0004');
 		this.getTemplates(1);
@@ -121,6 +140,7 @@ class TemplateCollapseCardContainer extends React.Component {
 						onChange={this.handleChange}
 						onUpload={this.handleUpload}
 						onSave={this.handleSave}
+						onEdit={this.handleEdit}
 					/>
 				}
 			/>

@@ -6,6 +6,7 @@ import * as api from 'lib/api';
 const GET_TEMPLATES = 'template/GET_TEMPLATES';
 const GET_TEMPLATE = 'template/GET_TEMPLATE';
 const ADD_TEMPLATE = 'template/ADD_TEMPLATE';
+const EDIT_TEMPLATE = 'template/EDIT_TEMPLATE';
 const SELECT_TEMPLATE = 'template/SELECT_TEMPLATE';
 const ON_CHANGE = 'template/ON_CHANGE';
 const INITIALIZE = 'template/INITIALIZE';
@@ -13,6 +14,7 @@ const INITIALIZE = 'template/INITIALIZE';
 export const getTemplates = createAction(GET_TEMPLATES, api.getTemplates);
 export const getTemplate = createAction(GET_TEMPLATE, api.getTemplate);
 export const addTemplate = createAction(ADD_TEMPLATE, api.addTemplate);
+export const editTemplate = createAction(EDIT_TEMPLATE, api.editTemplate);
 export const selectTemplate = createAction(SELECT_TEMPLATE);
 export const onChange = createAction(ON_CHANGE);
 export const initialize = createAction(INITIALIZE);
@@ -72,7 +74,9 @@ export default handleActions(
 			onSuccess: (state, action) => {
 				const { data: template } = action.payload.data;
 
-				return state.set('template', fromJS(template));
+				return state
+					.set('template', Map({ ...template, templateGb: template.templateGb._id }))
+					.set('add', initialState.get('add'));
 			},
 			onFailure: (state, action) => {
 				const template = state.get('add');
@@ -83,6 +87,14 @@ export default handleActions(
 					.setIn([ 'errors', 'templateTypeError' ], template.get('templateType') === '')
 					.setIn([ 'errors', 'templatePathError' ], template.get('templatePath') === '')
 					.setIn([ 'errors', 'templateDescriptionError' ], template.get('templateDescription') === '');
+			}
+		}),
+		...pender({
+			type: EDIT_TEMPLATE,
+			onSuccess: (state, action) => {
+				const { data: template } = action.payload;
+
+				return state.set('template', Map({ ...template, templateGb: template.templateGb._id }));
 			}
 		}),
 		[SELECT_TEMPLATE]: (state, action) => {
