@@ -86,6 +86,16 @@ export const editProject = ({ id, param }) => axios.patch(`${real}/api/projects/
 
 /** Template */
 export const getTemplates = ({ page }) => axios.get(`${real}/api/templates?page=${page}`);
+export const getTemplatesForSelect = () => axios.get(`${real}/api/templates/forselect`);
 export const getTemplate = ({ id }) => axios.get(`${real}/api/templates/${id}`);
 export const addTemplate = (param) => axios.post(`${real}/api/templates`, { ...param });
 export const editTemplate = ({ id, param }) => axios.patch(`${real}/api/templates/${id}/edit`, { ...param });
+export const downloadTemplate = (param) =>
+	axios.post(`${real}/api/templates/download`, { ...param }, { responseType: 'blob' }).then((response) => {
+		const url = window.URL.createObjectURL(new Blob([ response.data ]));
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', 'file.docx');
+		document.body.appendChild(link);
+		link.click();
+	});

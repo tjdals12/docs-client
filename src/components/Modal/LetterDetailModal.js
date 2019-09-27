@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Typography from 'components/Typography';
 
 const LetterDetailModal = ({
+	templates,
+	selectedTemplate,
 	data,
 	reasonError,
 	isOpen,
@@ -12,6 +14,7 @@ const LetterDetailModal = ({
 	onChange,
 	onCancel,
 	onOpenReference,
+	onDownload,
 	className,
 	...rest
 }) => {
@@ -22,7 +25,7 @@ const LetterDetailModal = ({
 			className={className}
 			contentClassName="border rounded"
 			{...rest}
-			size="lg"
+			size="xl"
 		>
 			<ModalHeader toggle={onClose} className="bg-light">
 				Letter 상세 <span className="text-primary">({data.get('officialNumber')})</span>
@@ -170,7 +173,7 @@ const LetterDetailModal = ({
 							</th>
 							<td colSpan={3}>
 								<span className="text-danger">
-									등록: {data.getIn([ 'timestamp', 'regId' ])} ({data.getIn([ 'timestamp', 'regDt' ]).subst})
+									등록: {data.getIn([ 'timestamp', 'regId' ])} ({data.getIn([ 'timestamp', 'regDt' ])})
 								</span>
 								<br />
 								<span className="text-danger">
@@ -182,11 +185,39 @@ const LetterDetailModal = ({
 				</Table>
 			</ModalBody>
 			<ModalFooter className="bg-light">
-				<Col className="m-0 p-0">
-					<Button color="success" className="flex-start">
-						E-mail 작성
-					</Button>
-				</Col>
+				{data.get('letterGb') === '01' ? (
+					<Col className="m-0 p-0">
+						<Button color="success" className="flex-start">
+							E-mail 작성
+						</Button>
+					</Col>
+				) : (
+					<Col className="d-flex align-items-center justify-content-start mr-4 p-0">
+						<Input
+							type="select"
+							name="template"
+							className="mr-2"
+							value={selectedTemplate}
+							onChange={onChange}
+						>
+							<option value="">-- 양식 --</option>
+							{templates
+								.filter((template) => template.getIn([ 'templateGb', 'cdMinor' ]) === '0001')
+								.map((template) => (
+									<option key={template.get('_id')} value={template.get('_id')}>
+										{template.get('templateName')}
+									</option>
+								))}
+						</Input>
+						<Button
+							color="success"
+							disabled={selectedTemplate === ''}
+							onClick={onDownload(data.get('_id'))}
+						>
+							DOWNLOAD
+						</Button>
+					</Col>
+				)}
 
 				<Input
 					type="text"
@@ -224,6 +255,7 @@ LetterDetailModal.propTypes = {
 	onChange: PropTypes.func,
 	onCancel: PropTypes.func,
 	onOpenReference: PropTypes.func,
+	onDownload: PropTypes.func,
 	className: PropTypes.string
 };
 
@@ -233,7 +265,8 @@ LetterDetailModal.defaultProps = {
 	onOpen: () => console.warn('Warning: onOpen is not defined'),
 	onChange: () => console.warn('Warning: onChange is not defined'),
 	onCancel: () => console.warn('Warning: onCancel is not defined'),
-	onOpenReference: () => console.warn('WarningL onOpenReference is not defined')
+	onOpenReference: () => console.warn('Warning: onOpenReference is not defined'),
+	onDownload: () => console.warn('Warning: onDownload is not defined')
 };
 
 export default LetterDetailModal;

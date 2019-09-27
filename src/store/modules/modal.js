@@ -28,6 +28,7 @@ const initialState = Map({
 	letterEditModal: false,
 	referenceSearchModal: false,
 	latestDocumentsModal: false,
+	templateDownloadModal: false,
 	questionModal: false
 });
 

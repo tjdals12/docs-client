@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Row, Col, Button, Table } from 'reactstrap';
-import { TiArrowForward } from 'react-icons/ti';
 import Pagination from 'components/Pagination';
 
 const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, className, ...rest }) => {
@@ -20,14 +19,13 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 				<colgroup>
 					<col width="3%" />
 					<col width="5%" />
-					<col width="15%" />
-					<col width="29%" />
+					<col width="17%" />
+					<col width="30%" />
 					<col width="10%" />
 					<col width="10%" />
 					<col width="10%" />
 					<col width="10%" />
 					<col width="5%" />
-					<col width="3%" />
 				</colgroup>
 				<thead>
 					<tr>
@@ -42,7 +40,6 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 						<th className="text-center">발신일</th>
 						<th className="text-center">회신요청일</th>
 						<th className="text-center">회신</th>
-						<th className="text-center" />
 					</tr>
 				</thead>
 				<tbody>
@@ -89,17 +86,6 @@ const LetterTable = ({ page, lastPage, data, onOpen, onOpenDetail, onPage, class
 								</td>
 								<td className="text-center">
 									{transmittal.get('replyRequired') === 'YES' ? transmittal.get('replyYn') : '-'}
-								</td>
-								<td className="text-center">
-									<TiArrowForward
-										size={20}
-										className="text-primary can-click"
-										onClick={() => {
-											var sender = [ 'lll2slll@naver.com', 'ldh1245@hanmail.net' ];
-
-											window.location.href = `mailto:${sender.join(',')}`;
-										}}
-									/>
 								</td>
 							</tr>
 						);

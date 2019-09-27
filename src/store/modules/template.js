@@ -4,23 +4,28 @@ import { pender } from 'redux-pender';
 import * as api from 'lib/api';
 
 const GET_TEMPLATES = 'template/GET_TEMPLATES';
+const GET_TEMPLATES_FOR_SELECT = 'template/GET_TEMPLATES_FOR_SELECT';
 const GET_TEMPLATE = 'template/GET_TEMPLATE';
 const ADD_TEMPLATE = 'template/ADD_TEMPLATE';
 const EDIT_TEMPLATE = 'template/EDIT_TEMPLATE';
+const DOWNLOAD_TEMPLATE = 'template/DOWNLOAD_TEMPLATE';
 const SELECT_TEMPLATE = 'template/SELECT_TEMPLATE';
 const ON_CHANGE = 'template/ON_CHANGE';
 const INITIALIZE = 'template/INITIALIZE';
 
 export const getTemplates = createAction(GET_TEMPLATES, api.getTemplates);
+export const getTemplatesForSelect = createAction(GET_TEMPLATES_FOR_SELECT, api.getTemplatesForSelect);
 export const getTemplate = createAction(GET_TEMPLATE, api.getTemplate);
 export const addTemplate = createAction(ADD_TEMPLATE, api.addTemplate);
 export const editTemplate = createAction(EDIT_TEMPLATE, api.editTemplate);
+export const downloadTemplate = createAction(DOWNLOAD_TEMPLATE, api.downloadTemplate);
 export const selectTemplate = createAction(SELECT_TEMPLATE);
 export const onChange = createAction(ON_CHANGE);
 export const initialize = createAction(INITIALIZE);
 
 const initialState = Map({
 	templates: List(),
+	templateList: List(),
 	template: Map(),
 	add: Map({
 		templateGb: '',
@@ -37,6 +42,7 @@ const initialState = Map({
 		templateDescriptionError: false
 	}),
 	total: 0,
+	selectedTemplate: '',
 	lastPage: null
 });
 
@@ -59,6 +65,14 @@ export default handleActions(
 					.set('templates', fromJS(templates))
 					.set('total', parseInt(count, 10))
 					.set('lastPage', parseInt(lastPage || 1, 10));
+			}
+		}),
+		...pender({
+			type: GET_TEMPLATES_FOR_SELECT,
+			onSuccess: (state, action) => {
+				const { data: templateList } = action.payload.data;
+
+				return state.set('templateList', fromJS(templateList));
 			}
 		}),
 		...pender({
@@ -95,6 +109,12 @@ export default handleActions(
 				const { data: template } = action.payload;
 
 				return state.set('template', Map({ ...template, templateGb: template.templateGb._id }));
+			}
+		}),
+		...pender({
+			type: DOWNLOAD_TEMPLATE,
+			onSuccess: (state, action) => {
+				return state.set('selectedTemplate', '');
 			}
 		}),
 		[SELECT_TEMPLATE]: (state, action) => {

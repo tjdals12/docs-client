@@ -6,8 +6,15 @@ import * as modalActions from 'store/modules/modal';
 import * as letterActions from 'store/modules/letter';
 import * as documentActions from 'store/modules/document';
 import * as vendorLetterActions from 'store/modules/vendorLetter';
+import * as templateActions from 'store/modules/template';
 
 class LetterDetailModalContainer extends React.Component {
+	getTemplateList = () => {
+		const { TemplateActions } = this.props;
+
+		TemplateActions.getTemplatesForSelect();
+	};
+
 	handleClose = () => {
 		const { ModalActions } = this.props;
 
@@ -38,8 +45,12 @@ class LetterDetailModalContainer extends React.Component {
 	};
 
 	handleChange = (e) => {
-		const { LetterActions } = this.props;
+		const { LetterActions, TemplateActions } = this.props;
 		const { name, value } = e.target;
+
+		if (name === 'template') {
+			TemplateActions.onChange({ name: 'selectedTemplate', value });
+		}
 
 		LetterActions.onChange({ name, value });
 	};
@@ -50,13 +61,27 @@ class LetterDetailModalContainer extends React.Component {
 		LetterActions.cancelLetter({ id, yn, reason });
 	};
 
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
+			this.getTemplateList();
+		}
+	}
+
+	handleDownload = (id) => () => {
+		const { TemplateActions, selectedTemplate } = this.props;
+
+		TemplateActions.downloadTemplate({ key: 'letter', target: id, template: selectedTemplate });
+	};
+
 	render() {
-		const { letter, reasonError, isOpen, loading } = this.props;
+		const { templates, selectedTemplate, letter, reasonError, isOpen, loading } = this.props;
 
 		if (loading || loading === undefined) return null;
 
 		return (
 			<LetterDetailModal
+				templates={templates}
+				selectedTemplate={selectedTemplate}
 				data={letter}
 				reasonError={reasonError}
 				isOpen={isOpen}
@@ -65,6 +90,7 @@ class LetterDetailModalContainer extends React.Component {
 				onChange={this.handleChange}
 				onCancel={this.handleCancel}
 				onOpenReference={this.handleOpenReference}
+				onDownload={this.handleDownload}
 			/>
 		);
 	}
@@ -72,6 +98,8 @@ class LetterDetailModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		templates: state.template.get('templateList'),
+		selectedTemplate: state.template.get('selectedTemplate'),
 		id: state.letter.getIn([ 'letter', '_id' ]),
 		letter: state.letter.get('letter'),
 		reason: state.letter.get('reason'),
@@ -83,6 +111,7 @@ export default connect(
 		ModalActions: bindActionCreators(modalActions, dispatch),
 		LetterActions: bindActionCreators(letterActions, dispatch),
 		DocumentActions: bindActionCreators(documentActions, dispatch),
-		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch)
+		VendorLetterActions: bindActionCreators(vendorLetterActions, dispatch),
+		TemplateActions: bindActionCreators(templateActions, dispatch)
 	})
 )(LetterDetailModalContainer);

@@ -180,22 +180,29 @@ const TemplateCollapse = ({
 						</FormGroup>
 
 						<FormGroup row className="mt-5 mb-0">
-							<Col md={{ offset: 8, size: 4 }} className="d-flex justify-content-end">
-								{isAdd ? (
+							{isAdd ? (
+								<Col md={{ offset: 8, size: 4 }} className="d-flex justify-content-end">
 									<Button color="primary" size="lg" onClick={onSave}>
 										SAVE
 									</Button>
-								) : (
-									<React.Fragment>
+								</Col>
+							) : (
+								<React.Fragment>
+									<Col md={4}>
+										<Button color="success" size="lg" tag="a" href={detail.get('templatePath')}>
+											DOWNLOAD
+										</Button>
+									</Col>
+									<Col md={{ offset: 4, size: 4 }} className="d-flex justify-content-end">
 										<Button color="primary" size="lg" className="mr-2" onClick={onEdit}>
 											EDIT
 										</Button>
 										<Button color="danger" size="lg">
 											DELETE
 										</Button>
-									</React.Fragment>
-								)}
-							</Col>
+									</Col>
+								</React.Fragment>
+							)}
 						</FormGroup>
 					</Form>
 				</Col>
