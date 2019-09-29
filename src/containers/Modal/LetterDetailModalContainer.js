@@ -61,17 +61,17 @@ class LetterDetailModalContainer extends React.Component {
 		LetterActions.cancelLetter({ id, yn, reason });
 	};
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
-			this.getTemplateList();
-		}
-	}
-
 	handleDownload = (id) => () => {
 		const { TemplateActions, selectedTemplate } = this.props;
 
 		TemplateActions.downloadTemplate({ key: 'letter', target: id, template: selectedTemplate });
 	};
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
+			this.getTemplateList();
+		}
+	}
 
 	render() {
 		const { templates, selectedTemplate, letter, reasonError, isOpen, loading } = this.props;

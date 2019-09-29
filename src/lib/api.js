@@ -1,4 +1,5 @@
 import axios from 'axios';
+import ContentDisposition from 'content-disposition';
 
 // const real = 'http://192.168.7.9';
 const real = '';
@@ -92,10 +93,12 @@ export const addTemplate = (param) => axios.post(`${real}/api/templates`, { ...p
 export const editTemplate = ({ id, param }) => axios.patch(`${real}/api/templates/${id}/edit`, { ...param });
 export const downloadTemplate = (param) =>
 	axios.post(`${real}/api/templates/download`, { ...param }, { responseType: 'blob' }).then((response) => {
+		let { filename } = ContentDisposition.parse(response.headers['content-disposition']).parameters;
+
 		const url = window.URL.createObjectURL(new Blob([ response.data ]));
 		const link = document.createElement('a');
 		link.href = url;
-		link.setAttribute('download', 'file.docx');
+		link.setAttribute('download', filename);
 		document.body.appendChild(link);
 		link.click();
 	});
