@@ -217,7 +217,7 @@ const DocumentDetailModal = ({
 									return (
 										<div key={index} className="mb-2">
 											<span key={index}>
-												{item.get('status')}
+												{item.get('statusName')}
 												{!!item.get('resultCode') && ` (${item.get('resultCode')})`}
 												{!!item.get('replyCode') && ` - ${item.get('replyCode')}`}
 												{'  '}

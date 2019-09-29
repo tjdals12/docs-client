@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table, Input, Col } from 'reactstrap';
 import PropTypes from 'prop-types';
 import Typography from 'components/Typography';
+import queryString from 'query-string';
 
 const LetterDetailModal = ({
 	templates,
@@ -187,7 +188,26 @@ const LetterDetailModal = ({
 			<ModalFooter className="bg-light">
 				{data.get('letterGb') === '01' ? (
 					<Col className="m-0 p-0">
-						<Button color="success" className="flex-start">
+						<Button
+							color="success"
+							className="flex-start"
+							onClick={() => {
+								const subject = `[${data.get('officialNumber')}] ${data.get('letterTitle')}`;
+
+								const { clientCode, contractorCode } = data.get('project').toJS();
+
+								const body = `수신: ${data.get('receiver')} / ${data.get('receiverGb') === '01'
+									? clientCode
+									: contractorCode}\n발신: ${data.get('sender')} / ${data.get('senderGb') === '01'
+									? clientCode
+									: contractorCode}\n\n제목: ${subject}\t\t\t${data.get('sendDate').substr(0, 10)}`;
+
+								window.location.href = `mailto:lll2slll@naver.com?${queryString.stringify({
+									subject,
+									body
+								})}`;
+							}}
+						>
 							E-mail 작성
 						</Button>
 					</Col>
