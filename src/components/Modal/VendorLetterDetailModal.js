@@ -119,10 +119,29 @@ const VendorLetterDetailModal = ({
 									{data.get('receiveDate').substr(0, 10)}
 								</span>
 							</td>
-							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
+							<th scope="row" className="text-right bg-light">
+								회신요청일
+							</th>
+							<td>
+								<span className="text-success font-weight-bold">
+									{data.get('targetDate').substr(0, 10)}
+								</span>
+							</td>
+						</tr>
+						<tr className="border-bottom">
+							<th scope="row" className="text-right align-middle bg-light">
+								지연여부
+							</th>
+							<td className="title-font">
+								{data.getIn([ 'isDelay', 'delayGb' ])}{' '}
+								<Typography tag="span" className="text-danger">
+									({data.getIn([ 'isDelay', 'remain' ])})
+								</Typography>
+							</td>
+							<th scope="row" className="text-right align-middle bg-light">
 								삭제여부
 							</th>
-							<td rowSpan="2">
+							<td>
 								{data.getIn([ 'cancelYn', 'yn' ])}{' '}
 								{data.getIn([ 'cancelYn', 'yn' ]) === 'YES' && (
 									<React.Fragment>
@@ -134,16 +153,6 @@ const VendorLetterDetailModal = ({
 										</Typography>
 									</React.Fragment>
 								)}
-							</td>
-						</tr>
-						<tr className="border-bottom">
-							<th scope="row" className="text-right bg-light">
-								회신요청일
-							</th>
-							<td>
-								<span className="text-success font-weight-bold">
-									{data.get('targetDate').substr(0, 10)}
-								</span>
 							</td>
 						</tr>
 						<tr className="border-bottom">

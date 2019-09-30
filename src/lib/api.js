@@ -49,7 +49,8 @@ export const deleteIndex = ({ id }) => axios.patch(`${real}/api/documentindexes/
 export const getInfos = ({ page }) => axios.get(`${real}/api/documentinfos?page=${page}`);
 export const searchInfos = (page, param) => axios.post(`${real}/api/documentinfos/search?page=${page}`, { ...param });
 export const getInfo = ({ id }) => axios.get(`${real}/api/documentinfos/${id}`);
-export const getLatestDocuments = ({ vendor }) => axios.get(`${real}/api/documentinfos/${vendor}/latest`);
+export const getLatestDocuments = ({ vendor, page }) =>
+	axios.get(`${real}/api/documentinfos/${vendor}/latest?page=${page}`);
 
 /** Vendor Letter */
 export const getVendorLetters = ({ page }) => axios.get(`${real}/api/vendorletters?page=${page}`);

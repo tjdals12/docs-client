@@ -1,14 +1,18 @@
 import React from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Table } from 'reactstrap';
+import Pagination from 'components/Pagination';
 import PropTypes from 'prop-types';
 
 const LatestDocumentsModal = ({
+	page,
+	lastPage,
 	data,
 	vendor,
 	isOpen,
 	onClose,
 	onOpenVendorDetail,
 	onOpenInfoDetail,
+	onPage,
 	className,
 	...rest
 }) => {
@@ -41,13 +45,13 @@ const LatestDocumentsModal = ({
 						</tr>
 					</thead>
 					<tbody>
-						{data.map((data, index) => {
-							const { _id, documentNumber, documentTitle, latestDocument } = data.toJS();
+						{data.map((data) => {
+							const { _id, documentNumber, documentTitle, latestDocument, index } = data.toJS();
 							const { documentRev, documentInOut, documentStatus } = latestDocument;
 
 							return (
 								<tr key={_id}>
-									<td className="text-right">{index + 1}</td>
+									<td className="text-right">{index}</td>
 									<td>{documentNumber}</td>
 									<td className="have-link" onClick={onOpenInfoDetail(_id)}>
 										{documentTitle}
@@ -76,7 +80,14 @@ const LatestDocumentsModal = ({
 					</tbody>
 				</Table>
 			</ModalBody>
-			<ModalFooter>
+			<ModalFooter className="bg-light">
+				<Pagination
+					currentPage={page}
+					lastPage={lastPage}
+					onPage={onPage}
+					aria-label="Page navigation"
+					listClassName="flex-row justify-content-end mb-0 ml-auto"
+				/>
 				<Button onClick={onClose}>CANCEL</Button>
 			</ModalFooter>
 		</Modal>
@@ -84,14 +95,20 @@ const LatestDocumentsModal = ({
 };
 
 LatestDocumentsModal.propTypes = {
+	page: PropTypes.number,
+	lastPage: PropTypes.number,
 	isOpen: PropTypes.bool,
 	onClose: PropTypes.func,
+	onPage: PropTypes.func,
 	className: PropTypes.string
 };
 
 LatestDocumentsModal.defaultProps = {
+	page: 1,
+	lastPage: 1,
 	isOpen: false,
-	onClose: () => console.warn('Warning: onClose is not defined')
+	onClose: () => console.warn('Warning: onClose is not defined'),
+	onPage: () => console.warn('Warning: onPage is not defined')
 };
 
 export default LatestDocumentsModal;

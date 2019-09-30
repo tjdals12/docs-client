@@ -13,7 +13,14 @@ import {
 	Input,
 	Col
 } from 'reactstrap';
+import Slider from 'react-rangeslider';
 import PropTypes from 'prop-types';
+
+const horizontalLabels = {
+	1: 'Low',
+	3: 'Normal',
+	5: 'High'
+};
 
 const DocumentEditModal = ({
 	vendorList,
@@ -28,7 +35,17 @@ const DocumentEditModal = ({
 	className,
 	...rest
 }) => {
-	const { vendor, part, documentGb, documentTitle, documentNumber, documentRev, officialNumber, memo } = data.toJS();
+	const {
+		vendor,
+		part,
+		documentGb,
+		documentTitle,
+		documentNumber,
+		documentRev,
+		level,
+		officialNumber,
+		memo
+	} = data.toJS();
 
 	return (
 		<Modal
@@ -138,6 +155,18 @@ const DocumentEditModal = ({
 								))}
 							</Input>
 						</Col>
+					</FormGroup>
+					<FormGroup className="mb-5">
+						<Label for="level">LEVEL</Label>
+						<Slider
+							min={1}
+							max={5}
+							value={level}
+							labels={horizontalLabels}
+							onChange={(value) => {
+								onChange({ target: { name: 'level', value: value } });
+							}}
+						/>
 					</FormGroup>
 					<FormGroup>
 						<Label for="transmittal">TRANSMITTAL NO.</Label>

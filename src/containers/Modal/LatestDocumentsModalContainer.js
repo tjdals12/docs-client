@@ -7,10 +7,12 @@ import * as modalActions from 'store/modules/modal';
 import * as vendorActions from 'store/modules/vendor';
 
 class LatestDocumentsModalContainer extends React.Component {
-	getLatestDocuments = () => {
+	getLatestDocuments = (page) => {
 		const { InfoActions, vendor } = this.props;
 
-		InfoActions.getLatestDocuments({ vendor: vendor.get('_id') });
+		InfoActions.onChange({ name: 'page', value: page });
+
+		InfoActions.getLatestDocuments({ vendor: vendor.get('_id'), page });
 	};
 
 	getInfo = (id) => {
@@ -41,23 +43,26 @@ class LatestDocumentsModalContainer extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.isOpen === false && this.props.isOpen !== prevProps.isOpen) {
-			this.getLatestDocuments();
+			this.getLatestDocuments(1);
 		}
 	}
 
 	render() {
-		const { latest, vendor, isOpen, loading } = this.props;
+		const { page, lastPage, latest, vendor, isOpen, loading } = this.props;
 
 		if (loading || loading === undefined) return null;
 
 		return (
 			<LatestDocumentsModal
+				page={page}
+				lastPage={lastPage}
 				vendor={vendor}
 				data={latest}
 				isOpen={isOpen}
 				onClose={this.handleClose}
 				onOpenVendorDetail={this.handleOpenVendorDetail}
 				onOpenInfoDetail={this.handleOpenInfoDetail}
+				onPage={this.getLatestDocuments}
 			/>
 		);
 	}
@@ -65,6 +70,8 @@ class LatestDocumentsModalContainer extends React.Component {
 
 export default connect(
 	(state) => ({
+		page: state.info.get('page'),
+		lastPage: state.info.get('lastPage'),
 		latest: state.info.get('latest'),
 		vendor: state.indexes.getIn([ 'index', 'vendor' ]),
 		isOpen: state.modal.get('latestDocumentsModal'),

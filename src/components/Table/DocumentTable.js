@@ -43,40 +43,37 @@ const DocumentTable = ({
 							<input type="checkbox" onChange={onCheckedAll} />
 						</th>
 						<th width="6%" className="text-center">
-							Gb
+							구분
 						</th>
 						<th width="15%" className="text-center">
-							No.
+							문서번호
 						</th>
 						<th width="25%" className="text-center">
-							Title
+							문서명
 						</th>
 						<th width="5%" className="text-center">
 							Rev.
 						</th>
 						<th width="10%" className="text-center">
-							Date
+							접수일
 						</th>
 						<th width="" className="text-center">
-							Status
+							상태
 						</th>
 						<th width="8%" className="text-center">
-							Hold
+							보류여부
 						</th>
 						<th width="7%" className="text-center">
-							Delete
+							삭제여부
 						</th>
-						<th width="5%" className="text-center">
-							Delay
-						</th>
-						<th width="1%" className="text-center">
-							Level
+						<th width="6%" className="text-center">
+							중요도
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					{data.map((item) => {
-						let { _id: id, level, delayGb } = item.toJS();
+						let { _id: id, level } = item.toJS();
 
 						return (
 							<tr key={id}>
@@ -123,23 +120,12 @@ const DocumentTable = ({
 									)}
 								</td>
 								<td className="text-center">
-									{delayGb === '01' ? (
-										<span className="text-success">여유</span>
-									) : delayGb === '02' ? (
-										<span className="text-primary">임박</span>
-									) : delayGb === '03' ? (
-										<span className="text-warning">오늘</span>
+									{level.number > 3 ? (
+										<span className="text-danger">{level.description}</span>
+									) : level.number === 3 ? (
+										<span className="text-info">{level.description}</span>
 									) : (
-										<span className="text-danger">지연</span>
-									)}
-								</td>
-								<td className="text-center">
-									{level > 3 ? (
-										<span className="text-danger">{level}</span>
-									) : level === 3 ? (
-										<span className="text-warning">{level}</span>
-									) : (
-										<span className="text-success">{level}</span>
+										<span className="text-success">{level.description}</span>
 									)}
 								</td>
 							</tr>

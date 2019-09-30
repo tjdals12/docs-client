@@ -116,32 +116,16 @@ const DocumentDetailModal = ({
 							<td colSpan={3}>{data.get('documentTitle')}</td>
 						</tr>
 						<tr className="border-bottom">
-							<th scope="row" className="text-right bg-light">
+							<th scope="row" className="text-right align-middle bg-light">
 								Revision
 							</th>
 							<td>{data.get('documentRev')}</td>
-							<th rowSpan="2" scope="row" className="text-right align-middle bg-light">
+							<th scope="row" className="text-right align-middle bg-light">
 								중요도
 							</th>
-							<td rowSpan="2">
-								<div className="pb-1">{data.get('level')} (Max: 5)</div>
-								<Progress max={5} value={data.get('level')} />
-							</td>
-						</tr>
-						<tr className="border-bottom">
-							<th scope="row" className="text-right bg-light">
-								지연여부
-							</th>
 							<td>
-								{data.get('delayGb') === '01' ? (
-									'여유'
-								) : data.get('delayGb') ? (
-									'임박'
-								) : data.get('delayGb') ? (
-									'오늘'
-								) : (
-									'지연'
-								)}
+								<div className="pb-1">{data.getIn([ 'level', 'description' ])} (Max: 5)</div>
+								<Progress max={5} value={data.getIn([ 'level', 'number' ])} />
 							</td>
 						</tr>
 						<tr className="border-bottom">

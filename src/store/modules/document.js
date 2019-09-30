@@ -56,6 +56,7 @@ const initialState = Map({
 		documentNumber: '',
 		documentGb: '',
 		documentRev: '',
+		level: 1,
 		officialNumber: '',
 		memo: ''
 	}),
@@ -142,6 +143,7 @@ export default handleActions(
 					.setIn([ 'edit', 'documentNumber' ], document.documentNumber)
 					.setIn([ 'edit', 'documentGb' ], document.documentGb._id)
 					.setIn([ 'edit', 'documentRev' ], document.documentRev)
+					.setIn([ 'edit', 'level' ], document.level)
 					.setIn([ 'edit', 'officialNumber' ], document.documentInOut[0].officialNumber)
 					.setIn([ 'edit', 'memo' ], document.memo);
 			}

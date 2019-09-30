@@ -53,3 +53,15 @@
 		height: 100%;
 	}
 }
+
+/* react-rangeslider override */
+.rangeslider-horizontal {
+	.rangeslider__fill {
+		background-color: #6a82fb !important;
+	}
+
+	.rangeslider__label-item {
+		font-family: 'Do Hyeon', sans-serif;
+		text-transform: uppercase;
+	}
+}

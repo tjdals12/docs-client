@@ -176,7 +176,6 @@ const DocumentSearchForm = ({ gb, status, search, onChange, onSearch, onFullPeri
 				<Col md={2}>
 					<Input type="select" name="level" id="level" value={search.get('level')} onChange={onChange}>
 						<option value="">-- Level --</option>
-						<option value="0">0</option>
 						<option value="1">1</option>
 						<option value="2">2</option>
 						<option value="3">3</option>
