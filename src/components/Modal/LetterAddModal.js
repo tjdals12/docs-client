@@ -179,7 +179,12 @@ const LetterAddModal = ({
 										<option value="NO">NO</option>
 									</Input>
 								</InputGroupAddon>
-								<Input type="date" name="targetDate" onChange={onChange} />
+								<Input
+									type="date"
+									name="targetDate"
+									onChange={onChange}
+									invalid={errors.get('targetDateError')}
+								/>
 							</InputGroup>
 						</Col>
 					</FormGroup>

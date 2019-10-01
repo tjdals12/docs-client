@@ -72,7 +72,8 @@ const initialState = Map({
 		receiverGbError: false,
 		receiverError: false,
 		sendDateError: false,
-		replyRequiredError: false
+		replyRequiredError: false,
+		targetDateError: false
 	}),
 	reason: '',
 	reasonError: false,
@@ -143,7 +144,11 @@ export default handleActions(
 					.setIn([ 'errors', 'receiverGbError' ], add.get('receiverGb') === '')
 					.setIn([ 'errors', 'receiverError' ], add.get('receiver') === '')
 					.setIn([ 'errors', 'sendDateError' ], add.get('sendDate') === '')
-					.setIn([ 'errors', 'replyRequiredError' ], add.get('replyRequired') === '');
+					.setIn([ 'errors', 'replyRequiredError' ], add.get('replyRequired') === '')
+					.setIn(
+						[ 'errors', 'targetDateError' ],
+						add.get('replyRequired') === 'YES' && (!add.get('targetDate') || add.get('targetDate') === '')
+					);
 			}
 		}),
 		...pender({
